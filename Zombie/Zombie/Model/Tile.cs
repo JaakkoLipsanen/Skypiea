@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Flai;
+﻿using Flai;
 using Microsoft.Xna.Framework;
 
 namespace Zombie.Model

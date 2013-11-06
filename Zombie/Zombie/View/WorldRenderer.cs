@@ -1,10 +1,5 @@
-﻿using Flai.CBES;
-using Flai.CBES.Graphics;
-using Flai.Graphics;
-using Microsoft.Xna.Framework;
-using Zombie.Components;
+﻿using Flai.Graphics;
 using Zombie.Model;
-using Zombie.Prefabs;
 
 namespace Zombie.View
 {
@@ -38,6 +33,7 @@ namespace Zombie.View
 
         public void DrawUI(GraphicsContext graphicsContext)
         {
+            _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
         }
     }

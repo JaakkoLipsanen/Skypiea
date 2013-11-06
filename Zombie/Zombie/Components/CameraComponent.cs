@@ -9,7 +9,7 @@ namespace Zombie.Components
     public class CameraComponent : Component, ICamera2D
     {
         // if null, should the getter create a new camera and return it?
-        public static CameraComponent Active { get; private set; }
+        public static CameraComponent Active { get; set; }
 
         public Vector2 Position
         {
@@ -21,6 +21,7 @@ namespace Zombie.Components
 
         public CameraComponent()
         {
+            // cause why not
             if (CameraComponent.Active == null)
             {
                 CameraComponent.Active = this;
@@ -42,11 +43,6 @@ namespace Zombie.Components
         public Vector2 ScreenToWorld(Size screenSize, Vector2 v)
         {
             return Camera2D.CalculateScreenToWorld(screenSize, this.Position, this.Zoom, v);
-        }
-
-        public void SetActive()
-        {
-            CameraComponent.Active = this;
         }
     }
 }

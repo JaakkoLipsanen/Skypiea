@@ -21,7 +21,7 @@ namespace Zombie.Model
 
         private static void CreateEntities(World world)
         {
-            world.EntityWorld.AddEntity(Prefab.CreateInstance<PlayerPrefab>(EntityTags.Player));
+            world.EntityWorld.AddEntity(Prefab.CreateInstance<PlayerPrefab>(EntityTags.Player, new Vector2(world.Width, world.Height) * Tile.Size / 2f));
 
             const float OffsetFromBorder = 120f;
             world.EntityWorld.AddEntity(Prefab.CreateInstance<VirtualThumbStickPrefab>(EntityTags.MovementThumbStick, new Vector2(OffsetFromBorder, FlaiGame.Current.ScreenSize.Height - OffsetFromBorder)));

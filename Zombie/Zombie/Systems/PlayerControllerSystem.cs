@@ -11,6 +11,7 @@ namespace Zombie.Systems
     public class PlayerControllerSystem : NameProcessingSystem
     {
         private TransformComponent _transform;
+        private PlayerInfoComponent _playerInfo;
         private WeaponComponent _weapon;
         private VirtualThumbStickComponent _movementThumbStick;
         private VirtualThumbStickComponent _rotationThumbStick;
@@ -28,6 +29,7 @@ namespace Zombie.Systems
         protected override void Initialize()
         {
             _transform = base.Entity.Get<TransformComponent>();
+            _playerInfo = base.Entity.Get<PlayerInfoComponent>();
             _weapon = base.Entity.Get<WeaponComponent>();
             _movementThumbStick = this.EntityWorld.FindEntityByName(EntityTags.MovementThumbStick).Get<VirtualThumbStickComponent>();
             _rotationThumbStick = this.EntityWorld.FindEntityByName(EntityTags.RotationThumbStick).Get<VirtualThumbStickComponent>();
@@ -35,6 +37,11 @@ namespace Zombie.Systems
 
         protected override void Process(UpdateContext updateContext, Entity entity)
         {
+            if (!_playerInfo.IsAlive)
+            {
+                return;
+            }
+
             const float Speed = Tile.Size * 4f;
 
             World world = this.EntityWorld.GetService<World>();

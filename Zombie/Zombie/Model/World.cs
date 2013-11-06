@@ -51,10 +51,15 @@ namespace Zombie.Model
 
         private void CreateSystems()
         { 
+            _entityWorld.AddSystem<ZombieAttackSystem>();
             _entityWorld.AddSystem<PlayerControllerSystem>();
             _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<ZombieManagerSystem>();
             _entityWorld.AddSystem<BasicZombieAIComponent>();
+            _entityWorld.AddSystem<BulletCollisionSystem>();
+            _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
+            _entityWorld.AddSystem<PlayerManagerSystem>();
+            _entityWorld.AddSystem<ZombieHealthSystem>();
         }
     }
 }
