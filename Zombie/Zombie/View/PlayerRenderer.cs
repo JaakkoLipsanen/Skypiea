@@ -35,6 +35,7 @@ namespace Zombie.View
             PlayerInfoComponent playerInfo = _player.Get<PlayerInfoComponent>();
             this.DrawLives(graphicsContext, playerInfo);
             this.DrawScore(graphicsContext, playerInfo);
+            this.DrawWeaponInfo(graphicsContext);
         }
 
         private void DrawLives(GraphicsContext graphicsContext, PlayerInfoComponent playerInfo)
@@ -59,6 +60,19 @@ namespace Zombie.View
         private void DrawScore(GraphicsContext graphicsContext, PlayerInfoComponent playerInfo)
         {
             graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, playerInfo.Score, new Vector2(8, 32), Color.White);
+        }
+
+        private void DrawWeaponInfo(GraphicsContext graphicsContext)
+        {
+            const string FontName = "SegoeWP.16";
+            WeaponComponent weapon = _player.Get<WeaponComponent>();
+
+            SpriteFont font = graphicsContext.FontContainer[FontName];
+            graphicsContext.SpriteBatch.DrawString(font, Common.AddSpaceBeforeCaps(weapon.Weapon.Type.ToString()), new Vector2(graphicsContext.ScreenSize.Width - 8, 8), Color.White, Corner.TopRight);
+
+            // todo: gaarbaage
+            string bulletsRemainingString = weapon.Weapon.BulletsRemaining.HasValue ? weapon.Weapon.BulletsRemaining.ToString() : "Infinity";
+            graphicsContext.SpriteBatch.DrawString(font, bulletsRemainingString, new Vector2(graphicsContext.ScreenSize.Width - 8, 32), Color.White, Corner.TopRight);
         }
     }
 }

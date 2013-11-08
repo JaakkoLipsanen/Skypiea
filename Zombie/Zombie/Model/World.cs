@@ -54,12 +54,16 @@ namespace Zombie.Model
             _entityWorld.AddSystem<ZombieAttackSystem>();
             _entityWorld.AddSystem<PlayerControllerSystem>();
             _entityWorld.AddSystem<VelocitySystem>();
-            _entityWorld.AddSystem<ZombieManagerSystem>();
-            _entityWorld.AddSystem<BasicZombieAIComponent>();
+            _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
+            _entityWorld.AddSystem<BasicZombieAISystem>();
             _entityWorld.AddSystem<BulletCollisionSystem>();
             _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
             _entityWorld.AddSystem<PlayerManagerSystem>();
             _entityWorld.AddSystem<ZombieHealthSystem>();
+            _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
+            _entityWorld.AddSystem<PlayerWeaponDropPickupSystem>();
+            _entityWorld.AddSystem<PlayerWeaponManagerSystem>();
+            _entityWorld.AddSystem<RusherZombieAISystem>();
         }
     }
 }

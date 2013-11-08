@@ -23,8 +23,8 @@ namespace Zombie.View
         private void DrawThumbStick(GraphicsContext graphicsContext, VirtualThumbStickComponent virtualThumbStick)
         {
             const float MaxDistance = 60f;
-            graphicsContext.PrimitiveRenderer.DrawRectangle(graphicsContext, virtualThumbStick.ThumbStick.CenterPosition, 12f, Color.Blue);
-            graphicsContext.PrimitiveRenderer.DrawRectangle(graphicsContext, virtualThumbStick.ThumbStick.CenterPosition + virtualThumbStick.ThumbStick.Direction * MaxDistance, 32f, Color.Blue);
+            graphicsContext.PrimitiveRenderer.DrawRectangle(virtualThumbStick.ThumbStick.CenterPosition, 12f, Color.Blue);
+            graphicsContext.PrimitiveRenderer.DrawRectangle(virtualThumbStick.ThumbStick.CenterPosition + virtualThumbStick.ThumbStick.Direction * MaxDistance, 32f, Color.Blue);
         }
     }
 }

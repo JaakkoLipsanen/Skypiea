@@ -1,5 +1,6 @@
 ﻿using Flai;
 using Flai.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using Zombie.Components;
 using Zombie.Model;
 
@@ -33,7 +34,7 @@ namespace Zombie.View
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(CameraComponent.Active);
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearWrap, CameraComponent.Active);
             _worldRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.End();
 

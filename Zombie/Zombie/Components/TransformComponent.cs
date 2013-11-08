@@ -24,6 +24,12 @@ namespace Zombie.Components
             this.Position = position;
         }
 
+        public TransformComponent(Vector2 position, float rotation)
+        {
+            this.Position = position;
+            this.Rotation = rotation;
+        }
+
         public TransformComponent(TransformComponent copy)
         {
             this.Position = copy.Position;

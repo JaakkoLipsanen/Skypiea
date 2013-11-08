@@ -1,6 +1,7 @@
 using Flai;
 using Flai.CBES;
 using Flai.General;
+using Flai.Misc;
 using Microsoft.Xna.Framework;
 
 namespace Zombie.Components

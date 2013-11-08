@@ -1,37 +1,26 @@
 using Flai;
 using Flai.CBES;
-using Microsoft.Xna.Framework;
 using Zombie.Components;
 
 namespace Zombie.Model.Weapons
 {
-    public class AssaultRifleWeapon : Weapon
+    public class AssaultRifleWeapon : BulletWeapon
     {
-        private const float MinimumTimeBetweenShots = 0.1f;
-        private float _timeSinceLastShot = 0f;
-
-        public override bool CanShoot
+        private const float MinimumTimeBetweenShots = 0.15f;
+        public override WeaponType Type
         {
-            get { return _timeSinceLastShot >= AssaultRifleWeapon.MinimumTimeBetweenShots; }
+            get { return WeaponType.AssaultRifle; }
         }
 
-        public override bool IsFinished
+        public AssaultRifleWeapon()
+            : base(AssaultRifleWeapon.MinimumTimeBetweenShots, null)
         {
-            get { return true; } // assault rifle doesn't have bullets
         }
 
-        public override void Update(UpdateContext updateContext)
+        protected override void ShootInner(EntityWorld entityWorld, TransformComponent parentTransform)
         {
-            _timeSinceLastShot += updateContext.DeltaSeconds;
-        }
-
-        public override void Shoot(EntityWorld entityWorld, TransformComponent parentTransform)
-        {
-            if (this.CanShoot)
-            {
-                entityWorld.AddEntity(Prefab.CreateInstance<AssaultRifleBulletPrefab>(parentTransform, (BulletHitCallback)this.OnBulletHit));
-                _timeSinceLastShot = 0f;
-            }
+            entityWorld.AddEntity(Prefab.CreateInstance<AssaultRifleBulletPrefab>(parentTransform, (BulletHitCallback)this.OnBulletHit));
+            this.DecreaseBulletCount();
         }
 
         private bool OnBulletHit(BulletComponent bullet, Entity entityHit)
@@ -41,7 +30,7 @@ namespace Zombie.Model.Weapons
                 HealthComponent health = entityHit.TryGet<HealthComponent>();
                 if (health)
                 {
-                    health.TakeDamage(100);
+                    health.TakeDamage(10);
                 }
                 else
                 {

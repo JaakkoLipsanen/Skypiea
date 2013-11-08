@@ -1,5 +1,12 @@
-﻿using Flai.Graphics;
+﻿using Flai;
+using Flai.CBES;
+using Flai.CBES.Graphics;
+using Flai.DataStructures;
+using Flai.Graphics;
+using Microsoft.Xna.Framework;
+using Zombie.Components;
 using Zombie.Model;
+using Zombie.Model.Weapons;
 
 namespace Zombie.View
 {
@@ -11,6 +18,7 @@ namespace Zombie.View
         private readonly ZombieRenderer _zombieRenderer;
         private readonly VirtualThumbStickRenderer _virtualThumbStickRenderer;
         private readonly BulletRenderer _bulletRenderer;
+        private readonly WeaponDropRenderer _weaponDropRenderer;
 
         public WorldRenderer(World world)
         {
@@ -20,12 +28,14 @@ namespace Zombie.View
             _virtualThumbStickRenderer = new VirtualThumbStickRenderer(_world.EntityWorld);
             _bulletRenderer = new BulletRenderer(_world.EntityWorld);
             _zombieRenderer = new ZombieRenderer(_world.EntityWorld);
+            _weaponDropRenderer = new WeaponDropRenderer(_world.EntityWorld);
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
             _tileMapRenderer.Draw(graphicsContext);
 
+            _weaponDropRenderer.Draw(graphicsContext);
             _bulletRenderer.Draw(graphicsContext);
             _playerRenderer.Draw(graphicsContext);
             _zombieRenderer.Draw(graphicsContext);

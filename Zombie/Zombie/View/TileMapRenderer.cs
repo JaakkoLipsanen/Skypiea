@@ -25,7 +25,7 @@ namespace Zombie.View
             int cameraTop = FlaiMath.Clamp(Tile.WorldToTileCoordinate(cameraArea.Top), 0, _tileMap.Height);
             int cameraBottom = FlaiMath.Clamp(Tile.WorldToTileCoordinate(cameraArea.Bottom) + 1, 0, _tileMap.Height);
 
-            for (int y = cameraTop; y < cameraBottom; y++)
+          /*  for (int y = cameraTop; y < cameraBottom; y++)
             {
                 for (int x = cameraLeft; x < cameraRight; x++)
                 {
@@ -35,9 +35,20 @@ namespace Zombie.View
                         graphicsContext.SpriteBatch.Draw(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Grass"), Tile.GetTileBounds(x, y), Color.DarkGray);
                     }
                 }
-            }
+            } */
 
-            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(graphicsContext, new RectangleF(0, 0, _tileMap.Width * Tile.Size, _tileMap.Height * Tile.Size), Color.Red, 2f);
+            //Texture2D texture = graphicsContext.ContentProvider.DefaultManager.LoadTexture("Grass");
+            //for (int y = 0; y < cameraArea.Bottom; y += texture.Height)
+            //{
+            //    for (int x = cameraLeft; x < cameraArea.Right; x += texture.Width)
+            //    {
+            //        graphicsContext.SpriteBatch.Draw(texture, new Vector2(x, y), Color.White);
+            //    }
+            //}
+
+            Rectangle sourceRectangle = cameraArea.ToRectangle(); // new Rectangle((int)cameraArea.Left, (int)came);
+            graphicsContext.SpriteBatch.Draw(graphicsContext.ContentProvider.DefaultManager.LoadTexture("GrassFullScreen"), cameraArea.TopLeft, sourceRectangle, Color.Gray);
+            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(new RectangleF(0, 0, _tileMap.Width * Tile.Size, _tileMap.Height * Tile.Size), Color.Red, 2f);
         }
     }
 }
