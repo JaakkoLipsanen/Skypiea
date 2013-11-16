@@ -41,6 +41,7 @@ namespace Zombie.View
             graphicsContext.SpriteBatch.Begin();
             _worldRenderer.DrawUI(graphicsContext);
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette"));
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette"));
             graphicsContext.SpriteBatch.End();
         }
     }

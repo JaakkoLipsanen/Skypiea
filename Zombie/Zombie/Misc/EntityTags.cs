@@ -10,5 +10,6 @@ namespace Zombie.Misc
         public const string RotationThumbStick = "RotationThumbStick";
         public const string Zombie = "Zombie";
         public const string WeaponDrop = "WeaponDrop";
+        public const string ZombieExplosionParticle = "ZombieExplosionParticle";
     }
 }

@@ -15,7 +15,7 @@ namespace Zombie.Prefabs
             entity.Add(new TransformComponent(position));
             entity.Add<RusherZombieAIComponent>();
             entity.Add(new AreaComponent(RusherZombiePrefab.Size));
-            entity.Add(new HealthComponent(15));
+            entity.Add(new HealthComponent(5));
             entity.Tag = EntityTags.Zombie;
 
             return entity;

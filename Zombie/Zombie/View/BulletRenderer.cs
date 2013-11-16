@@ -18,7 +18,7 @@ namespace Zombie.View
             BulletComponent bullet = entity.Get<BulletComponent>();
             TransformComponent transform = entity.Get<TransformComponent>();
 
-            graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, transform.Position, Color.Yellow * 0.55f, transform.Rotation, new Vector2(15, 3));
+            graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, transform.Position, Color.Yellow * 0.5f, transform.Rotation, new Vector2(16, 3));
         }
     }
 }

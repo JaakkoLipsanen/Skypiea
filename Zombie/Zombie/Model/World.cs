@@ -2,6 +2,7 @@
 using Flai.CBES;
 using Flai.General;
 using Zombie.Systems;
+using Zombie.View;
 
 namespace Zombie.Model
 {
@@ -64,6 +65,7 @@ namespace Zombie.Model
             _entityWorld.AddSystem<PlayerWeaponDropPickupSystem>();
             _entityWorld.AddSystem<PlayerWeaponManagerSystem>();
             _entityWorld.AddSystem<RusherZombieAISystem>();
+            _entityWorld.AddSystem<ZombieExplosionManagerSystem>();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Zombie.Prefabs
             entity.Add(new TransformComponent(position));
             entity.Add<BasicZombieAIComponent>();
             entity.Add(new AreaComponent(BasicZombiePrefab.Size));
-            entity.Add(new HealthComponent(15));
+            entity.Add(new HealthComponent(5));
             entity.Tag = EntityTags.Zombie;
 
             return entity;

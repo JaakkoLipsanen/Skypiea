@@ -13,7 +13,7 @@ namespace Zombie.Systems
     // ZombieSpawnManagerSystem ? -> do it probably
     public class ZombieSpawnManagerSystem : EntitySystem
     {
-        private readonly Timer _zombieTimer = new Timer(0.75f);
+        private readonly Timer _zombieTimer = new Timer(0.5f);
         protected override int ProcessOrder
         {
             get { return SystemProcessOrder.PreUpdate; }
@@ -41,7 +41,7 @@ namespace Zombie.Systems
                 new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),
                 playerTransform.Position, MinDistanceFromPlayer);
 
-            if (Global.Random.NextFromOdds(0.25f))
+            if (Global.Random.NextFromOdds(0.5f))
             {
                 this.EntityWorld.AddEntity(Prefab.CreateInstance<RusherZombiePrefab>(position));
             }

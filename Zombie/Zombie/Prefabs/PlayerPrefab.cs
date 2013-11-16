@@ -14,7 +14,7 @@ namespace Zombie.Prefabs
 
             entity.Add(new PlayerInfoComponent(2));
             entity.Add(new TransformComponent(position));
-            entity.Add<CameraComponent>();
+            entity.Add<CameraComponent>(new PlayerCameraComponent());
             entity.Add<WeaponComponent>();
             entity.Get<WeaponComponent>().Weapon = new AssaultRifleWeapon();
             entity.Tag = EntityTags.Player;

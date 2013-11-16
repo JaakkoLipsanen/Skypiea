@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Zombie.Components;
 using Zombie.Model;
 using Zombie.Model.Weapons;
+using Zombie.Systems;
 
 namespace Zombie.View
 {
@@ -20,6 +21,9 @@ namespace Zombie.View
         private readonly BulletRenderer _bulletRenderer;
         private readonly WeaponDropRenderer _weaponDropRenderer;
 
+        // todo: create generic "particle renderer" class?
+        private readonly ZombieExplosionParticleRenderer _zombieExplosionParticleRenderer;
+
         public WorldRenderer(World world)
         {
             _world = world;
@@ -29,6 +33,8 @@ namespace Zombie.View
             _bulletRenderer = new BulletRenderer(_world.EntityWorld);
             _zombieRenderer = new ZombieRenderer(_world.EntityWorld);
             _weaponDropRenderer = new WeaponDropRenderer(_world.EntityWorld);
+
+            _zombieExplosionParticleRenderer = new ZombieExplosionParticleRenderer(_world.EntityWorld);
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -39,12 +45,26 @@ namespace Zombie.View
             _bulletRenderer.Draw(graphicsContext);
             _playerRenderer.Draw(graphicsContext);
             _zombieRenderer.Draw(graphicsContext);
+            _zombieExplosionParticleRenderer.Draw(graphicsContext);
         }
 
         public void DrawUI(GraphicsContext graphicsContext)
         {
             _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
+        }
+    }
+
+    internal class ZombieExplosionParticleRenderer : ComponentProcessingRenderer<TransformComponent, ZombieExplosionParticleComponent>
+    {
+        public ZombieExplosionParticleRenderer(EntityWorld entityWorld) 
+            : base(entityWorld)
+        {
+        }
+
+        protected override void Draw(GraphicsContext graphicsContext, Entity entity, TransformComponent transform, ZombieExplosionParticleComponent zombieExplosionParticle)
+        {
+            graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, transform.Position, Color.DarkRed * zombieExplosionParticle.Alpha, 0, zombieExplosionParticle.Size);
         }
     }
 }

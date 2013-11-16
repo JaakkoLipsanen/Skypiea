@@ -119,6 +119,7 @@
     <Compile Include="View\VirtualThumbStickRenderer.cs" />
     <Compile Include="View\WeaponDropRenderer.cs" />
     <Compile Include="View\WorldRenderer.cs" />
+    <Compile Include="Systems\ZombieExplosionManagerSystem.cs" />
     <Compile Include="View\ZombieRenderer.cs" />
     <Compile Include="ZombieGame.cs" />
     <None Include="Properties\AppManifest.xml">
