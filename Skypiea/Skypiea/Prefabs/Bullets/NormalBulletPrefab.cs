@@ -13,17 +13,18 @@ namespace Skypiea.Prefabs.Bullets
         private static readonly SizeF BulletSize = new SizeF(6, 6);
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
-            const float Speed = Tile.Size * 25f;
+            const float DefaultSpeed = Tile.Size * 25f;
 
             CTransform2D transform = parameters.Get<CTransform2D>(0);
             BulletWeapon weapon = parameters.Get<BulletWeapon>(1);
             float angleOffset = parameters.GetOrDefault<float>(2);
+            float speed = parameters.HasIndex(3) ? parameters.Get<float>(3) : DefaultSpeed;
 
             entity.Transform.Position = transform.Position;
             entity.Transform.Rotation = transform.Rotation + angleOffset;
 
             entity.AddFromPool<CBullet>().Initialize(NormalBulletPrefab.BulletSize, weapon);
-            entity.AddFromPool<CVelocity>().Initialize(FlaiMath.GetAngleVector(entity.Transform.Rotation), Speed);
+            entity.AddFromPool<CVelocity>().Initialize(FlaiMath.GetAngleVector(entity.Transform.Rotation), speed);
         }
     }
 }

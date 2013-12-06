@@ -11,9 +11,9 @@ namespace Skypiea.Model.Weapons
 {
     public class Laser : Weapon
     {
-        private const float AmmoCount = 20;
-        private const float AmmoUsedPerSecond = 4;
-        private const float DamagePerSecond = 1000;
+        private const float AmmoCount = 30;
+        private const float AmmoUsedPerSecond = 3;
+        private const float DamagePerSecond = 40;
         private const float MaxHitDistance = 4;
         public const float Size = 16f;
 

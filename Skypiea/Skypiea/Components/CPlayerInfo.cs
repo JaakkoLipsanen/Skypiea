@@ -1,6 +1,8 @@
 using Flai;
 using Flai.CBES;
+using Flai.General;
 using Flai.Misc;
+using Microsoft.Xna.Framework;
 using Skypiea.Messages;
 
 namespace Skypiea.Components
@@ -32,6 +34,9 @@ namespace Skypiea.Components
         {
             get { return _invulnerabilityTimer.ElapsedTime < CPlayerInfo.RespawnInvulnerabilityTime - 1.5f; }
         }
+
+        // current movement per second vector.
+        public Vector2 MovementVector { get; set; }
 
         public CPlayerInfo(int totalLives)
         {

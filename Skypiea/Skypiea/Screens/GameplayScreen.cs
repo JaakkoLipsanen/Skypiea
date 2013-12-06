@@ -19,6 +19,7 @@ namespace Skypiea.Screens
         private Level _level;
         private LevelRenderer _levelRenderer;
         private bool _isPaused = false;
+        private bool _isDrawing = true;
 
         public GameplayScreen()
         {
@@ -41,14 +42,19 @@ namespace Skypiea.Screens
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            if (updateContext.InputState.IsBackButtonPressed)
+            if (this.IsActive && updateContext.InputState.IsBackButtonPressed)
             {
-                _isPaused = !_isPaused;
+                _isPaused = true;
+                this.ScreenManager.AddScreen(new PauseScreen());
+            }
+            else if (_isPaused && this.IsActive)
+            {
+                _isPaused = false;
             }
 
             if (updateContext.InputState.HasGesture(GestureType.DoubleTap))
             {
-                _draw = !_draw;
+                _isDrawing = !_isDrawing;
             }
 
             if (!_isPaused)
@@ -58,11 +64,12 @@ namespace Skypiea.Screens
             }
         }
 
-        private bool _draw = true;
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            if(_draw)
-            _levelRenderer.Draw(graphicsContext);
+            if (_isDrawing)
+            {
+                _levelRenderer.Draw(graphicsContext);
+            }
         }
 
         private void OnPlayerKilled(PlayerKilledMessage message)

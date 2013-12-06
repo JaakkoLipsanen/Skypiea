@@ -1,4 +1,5 @@
 using Flai.CBES;
+using Flai.General;
 using Skypiea.Model.Weapons;
 
 namespace Skypiea.Components
@@ -18,7 +19,7 @@ namespace Skypiea.Components
 
         protected override void Cleanup()
         {
-            this.Type = WeaponType.Invalid;
+            this.Type = (WeaponType)(-1);
         }
     }
 }

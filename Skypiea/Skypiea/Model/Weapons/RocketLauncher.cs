@@ -10,8 +10,8 @@ namespace Skypiea.Model.Weapons
 {
     public class RocketLauncher : BulletWeapon // do this!
     {
-        private const int BulletCount = 25;
-        private const int ExplosionRange = 75;
+        private const int BulletCount = 50;
+        private const int ExplosionRange = 60;
 
         public override WeaponType Type
         {
@@ -19,7 +19,7 @@ namespace Skypiea.Model.Weapons
         }
 
         public RocketLauncher()
-            : base(RocketLauncher.BulletCount, 0.5f)
+            : base(RocketLauncher.BulletCount, 0.3f)
         {
         }
 
@@ -34,7 +34,7 @@ namespace Skypiea.Model.Weapons
             IZombieSpatialMap zombieSpatialMap = entityHit.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
             {
-                ZombieHelper.TakeDamageOrDelete(zombie, 10);
+                ZombieHelper.TakeDamageOrDelete(zombie, 20);
             }
 
             IParticleEngine particleEngine = bullet.Entity.EntityWorld.Services.Get<IParticleEngine>();

@@ -6,22 +6,21 @@ using Skypiea.Prefabs.Bullets;
 
 namespace Skypiea.Model.Weapons
 {
-    public class AssaultRifle : BulletWeapon
+    public class Minigun : BulletWeapon
     {
-        private const float MinimumTimeBetweenShots = 0.175f;
         public override WeaponType Type
         {
-            get { return WeaponType.AssaultRifle; }
+            get { return WeaponType.Minigun; }
         }
 
-        public AssaultRifle()
-            : base(null, AssaultRifle.MinimumTimeBetweenShots)
+        public Minigun() 
+            : base(100, 0.1f)
         {
         }
 
         protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, 0f, Tile.Size * 40f);
             this.DecreaseBulletCount();
         }
 

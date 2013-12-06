@@ -113,12 +113,12 @@ namespace Skypiea.View
             {
                 Emitters = new ParticleEmitterCollection
                 {
-                    new ParticleEmitter(4000, 2f, new CircleEmitter(20, false, false))
+                    new ParticleEmitter(4000, 2f, new CircleEmitter(10, false, false))
                     {
                         ReleaseParameters = new ReleaseParameters
                         {
-                            Speed = new Range(16, 32),
-                            Quantity = new RangeInt(2, 4),
+                            Speed = new Range(12, 24),
+                            Quantity = new RangeInt(1, 3),
                         },
 
                         Modifiers = new ParticleModifierCollection
@@ -126,7 +126,7 @@ namespace Skypiea.View
                             new OpacityFadeModifier() { InitialOpacity = 0.75f },
                             new ColorTriInterpolatorModifier() { InitialColor = Color.Yellow, MedianColor = Color.DimGray, Median = 0.025f, FinalColor = Color.Black },
                             new RotationModifier() { RotationRate = FlaiMath.PiOver2 },
-                            new ScaleInterpolatorModifier { InitialScale = 10, FinalScale = 16 },
+                            new ScaleInterpolatorModifier { InitialScale = 7, FinalScale = 14 },
                         }
                     }
                 },
@@ -149,12 +149,12 @@ namespace Skypiea.View
                     {
                         ReleaseParameters = new ReleaseParameters
                         {
-                            Quantity = new RangeInt(50, 70),
+                            Quantity = new RangeInt(30, 50),
                             Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
                             Color = Color.DarkRed,
                             Opacity = 0.5f,
-                            Scale = new Range(30, 40),
-                            Speed = new Range(15, 200),
+                            Scale = new Range(20, 30),
+                            Speed = new Range(10, 150),
                         },
 
                         Modifiers = new ParticleModifierCollection
@@ -162,7 +162,7 @@ namespace Skypiea.View
                             new OpacityFadeModifier() { InitialOpacity = 0.75f },
                             new ColorInterpolatorModifier() { InitialColor = Color.Yellow, FinalColor = Color.Black },
                             new RotationModifier() { RotationRate = FlaiMath.PiOver2 },
-                            new ScaleInterpolatorModifier { InitialScale = 10, FinalScale = 16 },
+                            new ScaleInterpolatorModifier { InitialScale = 7, FinalScale = 14 },
                             new VelocityDampingModifier() { DampingPower = 1.5f },
                         }
                     }

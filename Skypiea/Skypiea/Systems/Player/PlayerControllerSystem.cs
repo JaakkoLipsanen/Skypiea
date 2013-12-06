@@ -33,7 +33,7 @@ namespace Skypiea.Systems.Player
             _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>();
         }
 
-        protected override void Process(UpdateContext updateContext, Entity entity)
+        protected override void Process(UpdateContext updateContext, Entity player)
         {
             if (!_playerInfo.IsAlive)
             {
@@ -43,21 +43,26 @@ namespace Skypiea.Systems.Player
             const float Speed = Tile.Size * 4.5f;
 
             World world = this.EntityWorld.Services.Get<World>();
-            entity.Transform.Position += _movementThumbstick.ThumbStick.Direction * Speed * updateContext.DeltaSeconds;
-            entity.Transform.Position = Vector2.Clamp(entity.Transform.Position, Vector2.Zero, new Vector2(world.Width, world.Height) * Tile.Size);
 
+            // movement
+            Vector2 previousPosition = player.Transform.Position;
+            player.Transform.Position += _movementThumbstick.ThumbStick.Direction * Speed * updateContext.DeltaSeconds;
+            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.Zero, new Vector2(world.Width, world.Height) * Tile.Size);
+            _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
+
+            // rotation
             if (_rotationThumbstick.ThumbStick.Direction != Vector2.Zero)
             {
-                entity.Transform.RotationVector = _rotationThumbstick.ThumbStick.Direction;
+                player.Transform.RotationVector = _rotationThumbstick.ThumbStick.Direction;
                 if (_weapon.Weapon.CanShoot)
                 {
-                    _weapon.Weapon.Shoot(updateContext, entity); // normalized thumbstick direction
+                    _weapon.Weapon.Shoot(updateContext, player); // normalized thumbstick direction
                 }
             }
             // If rotation thumbstick is not pressed, then the movement determines the direction
             else if (_movementThumbstick.ThumbStick.Direction != Vector2.Zero)
             {
-                entity.Transform.RotationVector = _movementThumbstick.ThumbStick.Direction;
+                player.Transform.RotationVector = _movementThumbstick.ThumbStick.Direction;
             }
         }
     }

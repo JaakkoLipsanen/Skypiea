@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
@@ -21,7 +22,7 @@ namespace Skypiea.Systems
 
         public override void Process(UpdateContext updateContext, Entity entity, CBullet bullet)
         {
-            foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 2))
+            foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 8))
             {
                 if (bullet.InvokeCallback(zombie))
                 {

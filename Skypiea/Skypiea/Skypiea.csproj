@@ -90,6 +90,7 @@
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
     <Compile Include="Model\Weapons\BulletWeapon.cs" />
     <Compile Include="Model\Weapons\Laser.cs" />
+    <Compile Include="Model\Weapons\Minigun.cs" />
     <Compile Include="Model\Weapons\RocketLauncher.cs" />
     <Compile Include="Model\Weapons\Shotgun.cs" />
     <Compile Include="Model\Weapons\Weapon.cs" />

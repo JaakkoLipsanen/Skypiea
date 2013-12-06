@@ -15,7 +15,7 @@ namespace Skypiea
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
-            this.Components.Add(new DebugInformationComponent(this.Services) { Font = "SegoeWP.24", DisplayPosition = new Vector2(9, 80), DebugInformationLevel = DebugInformationLevel.All });
+            this.Components.Add(new DebugInformationComponent(this.Services) { Font = "SegoeWP.24", DisplayPosition = new Vector2(9, 80), DebugInformationLevel = DebugInformationLevel.DetailedFPS });
             base.IsFixedTimeStep = false;
         }
 

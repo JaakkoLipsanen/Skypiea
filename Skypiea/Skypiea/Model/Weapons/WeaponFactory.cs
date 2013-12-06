@@ -21,6 +21,9 @@ namespace Skypiea.Model.Weapons
                 case WeaponType.Laser:
                     return new Laser();
 
+                    case WeaponType.Minigun:
+                    return new Minigun();
+
                 default:
                     throw new ArgumentOutOfRangeException("weaponType");
             }

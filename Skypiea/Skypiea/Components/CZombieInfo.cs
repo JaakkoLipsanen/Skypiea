@@ -16,7 +16,7 @@ namespace Skypiea.Components
 
         public Circle AreaCircle
         {
-            get { return new Circle(this.Entity.Transform.Position, this.Size); }
+            get { return new Circle(this.Entity.Transform.Position, this.Size * 0.5f); }
         }
 
         public void Initialize(ZombieType type, float size)

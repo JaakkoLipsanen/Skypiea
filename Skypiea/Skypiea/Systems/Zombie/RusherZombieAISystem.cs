@@ -51,7 +51,8 @@ namespace Skypiea.Systems.Zombie
             const float Speed = Tile.Size * 1.5f;
             if (Vector2.Distance(entity.Transform.Position, _player.Transform.Position) < RusherZombieAISystem.MinDistanceForRushing && rusherAI.NextRushAllowedTimer.HasFinished)
             {
-                rusherAI.Target = _player.Transform.Position - (entity.Transform.Position - _player.Transform.Position) / 4f * 3f; // rush 75% "over" the player
+                Vector2 target = _player.Transform.Position + _player.Get<CPlayerInfo>().MovementVector * 0.25f; // target where the player would be in 0.25s 
+                rusherAI.Target = target - (entity.Transform.Position - target) * 0.75f; // rush 75% "over" the player
                 entity.Transform.LookAt(rusherAI.Target);
                 rusherAI.State = RusherZombieState.Rushing;
                 return;
@@ -72,14 +73,18 @@ namespace Skypiea.Systems.Zombie
 
         private void UpdateRushing(UpdateContext updateContext, Entity entity, CRusherZombieAI rusherAI)
         {
-            const float RushingSpeed = Tile.Size * 8;
-            float movement = RushingSpeed * updateContext.DeltaSeconds;
+            const float MaxRushingSpeed = Tile.Size * 8;
+            const float RushingAcceleration = Tile.Size * 8;
+
+            rusherAI.RushingSpeed = FlaiMath.Min(MaxRushingSpeed, rusherAI.RushingSpeed + RushingAcceleration * updateContext.DeltaSeconds);
+            float movement = rusherAI.RushingSpeed * updateContext.DeltaSeconds;
             if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movement)
             {
                 entity.Transform.Position = rusherAI.Target;
 
                 rusherAI.State = RusherZombieState.RushingStun;
                 rusherAI.RushingStunTimer.Restart();
+                rusherAI.RushingSpeed = 0;
             }
             else
             {

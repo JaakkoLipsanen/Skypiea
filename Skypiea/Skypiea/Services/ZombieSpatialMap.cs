@@ -57,9 +57,11 @@ namespace Skypiea.Services
             for (int i = 0; i < _zombieEntityTracker.Entities.Count; i++)
             {
                 Entity zombie = _zombieEntityTracker.Entities[i];
-                if (searchCircle.Intersects(zombie.Get<CZombieInfo>().AreaCircle))
+                CZombieInfo zombieInfo = zombie.Get<CZombieInfo>();
+                if (searchCircle.Intersects(zombieInfo.AreaCircle))
                 {
                     _returnEntities.Add(zombie);
+                    searchCircle.Intersects(zombieInfo.AreaCircle);
                 }
             }
 

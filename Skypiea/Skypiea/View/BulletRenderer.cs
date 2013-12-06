@@ -22,7 +22,7 @@ namespace Skypiea.View
             Texture2D texture = this.GetTexture(bullet.Weapon.Type);
             if (bullet.Weapon.Type == WeaponType.RocketLauncher)
             {
-                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.White, entity.Transform.Rotation, 3);
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.White, entity.Transform.Rotation, 2);
             }
             else
             {
@@ -40,6 +40,7 @@ namespace Skypiea.View
 
                 case WeaponType.AssaultRifle:
                 case WeaponType.Shotgun:
+                case WeaponType.Minigun:
                     return _contentProvider.DefaultManager.LoadTexture("Bullet");
 
                 default:

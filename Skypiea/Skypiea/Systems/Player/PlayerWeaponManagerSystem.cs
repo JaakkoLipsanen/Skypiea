@@ -20,7 +20,7 @@ namespace Skypiea.Systems.Player
             _weapon = base.Entity.Get<CWeapon>();
         }
 
-        protected override void Process(UpdateContext updateContext, Entity entity)
+        protected override void Process(UpdateContext updateContext, Entity player)
         {
             if (_weapon.Weapon.AmmoRemaining == 0)
             {

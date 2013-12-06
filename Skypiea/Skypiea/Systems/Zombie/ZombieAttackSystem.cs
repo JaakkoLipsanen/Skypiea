@@ -39,15 +39,14 @@ namespace Skypiea.Systems.Zombie
             IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(_player.Transform, 2))
             {
-                if (true) //!_playerInfo.IsInvulnerable)
+                if (!_playerInfo.IsInvulnerable)
                 {
-                   // _playerInfo.KillPlayer();
+                    _playerInfo.KillPlayer();
                     return;
                 }
-                else // if is invulnerable
-                {
-                    ZombieHelper.Kill(zombie);
-                }
+
+                // player is invulnerable
+                ZombieHelper.Kill(zombie);
             }
         }
     }

@@ -1,5 +1,6 @@
 using Flai;
 using Flai.CBES;
+using Flai.General;
 using Flai.Misc;
 using Microsoft.Xna.Framework;
 
@@ -20,6 +21,7 @@ namespace Skypiea.Components
         private readonly Timer _rushingStunTimer = new Timer(CRusherZombieAI.RushingStunTime);
         private readonly Timer _rushingAllowedTimer = new Timer(CRusherZombieAI.RushingMinInterval);
 
+        public float RushingSpeed { get; set; }
         public RusherZombieState State { get; set; }
         public Vector2 Target { get; set; } // walking tager, wandering target, rushing target. whatever!
 
