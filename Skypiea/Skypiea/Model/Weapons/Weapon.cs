@@ -1,7 +1,6 @@
 
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
 
 namespace Skypiea.Model.Weapons
 {

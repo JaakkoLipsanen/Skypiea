@@ -40,7 +40,7 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
-            const float Speed = Tile.Size * 4f;
+            const float Speed = Tile.Size * 4.5f;
 
             World world = this.EntityWorld.Services.Get<World>();
             entity.Transform.Position += _movementThumbstick.ThumbStick.Direction * Speed * updateContext.DeltaSeconds;

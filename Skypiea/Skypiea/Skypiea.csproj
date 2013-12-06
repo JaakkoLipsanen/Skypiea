@@ -67,7 +67,6 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Components\CArea.cs" />
     <Compile Include="Components\CBasicZombieAI.cs" />
     <Compile Include="Components\CBullet.cs" />
     <Compile Include="Components\CCamera2D.cs" />
@@ -79,11 +78,13 @@
     <Compile Include="Components\CVirtualThumbStick.cs" />
     <Compile Include="Components\CWeapon.cs" />
     <Compile Include="Components\CWeaponDrop.cs" />
+    <Compile Include="Components\CZombieInfo.cs" />
     <Compile Include="Messages\PlayerKilledMessage.cs" />
     <Compile Include="Messages\ZombieKilledMessage.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
     <Compile Include="Misc\SkypieaConstants.cs" />
+    <Compile Include="Misc\ZombieHelper.cs" />
     <Compile Include="Model\Level.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
@@ -96,16 +97,21 @@
     <Compile Include="Model\Weapons\WeaponType.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldGenerator.cs" />
+    <Compile Include="Model\ZombieType.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
+    <Compile Include="Prefabs\Bullets\RocketLauncherBulletPrefab.cs" />
     <Compile Include="Prefabs\PlayerPrefab.cs" />
-    <Compile Include="Prefabs\RusherZombiePrefab.cs" />
+    <Compile Include="Prefabs\Zombies\FatZombiePrefab.cs" />
+    <Compile Include="Prefabs\Zombies\RusherZombiePrefab.cs" />
     <Compile Include="Prefabs\VirtualThumbStickPrefab.cs" />
     <Compile Include="Prefabs\WeaponDropPrefab.cs" />
-    <Compile Include="Prefabs\BasicZombiePrefab.cs" />
+    <Compile Include="Prefabs\Zombies\BasicZombiePrefab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="Screens\PauseScreen.cs" />
+    <Compile Include="Services\ZombieSpatialMap.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />
@@ -138,9 +144,6 @@
     <None Include="Properties\WMAppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
     </None>
-    <None Include="Skypiea_2013_12_03_20_28_42.sap" />
-    <None Include="Skypiea_2013_12_03_20_46_56.sap" />
-    <None Include="Skypiea_2013_12_03_20_52_56.sap" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Flai\Flai\Flai.WP7.csproj">

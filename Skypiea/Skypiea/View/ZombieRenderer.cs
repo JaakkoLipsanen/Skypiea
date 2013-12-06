@@ -2,43 +2,47 @@ using Flai.CBES;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
-using Skypiea.Misc;
-using Skypiea.Prefabs;
+using Skypiea.Model;
 
 namespace Skypiea.View
 {
     public class ZombieRenderer : EntityProcessingRenderer
     {
         public ZombieRenderer(EntityWorld entityWorld)
-            : base(entityWorld, Aspect.WithTag(EntityTags.Zombie))
+            : base(entityWorld, Aspect.All<CZombieInfo>())
         {
         }
 
         protected override void Draw(GraphicsContext graphicsContext, Entity entity)
         {
-            CArea area = entity.Get<CArea>();
-            if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(area.Area))
+            CZombieInfo zombieInfo = entity.Get<CZombieInfo>();
+            if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(zombieInfo.AreaRectangle))
             {
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), entity.Transform.Position, Color.White * 0.5f, 0, 1.4f * 0.75f);
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Zombie"), entity.Transform.Position, ZombieRenderer.GetColor(entity), entity.Transform.Rotation, 1 * 0.75f);
+                Texture2D zombieTexture = _contentProvider.DefaultManager.LoadTexture("Zombie");
+                float scale = zombieInfo.Size / zombieTexture.Width;
+                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), entity.Transform.Position, Color.White * 0.5f, 0, scale * 1.4f);
+                graphicsContext.SpriteBatch.DrawCentered(zombieTexture, entity.Transform.Position, ZombieRenderer.GetColor(zombieInfo), entity.Transform.Rotation, scale);
             }
         }
 
-        private static readonly Aspect BasicZombieAspect = Aspect.FromPrefab<BasicZombiePrefab>();
-        private static readonly Aspect RusherZombieAspect = Aspect.FromPrefab<RusherZombiePrefab>();
-        private static Color GetColor(Entity entity)
+        private static Color GetColor(CZombieInfo zombieInfo)
         {
-            if (ZombieRenderer.BasicZombieAspect.Matches(entity))
+            switch (zombieInfo.Type)
             {
-                return new Color(0, 255, 255);
-            }
-            else if (ZombieRenderer.RusherZombieAspect.Matches(entity))
-            {
-                return new Color(72, 72, 255);
-            }
+                case ZombieType.Normal:
+                    return new Color(0, 255, 255);
 
-            return Color.HotPink;
+                case ZombieType.Rusher:
+                    return new Color(72, 72, 255);
+
+                case ZombieType.Fat:
+                    return new Color(255, 108, 108);
+
+                default:
+                    return Color.HotPink;
+            }
         }
     }
 }

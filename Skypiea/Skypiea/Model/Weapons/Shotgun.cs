@@ -1,7 +1,7 @@
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
 using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
 
 namespace Skypiea.Model.Weapons
@@ -36,15 +36,7 @@ namespace Skypiea.Model.Weapons
         {
             if (entityHit != null)
             {
-                CHealth health = entityHit.TryGet<CHealth>();
-                if (health)
-                {
-                    health.TakeDamage(20);
-                }
-                else
-                {
-                    entityHit.Delete();
-                }
+                ZombieHelper.TakeDamageOrDelete(entityHit, 10);
             }
 
             bullet.Entity.Delete();

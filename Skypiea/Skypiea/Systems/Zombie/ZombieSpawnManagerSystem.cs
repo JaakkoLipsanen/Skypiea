@@ -6,14 +6,14 @@ using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
-using Skypiea.Prefabs;
+using Skypiea.Prefabs.Zombies;
 
 namespace Skypiea.Systems.Zombie
 {
     // ZombieSpawnManagerSystem ? -> do it probably
     public class ZombieSpawnManagerSystem : EntitySystem
     {
-        private readonly Timer _zombieTimer = new Timer(0.15f);
+        private readonly Timer _zombieTimer = new Timer(0.3f);
         private CPlayerInfo _playerInfo;
 
         protected override int ProcessOrder
@@ -53,9 +53,13 @@ namespace Skypiea.Systems.Zombie
                 new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),
                 playerTransform.Position, MinDistanceFromPlayer);
 
-            if (Global.Random.NextFromOdds(0.05f))
+            if (Global.Random.NextFromOdds(0.025f))
             {
                 this.EntityWorld.CreateEntityFromPrefab<RusherZombiePrefab>(position);
+            }
+            else if (Global.Random.NextFromOdds(0.025f))
+            {
+                this.EntityWorld.CreateEntityFromPrefab<FatZombiePrefab>(position);
             }
             else
             {

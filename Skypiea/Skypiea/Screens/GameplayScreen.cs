@@ -2,6 +2,7 @@
 using Flai;
 using Flai.Graphics;
 using Flai.ScreenManagement;
+using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Messages;
 using Skypiea.Model;
 using Skypiea.View;
@@ -24,6 +25,8 @@ namespace Skypiea.Screens
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeBackBufferToBlack = true;
+
+            this.EnabledGestures = GestureType.DoubleTap;
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -43,6 +46,11 @@ namespace Skypiea.Screens
                 _isPaused = !_isPaused;
             }
 
+            if (updateContext.InputState.HasGesture(GestureType.DoubleTap))
+            {
+                _draw = !_draw;
+            }
+
             if (!_isPaused)
             {
                 _level.Update(updateContext);
@@ -50,8 +58,10 @@ namespace Skypiea.Screens
             }
         }
 
+        private bool _draw = true;
         protected override void Draw(GraphicsContext graphicsContext)
         {
+            if(_draw)
             _levelRenderer.Draw(graphicsContext);
         }
 

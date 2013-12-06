@@ -2,13 +2,13 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
 using Skypiea.Components;
-using Skypiea.Misc;
+using Skypiea.Services;
 
 namespace Skypiea.Systems
 {
     public class BulletCollisionSystem : ComponentProcessingSystem<CBullet>
     {
-        private readonly EntityTracker _zombieTracker = EntityTracker.FromAspect(Aspect.WithTag(EntityTags.Zombie));
+        private IZombieSpatialMap _zombieSpatialMap;
         protected override int ProcessOrder
         {
             get { return SystemProcessOrder.Collision; }
@@ -16,21 +16,16 @@ namespace Skypiea.Systems
 
         protected override void Initialize()
         {
-            this.EntityWorld.AddEntityTracker(_zombieTracker);
+            _zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
         }
 
         public override void Process(UpdateContext updateContext, Entity entity, CBullet bullet)
         {
-            RectangleF bulletArea = bullet.Area;
-            foreach (Entity zombie in _zombieTracker)
+            foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 2))
             {
-                CArea area = zombie.Get<CArea>();
-                if (bulletArea.Intersects(area.Area)) // todo: "sweep" from previous bullet position
+                if (bullet.InvokeCallback(zombie))
                 {
-                    if (bullet.InvokeCallback(zombie))
-                    {
-                        break;
-                    }
+                    break;
                 }
             }
         }

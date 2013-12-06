@@ -15,7 +15,7 @@ namespace Skypiea.Systems.Zombie
         }
 
         public ZombieHealthSystem()
-            : base(Aspect.WithTag(EntityTags.Zombie))
+            : base(Aspect.All<CZombieInfo>())
         {
         }
 

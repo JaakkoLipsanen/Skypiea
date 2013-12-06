@@ -1,19 +1,19 @@
-using System;
-using System.Linq;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
+using Skypiea.Services;
+using System;
 
 namespace Skypiea.Model.Weapons
 {
     public class Laser : Weapon
     {
-        private const float AmmoCount = 30f;
-        private const float AmmoUsedPerSecond = 2f;
-        private const float DamagePerSecond = 10;
+        private const float AmmoCount = 20;
+        private const float AmmoUsedPerSecond = 4;
+        private const float DamagePerSecond = 1000;
         private const float MaxHitDistance = 4;
         public const float Size = 16f;
 
@@ -54,17 +54,10 @@ namespace Skypiea.Model.Weapons
                 }
 
                 this.LaserSegment = this.GetLaserSegment(playerEntity.Transform, playerEntity.EntityWorld);
-                foreach (Entity zombie in playerEntity.EntityWorld.FindEntitiesWithTag(EntityTags.Zombie).Where(entity => Segment2D.MinimumDistance(this.LaserSegment, entity.Get<CArea>().Area) < Laser.MaxHitDistance))
+                IZombieSpatialMap zombieSpatialMap = playerEntity.EntityWorld.Services.Get<IZombieSpatialMap>();
+                foreach (Entity zombie in zombieSpatialMap.GetZombiesIntersecting(this.LaserSegment, Laser.MaxHitDistance))
                 {
-                    CHealth health = zombie.TryGet<CHealth>();
-                    if (health)
-                    {
-                        health.TakeDamage(Laser.DamagePerSecond * updateContext.DeltaSeconds);
-                    }
-                    else
-                    {
-                        zombie.Delete();
-                    }
+                    ZombieHelper.TakeDamageOrDelete(zombie, Laser.DamagePerSecond * updateContext.DeltaSeconds);
                 }
 
                 this.IsShooting = true;
@@ -78,49 +71,14 @@ namespace Skypiea.Model.Weapons
         private Segment2D GetLaserSegment(CTransform2D rayStartTransform, EntityWorld entityWorld)
         {
             Ray2D ray = new Ray2D(rayStartTransform);
-            Vector2? zombieHitPoint = this.GetFirstZombieHit(ray, entityWorld);
-            if (zombieHitPoint.HasValue)
-            {
-                return new Segment2D(ray.Position, zombieHitPoint.Value);
-            }
-
-            // if not zombie hit is found, then set endpoint to where the ray hits the camera boundaries (not really camera boundaries so that it doesn't look to player like the laser hits it, but close outside it)
             RectangleF cameraArea = SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active);
             Vector2 rayEndPoint;
             if (!ray.Intersects(cameraArea, out rayEndPoint))
             {
-                throw new InvalidOperationException("camera is fucked up?");
+                throw new InvalidOperationException("camera is fucked up? or player isn't in the camera area");
             }
 
             return new Segment2D(ray.Position, rayEndPoint);
-        }
-
-        private Vector2? GetFirstZombieHit(Ray2D laserRay, EntityWorld entityWorld)
-        {
-            RectangleF cameraArea = SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active);
-
-            float closestDistance = float.MaxValue;
-            Vector2 closestPoint = default(Vector2);
-            foreach (CArea zombieArea in entityWorld.FindEntitiesWithTag(EntityTags.Zombie).Where(zombie => cameraArea.Contains(zombie.Transform.Position)).Select(zombie => zombie.Get<CArea>()))
-            {
-                Vector2 intersectionPoint;
-                if (laserRay.Intersects(zombieArea.Area, out intersectionPoint))
-                {
-                    float distance = Vector2.Distance(laserRay.Position, intersectionPoint);
-                    if (distance < closestDistance)
-                    {
-                        closestDistance = distance;
-                        closestPoint = intersectionPoint;
-                    }
-                }
-            }
-
-            if (closestDistance != float.MaxValue)
-            {
-                return closestPoint;
-            }
-
-            return null;
         }
     }
 }

@@ -1,14 +1,14 @@
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
 using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
 
 namespace Skypiea.Model.Weapons
 {
     public class AssaultRifle : BulletWeapon
     {
-        private const float MinimumTimeBetweenShots = 0.15f;
+        private const float MinimumTimeBetweenShots = 0.2f;
         public override WeaponType Type
         {
             get { return WeaponType.AssaultRifle; }
@@ -29,15 +29,7 @@ namespace Skypiea.Model.Weapons
         {
             if (entityHit != null)
             {
-                CHealth cHealth = entityHit.TryGet<CHealth>();
-                if (cHealth)
-                {
-                    cHealth.TakeDamage(10);
-                }
-                else
-                {
-                    entityHit.Delete();
-                }
+                ZombieHelper.TakeDamageOrDelete(entityHit, 10);
             }
 
             bullet.Entity.Delete();

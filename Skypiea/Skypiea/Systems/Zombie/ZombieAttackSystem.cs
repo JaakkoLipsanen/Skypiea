@@ -4,6 +4,7 @@ using Flai.CBES.Systems;
 using Flai.DataStructures;
 using Skypiea.Components;
 using Skypiea.Misc;
+using Skypiea.Services;
 
 namespace Skypiea.Systems.Zombie
 {
@@ -18,8 +19,8 @@ namespace Skypiea.Systems.Zombie
         }
 
         public ZombieAttackSystem()
-            : base(Aspect.Combine(Aspect.WithTag(EntityTags.Zombie), Aspect.All<CArea>()))
-        {           
+            : base(Aspect.All<CZombieInfo>())
+        {
         }
 
         protected override void Initialize()
@@ -35,14 +36,17 @@ namespace Skypiea.Systems.Zombie
                 return;
             }
 
-            for (int i = 0; i < entities.Count; i++)
+            IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
+            foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(_player.Transform, 2))
             {
-                Entity zombie = entities[i];
-                CArea area = zombie.Get<CArea>();
-                if (area.Area.Contains(_player.Transform.Position)) // todo: instead of _player.Transform.Position, use a small area and Intersects
+                if (true) //!_playerInfo.IsInvulnerable)
                 {
-                    _playerInfo.OnKilled();
-                    break;
+                   // _playerInfo.KillPlayer();
+                    return;
+                }
+                else // if is invulnerable
+                {
+                    ZombieHelper.Kill(zombie);
                 }
             }
         }
