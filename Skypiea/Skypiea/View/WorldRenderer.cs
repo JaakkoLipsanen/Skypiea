@@ -6,7 +6,7 @@ namespace Skypiea.View
     public class WorldRenderer : FlaiRenderer
     {
         private readonly World _world;
-        private readonly TileMapRenderer _tileMapRenderer;
+        private readonly MapRenderer _mapRenderer;
         private readonly PlayerRenderer _playerRenderer;
         private readonly ZombieRenderer _zombieRenderer;
         private readonly VirtualThumbStickRenderer _virtualThumbStickRenderer;
@@ -18,7 +18,7 @@ namespace Skypiea.View
         public WorldRenderer(World world)
         {
             _world = world;
-            _tileMapRenderer = new TileMapRenderer(world.TileMap);
+            _mapRenderer = new MapRenderer(world);
             _playerRenderer = new PlayerRenderer(_world.EntityWorld);
             _virtualThumbStickRenderer = new VirtualThumbStickRenderer(_world.EntityWorld);
             _bulletRenderer = new BulletRenderer(_world.EntityWorld);
@@ -35,15 +35,16 @@ namespace Skypiea.View
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            _tileMapRenderer.Draw(graphicsContext);
+            _mapRenderer.Draw(graphicsContext);
 
             _weaponDropRenderer.Draw(graphicsContext);
-            _particleEffectRenderer.Draw(graphicsContext);
             _bulletRenderer.Draw(graphicsContext);
 
             _weaponRenderer.Draw(graphicsContext);
             _playerRenderer.Draw(graphicsContext);
             _zombieRenderer.Draw(graphicsContext);
+            _particleEffectRenderer.Draw(graphicsContext);
+            _mapRenderer.DrawFades(graphicsContext);
         }
 
         public void DrawUI(GraphicsContext graphicsContext)

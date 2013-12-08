@@ -4,6 +4,7 @@ using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Screens;
+using Skypiea.View;
 
 namespace Skypiea
 {
@@ -14,7 +15,7 @@ namespace Skypiea
     {
         public SkypieaGame()
         {
-            base.ClearColor = Color.Black;
+            base.ClearColor = null; // don't clear
             this.Components.Add(new DebugInformationComponent(this.Services) { Font = "SegoeWP.24", DisplayPosition = new Vector2(9, 80), DebugInformationLevel = DebugInformationLevel.DetailedFPS });
             base.IsFixedTimeStep = false;
         }
@@ -31,7 +32,7 @@ namespace Skypiea
 
         protected override void AddInitialScreens()
         {
-            _screenManager.AddScreen(new GameplayScreen());
+            _screenManager.AddScreen(new MainMenuScreen());
         }
 
         protected override void InitializeGraphicsSettings()

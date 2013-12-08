@@ -1,7 +1,6 @@
 using Flai;
 using Flai.CBES;
 using Flai.General;
-using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Messages;
 
@@ -64,7 +63,7 @@ namespace Skypiea.Components
             _spawnTimer.Restart();
             _invulnerabilityTimer.Restart();
 
-            this.Entity.EntityWorld.BroadcastMessage(new PlayerKilledMessage(this));
+            this.Entity.EntityWorld.BroadcastMessage(this.Entity.EntityWorld.FetchMessage<PlayerKilledMessage>().Initialize(this)); // blaarghh.. ugly...
         }
     }
 }

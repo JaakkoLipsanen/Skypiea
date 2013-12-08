@@ -3,12 +3,18 @@ using Skypiea.Components;
 
 namespace Skypiea.Messages
 {
-    public class PlayerKilledMessage : Message
+    public class PlayerKilledMessage : PoolableMessage
     {
-        public CPlayerInfo CPlayerInfo { get; private set; }
-        public PlayerKilledMessage(CPlayerInfo cPlayerInfo)
+        public CPlayerInfo PlayerInfo { get; private set; }
+        public PlayerKilledMessage Initialize(CPlayerInfo playerInfo)
         {
-            this.CPlayerInfo = cPlayerInfo;
+            this.PlayerInfo = playerInfo;
+            return this;
+        }
+
+        protected override void Cleanup()
+        {
+            this.PlayerInfo = null;
         }
     }
 }

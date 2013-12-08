@@ -34,6 +34,11 @@ namespace Skypiea.Components
             return Camera2D.CalculateTransform(screenSize, this.Position, this.Zoom, this.Rotation);
         }
 
+        public RectangleF GetArea()
+        {
+            return Camera2D.CalculateArea(FlaiGame.Current.ScreenSize, this.Position, this.Zoom, this.Rotation);
+        }
+
         public RectangleF GetArea(Size screenSize)
         {
             return Camera2D.CalculateArea(screenSize, this.Position, this.Zoom, this.Rotation);

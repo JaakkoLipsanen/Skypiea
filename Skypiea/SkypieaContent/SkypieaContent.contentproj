@@ -100,18 +100,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\GrassFullscreen.png">
-      <Name>GrassFullscreen</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\GrassFullscreenCorner.png">
-      <Name>GrassFullscreenCorner</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-    <Compile Include="Textures\GrassFullscreenSide.png">
-      <Name>GrassFullscreenSide</Name>
+    <Compile Include="Textures\Map\GrassMap.png">
+      <Name>GrassMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
@@ -126,6 +116,25 @@
   <ItemGroup>
     <Compile Include="Textures\Special Drops\Life.png">
       <Name>Life</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Map\CornerFadeTexture.png">
+      <Name>CornerFadeTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="Textures\Map\SideFadeTexture.png">
+      <Name>SideFadeTexture</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\Map\DesertMap.png">
+      <Name>DesertMap</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

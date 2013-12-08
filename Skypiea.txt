@@ -1,0 +1,60 @@
+*Skypiea*
+
+-- SKILLIT --
+
+-- PASSIVET
+- Running Speed boost
+- Attack Speed boost
+- Enemies run 10% slower near you (muut aurat jne)
+- Chance to cast/spawn X on kill/hit/death/enemy gets nearby (jotai aktivei tms)
+- X% more points/score per kill
+
+( ehkä ei aktiiveja? ) ** NÄILLÄ NÄKYMIN EI AKTIIVEJA **
+-- AKTIIVIT 
+- Turretit (monta eri, voi uppaa, esim freeze/slow turret jne. vois olla et unlockkaantuu sellai et pitää tappaa vaik tokaan 100 turretilla, kolmanteen 1000 turretilla jne)
+- Shieldit
+- Screen cleaner, freeze screen, freeze nova, slow time, minefield/fire boots,
+
+-- WAVET --
+
+********* VANHAT **************
+- Ei "pelkkiä waveja" tai luultavasti myöskään wavettomia peliä.
+- *TUSKIN* Wavet alkaa tiettyyn aikaan esim 2min välein. Wavet voi olla esim "10% enemmän kestävyyttä/nopeutta, pelkkii rushereita/bossei"
+- *AIKA HYVÄ* Wavet sellai "smootheja", että vihui tulee kunnes niitä on 200 tullut, ja sitten uusi wave alkaa kun vaikka 50 jäljellä tms. normi vihuja jne
+- *MELKO HYVÄ* sama kuin *AIKA HYVÄ*, mutta *TUSKIN* homman boosterit voi tulla randomisti kaikille vihuilla vaikka 20sec ajaksi
+
+- * JEE PARAS * sama kuin *AIKA HYVÄ*. no itseasiassa ihan sama. mutta! maahan voi tippua "random boostereita", jotka voi olla positiivisia (50% nopeampi, 50% faster attack speed jne),  
+  tai negatiivisiä (vihut nopeampia, vihut kestävämpiä tms) randomilla. "ota jos uskallat"
+********************************
+
+
+- *LOPULLINEN LUULTAVASTI* Smoothit wavet (kuten *AIKA HYVÄ*) ja ehkä jotain että joskus spawnaa paljon rushereita tms. Sitten, random aikoina tulee joko positiivinen tai negatiivinen boosteri
+ (ei tartte kerätä/nostaa, tulee automaattisesti), esim zombit/player juoksee nopeemmin, zombit kestävempiä, player invulnerable tms. Sit on countdown et milloin se loppuu. Mahollisesti kans countdown et milloin alkaa
+
+-- GRAFFAT --
+
+
+
+-- MENUT --
+
+
+-- ZOMBIT --
+
+- Normi zombie
+- Rusher zombie (AI:sta lisää?)
+- Läski zombie (kestävä)
+
+ -- ASEET --
+
+
+-- MAPPI --
+
+- Erilaisia mappeja (ruoho, aavikko jne)?
+- Vähän variaatiota graffoihin, et ei vaan täysin samanlaista tekstuuria
+
+- Kiviä/puskia/puita/muita esteitä????
+
+
+
+
+

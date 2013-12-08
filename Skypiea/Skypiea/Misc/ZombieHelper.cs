@@ -1,24 +1,25 @@
 using Flai.CBES;
+using Flai.CBES.Components;
+using Flai.Graphics.Particles;
 using Skypiea.Components;
 
 namespace Skypiea.Misc
 {
     public static class ZombieHelper
     {
-        public static void TakeDamageOrDelete(Entity zombie, float damage)
+        public static bool TakeDamageOrDelete(Entity zombie, float damage)
         {
             CHealth health = zombie.TryGet<CHealth>();
             if (health)
             {
-                health.TakeDamage(damage);
+                return health.TakeDamage(damage);
             }
-            else
-            {
-                zombie.Delete();
-            }
+
+            zombie.Delete();
+            return true;
         }
 
-        public static void Kill(Entity zombie)
+        public static bool Kill(Entity zombie)
         {
             const float LotsOfDamage = 1000 * 1000;
             CHealth health = zombie.TryGet<CHealth>();
@@ -30,6 +31,13 @@ namespace Skypiea.Misc
             {
                 zombie.Delete();
             }
+
+            return true;
+        }
+
+        public static void TriggerBloodSplatter(CTransform2D transform)
+        {
+            transform.Entity.EntityWorld.Services.Get<IParticleEngine>()[ParticleEffectID.ZombieBloodSplatter].Trigger(transform);
         }
     }
 }

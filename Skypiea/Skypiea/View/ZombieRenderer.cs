@@ -20,10 +20,10 @@ namespace Skypiea.View
             CZombieInfo zombieInfo = entity.Get<CZombieInfo>();
             if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(zombieInfo.AreaRectangle))
             {
-                Texture2D zombieTexture = _contentProvider.DefaultManager.LoadTexture("Zombie");
-                float scale = zombieInfo.Size / zombieTexture.Width;
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), entity.Transform.Position, Color.White * 0.5f, 0, scale * 1.4f);
-                graphicsContext.SpriteBatch.DrawCentered(zombieTexture, entity.Transform.Position, ZombieRenderer.GetColor(zombieInfo), entity.Transform.Rotation, scale);
+                const float RealTextureSize = 48;
+                float scale = zombieInfo.Size / RealTextureSize;
+             //   graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), entity.Transform.Position, Color.White * 0.5f, 0, scale * 1.4f);
+                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Zombie"), entity.Transform.Position, ZombieRenderer.GetColor(zombieInfo), entity.Transform.Rotation, scale);
             }
         }
 

@@ -19,8 +19,17 @@ namespace Skypiea.View
         {
             const float Size = 27;
             const string FontName = "SegoeWP.16";
-
             const int Scale = 4;
+
+            CLifeTime lifeTime = entity.TryGet<CLifeTime>();
+            if (lifeTime)
+            {
+                if (lifeTime.TimeRemaining < 5 && lifeTime.TimeRemaining % 0.4f < 0.1f)
+                {
+                    return;
+                }
+            }
+
             //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("SpecialDropBase"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
             //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Special Drops/Life"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
             graphicsContext.PrimitiveRenderer.DrawRectangle(entity.Transform.Position, Size, new Color(72, 72, 228));

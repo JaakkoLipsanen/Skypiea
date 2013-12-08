@@ -41,13 +41,14 @@ namespace Skypiea.Systems.Player
             }
 
             const float Speed = Tile.Size * 4.5f;
+            const float OffsetFromBorder = -Tile.Size;
 
             World world = this.EntityWorld.Services.Get<World>();
 
             // movement
             Vector2 previousPosition = player.Transform.Position;
             player.Transform.Position += _movementThumbstick.ThumbStick.Direction * Speed * updateContext.DeltaSeconds;
-            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.Zero, new Vector2(world.Width, world.Height) * Tile.Size);
+            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * OffsetFromBorder, new Vector2(world.Width, world.Height) * Tile.Size - Vector2.One * OffsetFromBorder);
             _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
 
             // rotation

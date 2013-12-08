@@ -1,8 +1,8 @@
 ﻿using System;
 using Flai;
 using Flai.CBES;
-using Flai.General;
 using Flai.Graphics.Particles;
+using Skypiea.Misc;
 using Skypiea.Services;
 using Skypiea.Systems;
 using Skypiea.Systems.Player;
@@ -10,20 +10,39 @@ using Skypiea.Systems.Zombie;
 
 namespace Skypiea.Model
 {
+    public enum WorldType
+    {
+        Grass,
+        Desert,
+    }
+
+    public static class WorldTypeExtensions
+    {
+        public static string GetMapTextureName(this WorldType worldType)
+        {
+            switch (worldType)
+            {
+                case WorldType.Grass:
+                    return "Map/GrassMap";
+
+                case WorldType.Desert:
+                    return "Map/DesertMap";
+
+                default:
+                    throw new ArgumentException("worldType");
+            }
+        }
+    }
+
     public class World
     {
-        private readonly ReadOnlyTileMap<TileType> _tileMap;
         private readonly EntityWorld _entityWorld;
         private readonly ParticleEngine _particleEngine;
+        private readonly WorldType _worldType;
 
         public EntityWorld EntityWorld
         {
             get { return _entityWorld; }
-        }
-
-        public ReadOnlyTileMap<TileType> TileMap
-        {
-            get { return _tileMap; }
         }
 
         // meh.. this sorta belongs to view but also sorta here... ParticleEngine = Model, ParticleRenderer = View? I guess so
@@ -34,17 +53,23 @@ namespace Skypiea.Model
 
         public int Width
         {
-            get { return _tileMap.Width; }
+            get { return SkypieaConstants.MapWidth; }
         }
 
         public int Height
         {
-            get { return _tileMap.Height; }
+            get { return SkypieaConstants.MapHeight; }
         }
 
-        public World(ITileMap<TileType> tiles)
+        public WorldType WorldType
         {
-            _tileMap = new ReadOnlyTileMap<TileType>(tiles);
+            get { return _worldType; }
+        }
+
+        public World(WorldType worldType)
+        {
+            _worldType = worldType;
+
             _entityWorld = new EntityWorld();
             _particleEngine = new ParticleEngine();
 
@@ -52,7 +77,7 @@ namespace Skypiea.Model
             _entityWorld.Services.Add<IParticleEngine>(_particleEngine);
             _entityWorld.Services.Add<IZombieSpatialMap>(new ZombieSpatialMap(_entityWorld));
 
-            this.CreateSystems(); 
+            this.CreateSystems();
         }
 
         public void Initialize()
@@ -67,7 +92,7 @@ namespace Skypiea.Model
         }
 
         private void CreateSystems()
-        { 
+        {
             _entityWorld.AddSystem<ZombieAttackSystem>();
             _entityWorld.AddSystem<PlayerControllerSystem>();
             _entityWorld.AddSystem<VelocitySystem>();

@@ -40,7 +40,7 @@ namespace Skypiea.Systems.Zombie
                 // todo: >> also maybe the rotation could depend also on separationVelocity, but be smoothed so that the rotation isn't that jittery... also not 100% sure if GetSeparationVector works correctly (the smoothing far away -> close)
                 Vector2 separationVelocity = this.GetSeparationVector(entity, entities);
 
-                Vector2 velocity = Vector2.Normalize(targetVelocity + separationVelocity*0.5f)*zombieAI.Speed*updateContext.DeltaSeconds;
+                Vector2 velocity = Vector2.Normalize(targetVelocity + separationVelocity * 0.5f) * zombieAI.Speed * (isFleeing ? 0.75f : 1) * updateContext.DeltaSeconds;
                 entity.Transform.Position += velocity;
                 entity.Transform.RotationVector = targetVelocity; //(transform.Position + targetVelocity);
             }
@@ -70,7 +70,7 @@ namespace Skypiea.Systems.Zombie
                 }
             }
 
-            return (nearbyDistanceSum == Vector2.Zero) ? Vector2.Zero : Vector2.Normalize(nearbyDistanceSum / count); 
+            return (nearbyDistanceSum == Vector2.Zero) ? Vector2.Zero : Vector2.Normalize(nearbyDistanceSum / count);
         }
     }
 }

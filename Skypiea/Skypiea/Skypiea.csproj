@@ -67,10 +67,14 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Achievements\Achievement.cs" />
+    <Compile Include="Achievements\AchievementProgression.cs" />
+    <Compile Include="Achievements\AchievementTracker.cs" />
     <Compile Include="Components\CBasicZombieAI.cs" />
     <Compile Include="Components\CBullet.cs" />
     <Compile Include="Components\CCamera2D.cs" />
     <Compile Include="Components\CHealth.cs" />
+    <Compile Include="Components\CLifeTime.cs" />
     <Compile Include="Components\CParticleEmitter.cs" />
     <Compile Include="Components\CPlayerInfo.cs" />
     <Compile Include="Components\CRusherZombieAI.cs" />
@@ -131,7 +135,7 @@
     <Compile Include="View\LevelRenderer.cs" />
     <Compile Include="View\ParticleEffectRenderer.cs" />
     <Compile Include="View\PlayerRenderer.cs" />
-    <Compile Include="View\TileMapRenderer.cs" />
+    <Compile Include="View\MapRenderer.cs" />
     <Compile Include="View\VirtualThumbStickRenderer.cs" />
     <Compile Include="View\WeaponDropRenderer.cs" />
     <Compile Include="View\WeaponRenderer.cs" />

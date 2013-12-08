@@ -34,7 +34,10 @@ namespace Skypiea.Model.Weapons
             IZombieSpatialMap zombieSpatialMap = entityHit.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
             {
-                ZombieHelper.TakeDamageOrDelete(zombie, 20);
+                if (!ZombieHelper.TakeDamageOrDelete(zombie, 20))
+                {
+                    ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform);
+                }
             }
 
             IParticleEngine particleEngine = bullet.Entity.EntityWorld.Services.Get<IParticleEngine>();

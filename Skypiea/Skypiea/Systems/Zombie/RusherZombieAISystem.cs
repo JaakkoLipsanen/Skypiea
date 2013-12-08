@@ -73,8 +73,8 @@ namespace Skypiea.Systems.Zombie
 
         private void UpdateRushing(UpdateContext updateContext, Entity entity, CRusherZombieAI rusherAI)
         {
-            const float MaxRushingSpeed = Tile.Size * 8;
-            const float RushingAcceleration = Tile.Size * 8;
+            const float MaxRushingSpeed = Tile.Size * 12;
+            const float RushingAcceleration = Tile.Size * 12;
 
             rusherAI.RushingSpeed = FlaiMath.Min(MaxRushingSpeed, rusherAI.RushingSpeed + RushingAcceleration * updateContext.DeltaSeconds);
             float movement = rusherAI.RushingSpeed * updateContext.DeltaSeconds;

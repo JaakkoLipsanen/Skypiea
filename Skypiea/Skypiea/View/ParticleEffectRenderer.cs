@@ -36,7 +36,7 @@ namespace Skypiea.View
 
         private void CreateParticleEffects()
         {
-            #region Zombie Explosion 
+            #region Zombie Explosion
 
             _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
             {
@@ -51,7 +51,7 @@ namespace Skypiea.View
                             Color = Color.DarkRed,
                             Opacity = 0.5f,
                             Scale = 10,
-                            Speed = new Range(0, 125),
+                            Speed = new Range(0, 100),
                         },
 
                         Modifiers = new ParticleModifierCollection
@@ -71,39 +71,43 @@ namespace Skypiea.View
                 }
             });
 
-            // "grunt birthday"
-            //_particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
-            //{
-            //    Emitters = new ParticleEmitterCollection
-            //    {
-            //        new ParticleEmitter(300, 1f, new PointEmitter(true))
-            //        {
-            //            ReleaseParameters = new ReleaseParameters
-            //            {
-            //                Quantity = new RangeInt(30, 40),
-            //                Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
-            //                Color = new ColorRange(new Range<byte>(0, 255), new Range<byte>(0, 255), new Range<byte>(0, 255)),
-            //                Scale = 10,
-            //                Speed = new Range(20, 150),
-            //            },
+            #endregion
 
-            //            Modifiers = new ParticleModifierCollection
-            //            {
-            //                new VelocityDampingModifier() { DampingPower =  2f },
-            //                new OpacityFadeModifier() { InitialOpacity = 1f },
-            //               // new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
-            //               new HueShiftModifier() { HueShiftAmount = 720 },
-            //              //  new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 10, Median = 0.333f, FinalScale = 20 },
-            //                new RotationFromVelocityModifier(),
-            //            },
-            //        },
-            //    },
+            #region Zombie Blood Splatter
 
-            //    TriggerHandlers = new ParticleTriggerHandlerCollection()
-            //    {
-            //        new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
-            //    }
-            //});
+            _particleEngine.Add(ParticleEffectID.ZombieBloodSplatter, new ParticleEffect
+            {
+                Emitters = new ParticleEmitterCollection
+                {
+                    new ParticleEmitter(300, 0.5f, new PointEmitter(true))
+                    {
+                        ReleaseParameters = new ReleaseParameters
+                        {
+                            Quantity = new RangeInt(10, 20),
+                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                            Color = Color.DarkRed,
+                            Opacity = 0.5f,
+                            Scale = 7,
+                            Speed = new Range(0, 75),
+                        },
+
+                        Modifiers = new ParticleModifierCollection
+                        {
+                            new VelocityDampingModifier() { DampingPower =  2f },
+                            new OpacityFadeModifier() { InitialOpacity = 0.5f },
+                            new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
+                            new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 7, Median = 0.333f, FinalScale = 14 },
+                            new RotationModifier() { RotationRate = 3f }
+                        },
+                    },
+                },
+
+                TriggerHandlers = new ParticleTriggerHandlerCollection()
+                {
+                    new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
+                }
+            });
+
 
             #endregion
 

@@ -16,13 +16,16 @@ namespace Skypiea.Screens
 
     public class GameplayScreen : GameScreen, IGameContainer
     {
+        private readonly WorldType _worldType;
+
         private Level _level;
         private LevelRenderer _levelRenderer;
         private bool _isPaused = false;
         private bool _isDrawing = true;
 
-        public GameplayScreen()
+        public GameplayScreen(WorldType worldType)
         {
+            _worldType = worldType;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeBackBufferToBlack = true;
@@ -72,13 +75,7 @@ namespace Skypiea.Screens
             }
         }
 
-        private void OnPlayerKilled(PlayerKilledMessage message)
-        {
-            if (message.CPlayerInfo.LivesRemaining == 0)
-            {
-                base.ScreenManager.AddScreen(new GameOverScreen(this));
-            }
-        }
+       
 
         public void Restart()
         {
@@ -88,11 +85,17 @@ namespace Skypiea.Screens
 
         private void LoadLevel()
         {
-            _level = Level.Generate();
+            _level = Level.Generate(_worldType);
             _levelRenderer = new LevelRenderer(_level);
+
             _level.Initialize();
             _levelRenderer.LoadContent();
-            _level.World.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
+            _level.GameOver += this.OnGameOver;
+        }
+
+        private void OnGameOver()
+        {
+            base.ScreenManager.AddScreen(new GameOverScreen(this));
         }
     }
 }

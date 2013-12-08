@@ -36,7 +36,10 @@ namespace Skypiea.Model.Weapons
         {
             if (entityHit != null)
             {
-                ZombieHelper.TakeDamageOrDelete(entityHit, 10);
+                if (!ZombieHelper.TakeDamageOrDelete(entityHit, 10))
+                {
+                    ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform);
+                }
             }
 
             bullet.Entity.Delete();

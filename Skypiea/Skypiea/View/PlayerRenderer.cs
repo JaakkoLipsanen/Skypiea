@@ -31,10 +31,9 @@ namespace Skypiea.View
             if (playerInfo.IsAlive && playerInfo.IsVisuallyInvulnerable)
             {
                 const float Scale = 50 * GlobalScale;
-                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, _player.Transform.Position, new Color(48, 48, 255) * 0.4f, graphicsContext.TotalSeconds * 5f, (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 6) / 6f) * Scale);
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, _player.Transform.Position, new Color(32, 32, 255) * 0.5f, graphicsContext.TotalSeconds * 5f, (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 6) / 6f) * Scale);
             }
 
-            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), _player.Transform.Position, Color.White * 0.5f, 0, 1.4f * GlobalScale);
             graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Zombie"), _player.Transform.Position, color, _player.Transform.Rotation, GlobalScale);
         }
 

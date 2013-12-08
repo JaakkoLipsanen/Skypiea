@@ -23,7 +23,7 @@ namespace Skypiea.Systems.Zombie
         {
             if (!health.IsAlive)
             {
-                this.EntityWorld.BroadcastMessage(new ZombieKilledMessage(entity));
+                this.EntityWorld.BroadcastMessage(this.EntityWorld.FetchMessage<ZombieKilledMessage>().Initialize(entity));
                 entity.Delete();
             }
         }

@@ -21,12 +21,11 @@ namespace Skypiea.Prefabs.Bullets
         {
             const float Speed = Tile.Size * 25;
             CTransform2D transform = parameters.Get<CTransform2D>(0);
-            RocketLauncher rocketLauncher = parameters.Get<RocketLauncher>(1);
 
             entity.Transform.Position = transform.Position;
             entity.Transform.Rotation = transform.Rotation;
 
-            entity.AddFromPool<CBullet>().Initialize(RocketLauncherBulletPrefab.BulletSize, rocketLauncher);
+            entity.AddFromPool<CBullet>().Initialize(RocketLauncherBulletPrefab.BulletSize, parameters.Get<RocketLauncher>(1));
             entity.AddFromPool<CVelocity>().Initialize(FlaiMath.GetAngleVector(transform.Rotation), Speed);
             entity.AddFromPool<CParticleEmitter>().Initialize(ParticleEffectID.RocketSmoke, new BurstTriggerParticleController(0.01f, entity.Transform));
         }

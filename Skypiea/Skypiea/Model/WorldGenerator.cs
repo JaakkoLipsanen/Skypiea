@@ -1,5 +1,4 @@
 ﻿using Flai;
-using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
 using Skypiea.Prefabs;
@@ -8,11 +7,9 @@ namespace Skypiea.Model
 {
     public static class WorldGenerator
     {
-        public static World Generate()
+        public static World Generate(WorldType worldType)
         {
-            const int Width = 60;
-            const int Height = 30;
-            World world = new World(new TileMap<TileType>(new TileType[Width * Height], Width, Height));
+            World world = new World(worldType);
             WorldGenerator.CreateEntities(world);
 
             return world;

@@ -2,7 +2,6 @@ using Flai;
 using Flai.CBES.Components;
 using Flai.CBES.Systems;
 using Flai.General;
-using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;

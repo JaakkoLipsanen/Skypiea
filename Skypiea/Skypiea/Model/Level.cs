@@ -1,11 +1,13 @@
 ﻿using Flai;
+using Skypiea.Messages;
 
 namespace Skypiea.Model
 {
     public class Level
     {
-        private readonly World _world;
+        public event GenericEvent GameOver; 
 
+        private readonly World _world;
         public World World
         {
             get { return _world; }
@@ -19,6 +21,7 @@ namespace Skypiea.Model
         public void Initialize()
         {
             _world.Initialize();
+            _world.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
         }
 
         public void Update(UpdateContext updateContext)
@@ -26,9 +29,17 @@ namespace Skypiea.Model
             _world.Update(updateContext);
         }
 
-        public static Level Generate()
+        public static Level Generate(WorldType worldType)
         {
-            return new Level(WorldGenerator.Generate());
+            return new Level(WorldGenerator.Generate(worldType));
+        }
+
+        private void OnPlayerKilled(PlayerKilledMessage message)
+        {
+            if (message.PlayerInfo.LivesRemaining == 0)
+            {
+                this.GameOver.InvokeIfNotNull();
+            }
         }
     }
 }
