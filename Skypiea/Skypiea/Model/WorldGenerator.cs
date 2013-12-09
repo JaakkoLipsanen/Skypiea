@@ -11,7 +11,8 @@ namespace Skypiea.Model
         {
             World world = new World(worldType);
             WorldGenerator.CreateEntities(world);
-
+            world.Initialize();
+            
             return world;
         }
 

@@ -2,6 +2,7 @@ using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.Graphics.Particles;
 using Skypiea.Components;
+using Skypiea.Model.Boosters;
 
 namespace Skypiea.Misc
 {
@@ -12,7 +13,7 @@ namespace Skypiea.Misc
             CHealth health = zombie.TryGet<CHealth>();
             if (health)
             {
-                return health.TakeDamage(damage);
+                return health.TakeDamage(damage * BoosterHelper.GetZombieDamageRedcutionMultiplier(zombie.EntityWorld.Services.Get<IBoosterState>()));
             }
 
             zombie.Delete();
@@ -21,10 +22,10 @@ namespace Skypiea.Misc
 
         public static bool Kill(Entity zombie)
         {
-            const float LotsOfDamage = 1000 * 1000;
             CHealth health = zombie.TryGet<CHealth>();
             if (health)
             {
+                const float LotsOfDamage = 1000 * 1000;
                 health.TakeDamage(LotsOfDamage);
             }
             else

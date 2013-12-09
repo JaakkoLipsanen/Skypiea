@@ -62,7 +62,7 @@ namespace Skypiea.View
 
         private void DrawUI(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin();
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
             _worldRenderer.DrawUI(graphicsContext);
 
             // vignette in DrawUI -method? maybe not.. :P

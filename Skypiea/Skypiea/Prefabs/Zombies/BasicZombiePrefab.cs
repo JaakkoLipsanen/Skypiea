@@ -15,7 +15,7 @@ namespace Skypiea.Prefabs.Zombies
             entity.Transform.Position = parameters.Get<Vector2>(0);
             entity.AddFromPool<CBasicZombieAI>().Initialize(BasicZombiePrefab.Speed);
             entity.AddFromPool<CZombieInfo>().Initialize(ZombieType.Normal, BasicZombiePrefab.Size);
-            entity.AddFromPool<CHealth>().Initialize(5);
+            entity.AddFromPool<CHealth>().Initialize(10);
 
             entity.Tag = EntityTags.Zombie;
         }

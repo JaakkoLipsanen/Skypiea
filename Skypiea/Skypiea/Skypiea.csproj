@@ -88,7 +88,16 @@
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
     <Compile Include="Misc\SkypieaConstants.cs" />
+    <Compile Include="Misc\TestingGlobals.cs" />
     <Compile Include="Misc\ZombieHelper.cs" />
+    <Compile Include="Model\Boosters\Booster.cs" />
+    <Compile Include="Model\Boosters\BoosterHelper.cs" />
+    <Compile Include="Model\Boosters\BoosterState.cs" />
+    <Compile Include="Model\Boosters\PlayerAttackSpeedBooster.cs" />
+    <Compile Include="Model\Boosters\PlayerInvulnerabilityBooster.cs" />
+    <Compile Include="Model\Boosters\PlayerSpeedBooster.cs" />
+    <Compile Include="Model\Boosters\ZombieDamageReductionBooster.cs" />
+    <Compile Include="Model\Boosters\ZombieSpeedBooster.cs" />
     <Compile Include="Model\Level.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
@@ -102,6 +111,7 @@
     <Compile Include="Model\Weapons\WeaponType.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldGenerator.cs" />
+    <Compile Include="Model\WorldType.cs" />
     <Compile Include="Model\ZombieType.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\RocketLauncherBulletPrefab.cs" />
@@ -117,6 +127,7 @@
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Services\ZombieSpatialMap.cs" />
+    <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />
@@ -131,6 +142,7 @@
     <Compile Include="Systems\Zombie\ZombieAttackSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieHealthSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpawnManagerSystem.cs" />
+    <Compile Include="View\BoosterStateRenderer.cs" />
     <Compile Include="View\BulletRenderer.cs" />
     <Compile Include="View\LevelRenderer.cs" />
     <Compile Include="View\ParticleEffectRenderer.cs" />

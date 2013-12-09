@@ -16,11 +16,6 @@ namespace Skypiea.Model
         private Level(World world)
         {
             _world = world;
-        }
-
-        public void Initialize()
-        {
-            _world.Initialize();
             _world.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
         }
 

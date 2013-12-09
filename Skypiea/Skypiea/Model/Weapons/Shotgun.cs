@@ -8,7 +8,7 @@ namespace Skypiea.Model.Weapons
 {
     public class Shotgun : BulletWeapon
     {
-        private const int BulletCount = 50;
+        private const int BulletCount = 55;
 
         public override WeaponType Type
         {

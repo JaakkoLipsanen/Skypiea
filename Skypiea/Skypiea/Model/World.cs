@@ -10,30 +10,6 @@ using Skypiea.Systems.Zombie;
 
 namespace Skypiea.Model
 {
-    public enum WorldType
-    {
-        Grass,
-        Desert,
-    }
-
-    public static class WorldTypeExtensions
-    {
-        public static string GetMapTextureName(this WorldType worldType)
-        {
-            switch (worldType)
-            {
-                case WorldType.Grass:
-                    return "Map/GrassMap";
-
-                case WorldType.Desert:
-                    return "Map/DesertMap";
-
-                default:
-                    throw new ArgumentException("worldType");
-            }
-        }
-    }
-
     public class World
     {
         private readonly EntityWorld _entityWorld;
@@ -94,19 +70,24 @@ namespace Skypiea.Model
         private void CreateSystems()
         {
             _entityWorld.AddSystem<ZombieAttackSystem>();
-            _entityWorld.AddSystem<PlayerControllerSystem>();
-            _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
-            _entityWorld.AddSystem<BasicZombieAISystem>();
-            _entityWorld.AddSystem<BulletCollisionSystem>();
-            _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
-            _entityWorld.AddSystem<PlayerManagerSystem>();
             _entityWorld.AddSystem<ZombieHealthSystem>();
-            _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
+            _entityWorld.AddSystem<ZombieExplosionManagerSystem>();
+
+            _entityWorld.AddSystem<BasicZombieAISystem>();
+            _entityWorld.AddSystem<RusherZombieAISystem>();
+
+            _entityWorld.AddSystem<PlayerControllerSystem>();
+            _entityWorld.AddSystem<PlayerManagerSystem>();
             _entityWorld.AddSystem<PlayerWeaponPickupSystem>();
             _entityWorld.AddSystem<PlayerWeaponManagerSystem>();
-            _entityWorld.AddSystem<RusherZombieAISystem>();
-            _entityWorld.AddSystem<ZombieExplosionManagerSystem>();
+
+            _entityWorld.AddSystem<BulletCollisionSystem>();
+            _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
+
+            _entityWorld.AddSystem<VelocitySystem>();
+            _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
+            _entityWorld.AddSystem<BoosterManagerSystem>();
         }
     }
 }

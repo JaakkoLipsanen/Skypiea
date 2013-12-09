@@ -1,4 +1,5 @@
-﻿using Flai.Graphics;
+﻿using Flai;
+using Flai.Graphics;
 using Skypiea.Model;
 
 namespace Skypiea.View
@@ -14,6 +15,7 @@ namespace Skypiea.View
         private readonly WeaponDropRenderer _weaponDropRenderer;
         private readonly WeaponRenderer _weaponRenderer;
         private readonly ParticleEffectRenderer _particleEffectRenderer; // hmm... for start at least create the particle effects here.. but should this manage rendering too? dunno..
+        private readonly BoosterStateRenderer _boosterStateRenderer;
 
         public WorldRenderer(World world)
         {
@@ -26,11 +28,17 @@ namespace Skypiea.View
             _weaponDropRenderer = new WeaponDropRenderer(_world.EntityWorld);
             _weaponRenderer = new WeaponRenderer(_world.EntityWorld);
             _particleEffectRenderer = new ParticleEffectRenderer(_world.ParticleEngine);
+            _boosterStateRenderer = new BoosterStateRenderer(_world.EntityWorld);
         }
 
         protected override void LoadContentInner()
         {
             _particleEffectRenderer.LoadContent();
+        }
+
+        protected override void UpdateInner(UpdateContext updateContext)
+        {
+            _boosterStateRenderer.Update(updateContext);
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -51,6 +59,7 @@ namespace Skypiea.View
         {
             _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
+            _boosterStateRenderer.Draw(graphicsContext);
         }
     }
 }

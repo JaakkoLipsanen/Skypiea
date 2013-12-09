@@ -14,7 +14,7 @@ namespace Skypiea.Model.Weapons
         }
 
         public Minigun() 
-            : base(100, 0.1f)
+            : base(140, 0.1f)
         {
         }
 

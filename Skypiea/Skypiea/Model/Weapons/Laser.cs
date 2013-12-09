@@ -11,9 +11,9 @@ namespace Skypiea.Model.Weapons
 {
     public class Laser : Weapon
     {
-        private const float AmmoCount = 30;
+        private const float AmmoCount = 40;
         private const float AmmoUsedPerSecond = 3;
-        private const float DamagePerSecond = 40;
+        private const float DamagePerSecond = 60;
         private const float MaxHitDistance = 4;
         public const float Size = 16f;
 
@@ -36,7 +36,7 @@ namespace Skypiea.Model.Weapons
         public bool IsShooting { get; private set; }
         public Segment2D LaserSegment { get; private set; }
 
-        public override void Update(UpdateContext updateContext)
+        public override void Update(UpdateContext updateContext, EntityWorld entityWorld)
         {
             // todo: there is some time between Update (Component.PreUpdate) and Shoot call.. so the "IsShooting" will be false there,
             // >> even if the laser is actually shooting... pfff...

@@ -16,7 +16,7 @@ namespace Skypiea.Model.Weapons
             get { return this.AmmoRemaining != null && this.AmmoRemaining <= 0; }
         }
 
-        public virtual void Update(UpdateContext updateContext) { }
+        public virtual void Update(UpdateContext updateContext, EntityWorld entityWorld) { }
         public abstract void Shoot(UpdateContext updateContext, Entity playerEntity);
         public virtual void OnNewInstancePickedUp() { }
     }

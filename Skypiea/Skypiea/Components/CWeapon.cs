@@ -9,7 +9,7 @@ namespace Skypiea.Components
         public Weapon Weapon { get; set; }
         protected override void PreUpdate(UpdateContext updateContext)
         {
-            this.Weapon.Update(updateContext);
+            this.Weapon.Update(updateContext, this.EntityWorld);
         }
     }
 }

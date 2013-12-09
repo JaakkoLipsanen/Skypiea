@@ -5,6 +5,7 @@ using Flai.ScreenManagement;
 using Flai.ScreenManagement.Screens;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
+using Skypiea.Misc;
 using Skypiea.Model;
 
 namespace Skypiea.Screens
@@ -13,6 +14,7 @@ namespace Skypiea.Screens
     {
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
         private TextToggleButton _worldTypeToggleButton;
+        private TextToggleButton _zombiesToggleButton;
 
         public MainMenuScreen()
         {
@@ -30,11 +32,13 @@ namespace Skypiea.Screens
 
             _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 200), this.OnPlayClicked));
             _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2F, 280), this.OnExitClicked));
-            _uiContainer.Add(_worldTypeToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), "Grass", "Desert") { Font =  "SegoeWP.24" });
+            _uiContainer.Add(_worldTypeToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), "Grass", "Desert") { Font = "SegoeWP.24" });
+            _uiContainer.Add(_zombiesToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f, 440), 150), "All zombies", "Only Rushers") { Font = "SegoeWP.24" });
         }
 
         private void OnPlayClicked()
         {
+            TestingGlobals.SpawnOnlyRushers = !_zombiesToggleButton.IsToggled;
             LoadingScreen.Load(this.ScreenManager, false, new GameplayScreen(_worldTypeToggleButton.IsToggled ? WorldType.Grass : WorldType.Desert));
         }
 

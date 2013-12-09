@@ -1,9 +1,8 @@
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
 using Flai.General;
-using Flai.Misc;
 using Skypiea.Components;
+using Skypiea.Model.Boosters;
 
 namespace Skypiea.Model.Weapons
 {
@@ -33,9 +32,9 @@ namespace Skypiea.Model.Weapons
             _bulletTimer = new Timer(timeBetweenShots);
         }
 
-        public sealed override void Update(UpdateContext updateContext)
+        public sealed override void Update(UpdateContext updateContext, EntityWorld entityWorld)
         {
-            _bulletTimer.Update(updateContext);
+            _bulletTimer.Update(updateContext.DeltaSeconds * BoosterHelper.GetPlayerAttackSpeedMultiplier(entityWorld.Services.Get<IBoosterState>()));
             this.UpdateInner(updateContext);
         }
 

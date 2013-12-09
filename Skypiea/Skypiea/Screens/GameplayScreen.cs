@@ -1,11 +1,10 @@
-﻿using System;
-using Flai;
+﻿using Flai;
 using Flai.Graphics;
 using Flai.ScreenManagement;
 using Microsoft.Xna.Framework.Input.Touch;
-using Skypiea.Messages;
 using Skypiea.Model;
 using Skypiea.View;
+using System;
 
 namespace Skypiea.Screens
 {
@@ -75,10 +74,9 @@ namespace Skypiea.Screens
             }
         }
 
-       
-
         public void Restart()
         {
+            _level.GameOver -= this.OnGameOver;
             _levelRenderer.Unload();
             this.LoadLevel();
         }
@@ -88,7 +86,6 @@ namespace Skypiea.Screens
             _level = Level.Generate(_worldType);
             _levelRenderer = new LevelRenderer(_level);
 
-            _level.Initialize();
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;
         }

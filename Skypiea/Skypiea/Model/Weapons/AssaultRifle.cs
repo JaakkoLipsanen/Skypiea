@@ -1,6 +1,5 @@
 using Flai;
 using Flai.CBES;
-using Flai.Graphics.Particles;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;

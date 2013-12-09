@@ -10,7 +10,7 @@ namespace Skypiea.Model.Weapons
 {
     public class RocketLauncher : BulletWeapon // do this!
     {
-        private const int BulletCount = 50;
+        private const int BulletCount = 55;
         private const int ExplosionRange = 60;
 
         public override WeaponType Type

@@ -51,8 +51,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts\Default.spritefont">
-      <Name>Default</Name>
+    <Compile Include="Fonts\Minecraftia.24.spritefont">
+      <Name>Minecraftia.24</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>FontDescriptionProcessor</Processor>
     </Compile>
@@ -135,6 +135,34 @@
   <ItemGroup>
     <Compile Include="Textures\Map\DesertMap.png">
       <Name>DesertMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\Minecraftia.16.spritefont">
+      <Name>Minecraftia.16</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\Minecraftia.32.spritefont">
+      <Name>Minecraftia.32</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Fonts\Minecraftia.20.spritefont">
+      <Name>Minecraftia.20</Name>
+      <Importer>FontDescriptionImporter</Importer>
+      <Processor>FontDescriptionProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Textures\BoosterTextBackground.png">
+      <Name>BoosterTextBackground</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

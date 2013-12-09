@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
+using Skypiea.Model.Boosters;
 
 namespace Skypiea.Systems.Player
 {
@@ -14,6 +15,9 @@ namespace Skypiea.Systems.Player
         private CWeapon _weapon;
         private CVirtualThumbstick _movementThumbstick;
         private CVirtualThumbstick _rotationThumbstick;
+
+        private World _world;
+        private IBoosterState _boosterState;
 
         protected override int ProcessOrder
         {
@@ -31,6 +35,9 @@ namespace Skypiea.Systems.Player
             _weapon = base.Entity.Get<CWeapon>();
             _movementThumbstick = this.EntityWorld.FindEntityByName(EntityNames.MovementThumbStick).Get<CVirtualThumbstick>();
             _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>();
+
+            _world = this.EntityWorld.Services.Get<World>();
+            _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
         }
 
         protected override void Process(UpdateContext updateContext, Entity player)
@@ -40,15 +47,14 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
-            const float Speed = Tile.Size * 4.5f;
-            const float OffsetFromBorder = -Tile.Size;
-
-            World world = this.EntityWorld.Services.Get<World>();
+            const float PositionClampOffset = -Tile.Size;
+            const float DefaultSpeed = Tile.Size * 4.5f;
+            float speed = DefaultSpeed * BoosterHelper.GetPlayerSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
 
             // movement
             Vector2 previousPosition = player.Transform.Position;
-            player.Transform.Position += _movementThumbstick.ThumbStick.Direction * Speed * updateContext.DeltaSeconds;
-            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * OffsetFromBorder, new Vector2(world.Width, world.Height) * Tile.Size - Vector2.One * OffsetFromBorder);
+            player.Transform.Position += _movementThumbstick.ThumbStick.Direction * speed * updateContext.DeltaSeconds;
+            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, new Vector2(_world.Width, _world.Height) * Tile.Size - Vector2.One * PositionClampOffset);
             _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
 
             // rotation

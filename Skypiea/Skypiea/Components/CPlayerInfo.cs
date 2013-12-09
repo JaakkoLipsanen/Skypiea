@@ -3,17 +3,19 @@ using Flai.CBES;
 using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Messages;
+using Skypiea.Model.Boosters;
 
 namespace Skypiea.Components
 {
     // I could do a lot more specific components (PlayerLivesComponent etc), but atm can't see a reason to do so
     public class CPlayerInfo : Component
     {
-        private const float RespawnTime = 1.5f;
-        private const float RespawnInvulnerabilityTime = 7;
+        private const float RespawnTime = 2.5f;
+        private const float RespawnInvulnerabilityTime = 8;
 
         private readonly Timer _spawnTimer = new Timer(CPlayerInfo.RespawnTime);
-        private readonly Timer _invulnerabilityTimer = new Timer(CPlayerInfo.RespawnInvulnerabilityTime);
+        private readonly Timer _respawnInvulnerabilityTimer = new Timer(CPlayerInfo.RespawnInvulnerabilityTime);
+        private IBoosterState _boosterState;
 
         public int TotalLives { get; private set; }
         public int LivesRemaining { get; private set; }
@@ -26,12 +28,20 @@ namespace Skypiea.Components
 
         public bool IsInvulnerable
         {
-            get { return !_invulnerabilityTimer.HasFinished; }
+            get
+            {
+                _boosterState = _boosterState ?? this.EntityWorld.Services.Get<IBoosterState>();
+                return !_respawnInvulnerabilityTimer.HasFinished || BoosterHelper.IsPlayerInvulnerable(this.EntityWorld.Services.Get<IBoosterState>());
+            }
         }
 
         public bool IsVisuallyInvulnerable
         {
-            get { return _invulnerabilityTimer.ElapsedTime < CPlayerInfo.RespawnInvulnerabilityTime - 1.5f; }
+            get
+            {
+                _boosterState = _boosterState ?? this.EntityWorld.Services.Get<IBoosterState>();
+                return _boosterState.IsActive<PlayerInvulnerabilityBooster>() || (_respawnInvulnerabilityTimer.ElapsedTime < CPlayerInfo.RespawnInvulnerabilityTime - 1.5f);
+            }
         }
 
         // current movement per second vector.
@@ -42,13 +52,13 @@ namespace Skypiea.Components
             this.TotalLives = totalLives;
             this.LivesRemaining = totalLives;
             _spawnTimer.ForceFinish();
-            _invulnerabilityTimer.ForceFinish();
+            _respawnInvulnerabilityTimer.ForceFinish();
         }
 
         protected override void PreUpdate(UpdateContext updateContext)
         {
             _spawnTimer.Update(updateContext);
-            _invulnerabilityTimer.Update(updateContext);
+            _respawnInvulnerabilityTimer.Update(updateContext);
         }
 
         // todo: subscribe to message?
@@ -61,7 +71,7 @@ namespace Skypiea.Components
 
             this.LivesRemaining--;
             _spawnTimer.Restart();
-            _invulnerabilityTimer.Restart();
+            _respawnInvulnerabilityTimer.Restart();
 
             this.Entity.EntityWorld.BroadcastMessage(this.Entity.EntityWorld.FetchMessage<PlayerKilledMessage>().Initialize(this)); // blaarghh.. ugly...
         }

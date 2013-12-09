@@ -1,3 +1,4 @@
+using System;
 using Flai;
 
 namespace Skypiea.Achievements
@@ -26,6 +27,21 @@ namespace Skypiea.Achievements
         public void Unlock()
         {
             this.IsUnlocked = true;
+        }
+    }
+
+    public class PredicateProgression : IAchievementProgression
+    {
+        private readonly Func<bool> _predicate;  
+        public bool IsUnlocked
+        {
+            get { return _predicate(); }
+        }
+
+        public PredicateProgression(Func<bool> predicate)
+        {
+            Ensure.NotNull(predicate);
+            _predicate = predicate;
         }
     }
 

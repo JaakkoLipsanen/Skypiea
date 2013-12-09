@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
+using Skypiea.Model.Boosters;
 
 namespace Skypiea.Systems.Zombie
 {
@@ -58,15 +59,16 @@ namespace Skypiea.Systems.Zombie
                 return;
             }
 
-            float movement = Speed * updateContext.DeltaSeconds;
-            if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movement)
+            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
+            float movementAmount = Speed * boosterSpeedMultiplier * updateContext.DeltaSeconds;
+            if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movementAmount)
             {
                 entity.Transform.Position = rusherAI.Target;
                 this.GenerateWanderingTarget(rusherAI);
             }
             else
             {
-                entity.Transform.Position -= Vector2.Normalize(entity.Transform.Position - rusherAI.Target);
+                entity.Transform.Position -= Vector2.Normalize(entity.Transform.Position - rusherAI.Target) * movementAmount;
                 entity.Transform.LookAt(rusherAI.Target);
             }
         }
@@ -77,7 +79,9 @@ namespace Skypiea.Systems.Zombie
             const float RushingAcceleration = Tile.Size * 12;
 
             rusherAI.RushingSpeed = FlaiMath.Min(MaxRushingSpeed, rusherAI.RushingSpeed + RushingAcceleration * updateContext.DeltaSeconds);
-            float movement = rusherAI.RushingSpeed * updateContext.DeltaSeconds;
+
+            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
+            float movement = rusherAI.RushingSpeed * boosterSpeedMultiplier * updateContext.DeltaSeconds;
             if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movement)
             {
                 entity.Transform.Position = rusherAI.Target;

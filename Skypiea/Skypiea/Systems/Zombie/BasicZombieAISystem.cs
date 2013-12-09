@@ -1,3 +1,4 @@
+using System.Threading;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
+using Skypiea.Model.Boosters;
 using Skypiea.Services;
 
 namespace Skypiea.Systems.Zombie
@@ -26,23 +28,24 @@ namespace Skypiea.Systems.Zombie
         {
             Entity player = this.EntityWorld.FindEntityByName(EntityNames.Player);
             CPlayerInfo playerInfo = player.Get<CPlayerInfo>();
+            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
 
             bool isFleeing = !playerInfo.IsAlive;
             for (int i = 0; i < entities.Count; i++)
             {
-                Entity entity = entities[i];
-                CBasicZombieAI zombieAI = entity.Get<CBasicZombieAI>();
+                Entity zombieEntity = entities[i];
 
                 // todo: if playerTransform.Position == transform.position, then targetVelocity will be NaN
-                Vector2 targetVelocity = Vector2.Normalize(player.Transform.Position - entity.Transform.Position) * (isFleeing ? -1 : 1);
+                Vector2 targetVelocity = Vector2.Normalize(player.Transform.Position - zombieEntity.Transform.Position) * (isFleeing ? -1 : 1);
 
                 // todo: this is really jittery/stuttering. one fix could be that basically don't normalize the separation/target vectors, and instead allow movements that are less/smaller than the "movement"/Speed
                 // todo: >> also maybe the rotation could depend also on separationVelocity, but be smoothed so that the rotation isn't that jittery... also not 100% sure if GetSeparationVector works correctly (the smoothing far away -> close)
-                Vector2 separationVelocity = this.GetSeparationVector(entity, entities);
+                Vector2 separationVelocity = this.GetSeparationVector(zombieEntity, entities) * 0.5f;
 
-                Vector2 velocity = Vector2.Normalize(targetVelocity + separationVelocity * 0.5f) * zombieAI.Speed * (isFleeing ? 0.75f : 1) * updateContext.DeltaSeconds;
-                entity.Transform.Position += velocity;
-                entity.Transform.RotationVector = targetVelocity; //(transform.Position + targetVelocity);
+                float speed = zombieEntity.Get<CBasicZombieAI>().Speed * boosterSpeedMultiplier * (isFleeing ? 0.75f : 1);
+                Vector2 finalVelocity = Vector2.Normalize(targetVelocity + separationVelocity) * speed * updateContext.DeltaSeconds;
+                zombieEntity.Transform.Position += finalVelocity;
+                zombieEntity.Transform.RotationVector = targetVelocity;
             }
         }
 

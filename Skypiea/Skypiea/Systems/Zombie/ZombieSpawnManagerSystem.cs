@@ -53,7 +53,7 @@ namespace Skypiea.Systems.Zombie
                 new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),
                 playerTransform.Position, MinDistanceFromPlayer);
 
-            if (Global.Random.NextFromOdds(0.025f))
+            if (Global.Random.NextFromOdds(TestingGlobals.SpawnOnlyRushers ? 1 : 0.04f))
             {
                 this.EntityWorld.CreateEntityFromPrefab<RusherZombiePrefab>(position);
             }
