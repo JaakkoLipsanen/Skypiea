@@ -67,9 +67,9 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Achievements\Achievement.cs" />
-    <Compile Include="Achievements\AchievementProgression.cs" />
-    <Compile Include="Achievements\AchievementTracker.cs" />
+    <Compile Include="Achievements\AchievementHelper.cs" />
+    <Compile Include="Achievements\Trackers\KillZombiesTracker.cs" />
+    <Compile Include="Achievements\Trackers\PersistentRunningTracker.cs" />
     <Compile Include="Components\CBasicZombieAI.cs" />
     <Compile Include="Components\CBullet.cs" />
     <Compile Include="Components\CCamera2D.cs" />
@@ -127,6 +127,7 @@
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Services\ZombieSpatialMap.cs" />
+    <Compile Include="Systems\AchievementSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Systems\Zombie\ZombieAttackSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieHealthSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpawnManagerSystem.cs" />
+    <Compile Include="View\AchievementRenderer.cs" />
     <Compile Include="View\BoosterStateRenderer.cs" />
     <Compile Include="View\BulletRenderer.cs" />
     <Compile Include="View\LevelRenderer.cs" />

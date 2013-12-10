@@ -42,7 +42,7 @@ namespace Skypiea.View
                 graphicsContext.SpriteBatch.DrawStringFadedCentered(
                     graphicsContext.FontContainer["Minecraftia.20"], 
                     (_currentBooster.TimeRemaining >= 10 ? "0:" : "0:0"), _currentBooster.TimeRemaining,
-                    new Vector2(graphicsContext.ScreenSize.Width / 2f, 72), Color.Black * _alpha, Color.White * _alpha);
+                    new Vector2(graphicsContext.ScreenSize.Width / 2f, 72), Color.Black * 0.85f * _alpha, Color.White * _alpha);
             }
         }
 

@@ -88,6 +88,7 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
             _entityWorld.AddSystem<BoosterManagerSystem>();
+            _entityWorld.AddSystem<AchievementSystem>();
         }
     }
 }

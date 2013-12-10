@@ -16,6 +16,7 @@ namespace Skypiea.View
         private readonly WeaponRenderer _weaponRenderer;
         private readonly ParticleEffectRenderer _particleEffectRenderer; // hmm... for start at least create the particle effects here.. but should this manage rendering too? dunno..
         private readonly BoosterStateRenderer _boosterStateRenderer;
+        private readonly AchievementRenderer _achievementRenderer;
 
         public WorldRenderer(World world)
         {
@@ -29,6 +30,7 @@ namespace Skypiea.View
             _weaponRenderer = new WeaponRenderer(_world.EntityWorld);
             _particleEffectRenderer = new ParticleEffectRenderer(_world.ParticleEngine);
             _boosterStateRenderer = new BoosterStateRenderer(_world.EntityWorld);
+            _achievementRenderer = new AchievementRenderer(_world.EntityWorld);
         }
 
         protected override void LoadContentInner()
@@ -39,6 +41,7 @@ namespace Skypiea.View
         protected override void UpdateInner(UpdateContext updateContext)
         {
             _boosterStateRenderer.Update(updateContext);
+            _achievementRenderer.Update(updateContext);
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -59,7 +62,9 @@ namespace Skypiea.View
         {
             _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
+
             _boosterStateRenderer.Draw(graphicsContext);
+            _achievementRenderer.Draw(graphicsContext);
         }
     }
 }
