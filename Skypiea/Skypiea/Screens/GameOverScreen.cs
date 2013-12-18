@@ -61,7 +61,7 @@ namespace Skypiea.Screens
 
         private void OnExitClicked()
         {
-            LoadingScreen.Load(this.ScreenManager, false, new MainMenuScreen());
+            this.ScreenManager.LoadScreen(new MainMenuScreen());
         }
     }
 }

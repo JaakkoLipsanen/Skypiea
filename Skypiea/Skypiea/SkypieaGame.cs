@@ -4,7 +4,6 @@ using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Screens;
-using Skypiea.View;
 
 namespace Skypiea
 {
@@ -15,15 +14,14 @@ namespace Skypiea
     {
         public SkypieaGame()
         {
-            base.ClearColor = null; // don't clear
-            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 80), DebugInformationLevel = DebugInformationLevel.DetailedFPS });
+            base.ClearColor = Color.White; // don't clear
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory });
             base.IsFixedTimeStep = false;
-
         }
 
         protected override void InitializeInner()
         {
-            this.FontContainer.DefaultFont = this.FontContainer["SegoeWP.24"];
+            this.FontContainer.DefaultFont = this.FontContainer["Minecraftia.20"];
         }
 
         protected override void UpdateInner(UpdateContext updateContext)

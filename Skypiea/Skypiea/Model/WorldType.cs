@@ -6,6 +6,7 @@ namespace Skypiea.Model
     {
         Grass,
         Desert,
+        Combined,
     }
 
     public static class WorldTypeExtensions
@@ -16,6 +17,9 @@ namespace Skypiea.Model
             {
                 case WorldType.Grass:
                     return "Map/GrassMap";
+
+                case WorldType.Combined:
+                    return "Map/CombineTest";
 
                 case WorldType.Desert:
                     return "Map/DesertMap";

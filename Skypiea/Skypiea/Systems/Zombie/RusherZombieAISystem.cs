@@ -19,30 +19,30 @@ namespace Skypiea.Systems.Zombie
             _player = this.EntityWorld.FindEntityByName(EntityNames.Player);
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CRusherZombieAI rusherAI)
+        public override void Process(UpdateContext updateContext, Entity entity, CRusherZombieAI velocity2D)
         {
             // should only happen at first frame after zombie has spawned
-            if (rusherAI.State == RusherZombieState.None)
+            if (velocity2D.State == RusherZombieState.None)
             {
-                this.GenerateWanderingTarget(rusherAI);
-                rusherAI.State = RusherZombieState.Wandering;
+                this.GenerateWanderingTarget(velocity2D);
+                velocity2D.State = RusherZombieState.Wandering;
             }
 
-            if (rusherAI.State == RusherZombieState.Wandering)
+            if (velocity2D.State == RusherZombieState.Wandering)
             {
-                this.UpdateWandering(updateContext, entity, rusherAI);
+                this.UpdateWandering(updateContext, entity, velocity2D);
             }
-            else if (rusherAI.State == RusherZombieState.Rushing)
+            else if (velocity2D.State == RusherZombieState.Rushing)
             {
-                this.UpdateRushing(updateContext, entity, rusherAI);
+                this.UpdateRushing(updateContext, entity, velocity2D);
             }
-            else if (rusherAI.State == RusherZombieState.RushingStun)
+            else if (velocity2D.State == RusherZombieState.RushingStun)
             {
-                if (rusherAI.RushingStunTimer.HasFinished)
+                if (velocity2D.RushingStunTimer.HasFinished)
                 {
-                    rusherAI.State = RusherZombieState.Wandering;
-                    rusherAI.NextRushAllowedTimer.Restart();
-                    this.GenerateWanderingTarget(rusherAI);
+                    velocity2D.State = RusherZombieState.Wandering;
+                    velocity2D.NextRushAllowedTimer.Restart();
+                    this.GenerateWanderingTarget(velocity2D);
                 }
             }
         }

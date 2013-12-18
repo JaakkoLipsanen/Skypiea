@@ -1,4 +1,5 @@
 using Flai;
+using Flai.CBES.Components;
 using Skypiea.Components;
 
 namespace Skypiea.Misc

@@ -16,7 +16,7 @@ namespace Skypiea.Model
         private Level(World world)
         {
             _world = world;
-            _world.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
+            _world.EntityWorld.SubscribeToMessage<GameOverMessage>(this.OnGameOver);
         }
 
         public void Update(UpdateContext updateContext)
@@ -24,17 +24,14 @@ namespace Skypiea.Model
             _world.Update(updateContext);
         }
 
+        private void OnGameOver(GameOverMessage message)
+        {
+            this.GameOver.InvokeIfNotNull();
+        }
+
         public static Level Generate(WorldType worldType)
         {
             return new Level(WorldGenerator.Generate(worldType));
-        }
-
-        private void OnPlayerKilled(PlayerKilledMessage message)
-        {
-            if (message.PlayerInfo.LivesRemaining == 0)
-            {
-                this.GameOver.InvokeIfNotNull();
-            }
         }
     }
 }

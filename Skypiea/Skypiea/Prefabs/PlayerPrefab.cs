@@ -1,4 +1,5 @@
 ﻿using Flai.CBES;
+using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
@@ -13,7 +14,7 @@ namespace Skypiea.Prefabs
             entity.Transform.Position = parameters.Get<Vector2>(0);
             entity.Add(new CPlayerInfo(2));
             entity.Add<CCamera2D>(new CPlayerCamera2D());
-            entity.Add<CWeapon>().Weapon = new AssaultRifle();
+            entity.Add<CWeapon>().Weapon = WeaponFactory.CreateDefaultWeapon();
 
             entity.Tag = EntityTags.Player;
         }

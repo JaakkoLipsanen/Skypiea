@@ -2,6 +2,7 @@
 using Flai.Graphics;
 using Flai.ScreenManagement;
 using Microsoft.Xna.Framework.Input.Touch;
+using Skypiea.Messages;
 using Skypiea.Model;
 using Skypiea.View;
 using System;
@@ -40,6 +41,16 @@ namespace Skypiea.Screens
             }
 
             this.LoadLevel();
+        }
+
+        protected override void UnloadContent()
+        {
+            _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
+        }
+
+        protected override void Deactivate()
+        {
+            _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -92,7 +103,7 @@ namespace Skypiea.Screens
 
         private void OnGameOver()
         {
-            base.ScreenManager.AddScreen(new GameOverScreen(this));
+            this.ScreenManager.AddScreen(new GameOverScreen(this));
         }
     }
 }

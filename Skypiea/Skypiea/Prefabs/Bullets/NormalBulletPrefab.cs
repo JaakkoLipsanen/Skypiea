@@ -24,7 +24,7 @@ namespace Skypiea.Prefabs.Bullets
             entity.Transform.Rotation = transform.Rotation + angleOffset;
 
             entity.AddFromPool<CBullet>().Initialize(NormalBulletPrefab.BulletSize, weapon);
-            entity.AddFromPool<CVelocity>().Initialize(FlaiMath.GetAngleVector(entity.Transform.Rotation), speed);
+            entity.AddFromPool<CVelocity2D>().Initialize(FlaiMath.GetAngleVector(entity.Transform.Rotation), speed);
         }
     }
 }

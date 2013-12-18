@@ -1,5 +1,6 @@
 ﻿using Flai;
 using Flai.CBES;
+using Flai.CBES.Components;
 using Flai.CBES.Systems;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
@@ -49,7 +50,10 @@ namespace Skypiea.Systems.Player
 
             const float PositionClampOffset = -Tile.Size;
             const float DefaultSpeed = Tile.Size * 4.5f;
-            float speed = DefaultSpeed * BoosterHelper.GetPlayerSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
+
+            float boosterMovementSpeedMultiplier = BoosterHelper.GetPlayerSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
+            float passiveMovementSpeedMultiplier = this.EntityWorld.Services.Get<IPlayerPassiveStats>().MovementSpeedMultiplier;
+            float speed = DefaultSpeed * boosterMovementSpeedMultiplier * passiveMovementSpeedMultiplier;
 
             // movement
             Vector2 previousPosition = player.Transform.Position;

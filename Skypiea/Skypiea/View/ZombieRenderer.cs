@@ -1,8 +1,8 @@
 using Flai.CBES;
+using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
 using Skypiea.Model;
 

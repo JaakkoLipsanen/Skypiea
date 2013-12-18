@@ -1,36 +1,52 @@
 using Flai;
 using Flai.Achievements;
 using Flai.CBES.Systems;
+using Flai.DataStructures;
 using Skypiea.Achievements;
-using Skypiea.Achievements.Trackers;
+using Skypiea.Messages;
 
 namespace Skypiea.Systems
 {
-    // listener...? shouldn't it be like Broadcaster or something?? dunno..
-    public interface IAchievementListener
+    public interface IAchievementManager
     {
         event AchievementUnlockedDelegate AchievementUnlocked;
+        ReadOnlyArray<Achievement> AllAchievements { get; }
     }
 
-    public class AchievementSystem : EntitySystem, IAchievementListener
+    public class AchievementSystem : EntitySystem, IAchievementManager
     {
         public event AchievementUnlockedDelegate AchievementUnlocked;
 
         private readonly AchievementManager _achievementManager;
         private AchievementTrackerCollection _achievementTrackerCollection;
 
+        public ReadOnlyArray<Achievement> AllAchievements
+        {
+            get { return _achievementManager.Achievements; }
+        }
 
         public AchievementSystem()
         {
             _achievementManager = AchievementHelper.CreateAchivementManager();
         }
 
+        protected override void PreInitialize()
+        {
+            this.EntityWorld.Services.Add<IAchievementManager>(this);
+        }
+
         protected override void Initialize()
         {
-            this.EntityWorld.Services.Add<IAchievementListener>(this);
+            this.EntityWorld.SubscribeToMessage<GameOverMessage>(message => this.OnGameOver());
+            this.EntityWorld.SubscribeToMessage<GameExitMessage>(message => this.OnGameOver());
 
             this.CreateTrackers();
             _achievementManager.AchievementUnlocked += this.OnAchievementUnlocked;
+        }
+
+        protected override void Shutdown()
+        {
+            _achievementManager.SaveToFile();
         }
 
         protected override void Update(UpdateContext updateContext)
@@ -40,21 +56,22 @@ namespace Skypiea.Systems
 
         private void CreateTrackers()
         {
-            _achievementTrackerCollection = new AchievementTrackerCollection
+            _achievementTrackerCollection = new AchievementTrackerCollection();
+            foreach (Achievement achievement in _achievementManager.Achievements)
             {
-                new PersistentKillZombiesTracker(_achievementManager, this.EntityWorld, "Sunday Killer"),
-                new PersistentKillZombiesTracker(_achievementManager, this.EntityWorld, "Zombie-nator"),
-                new PersistentKillZombiesTracker(_achievementManager, this.EntityWorld, "Jesus Fucking Christ Antti"),
-                
-                new PersistentRunningTracker(_achievementManager, this.EntityWorld, "Jogger"),
-                new PersistentRunningTracker(_achievementManager, this.EntityWorld, "The Marathoner"),
-                new PersistentRunningTracker(_achievementManager, this.EntityWorld, "The Flash"),
-            };
+                AchievementInfo achievementInfo = (AchievementInfo)achievement.Tag;
+                _achievementTrackerCollection.Add(achievementInfo.CreateTracker(_achievementManager, this.EntityWorld, achievement));
+            }
         }
 
         private void OnAchievementUnlocked(Achievement achievement)
         {
             this.AchievementUnlocked.InvokeIfNotNull(achievement);
+        }
+
+        private void OnGameOver()
+        {
+            _achievementManager.SaveToFile();
         }
     }
 }

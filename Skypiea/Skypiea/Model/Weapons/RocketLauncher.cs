@@ -29,7 +29,7 @@ namespace Skypiea.Model.Weapons
             this.DecreaseBulletCount();
         }
 
-        public override bool OnBulletHitCallback(CBullet bullet, Entity entityHit)
+        public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
             IZombieSpatialMap zombieSpatialMap = entityHit.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(bullet.Entity.Transform, RocketLauncher.ExplosionRange))

@@ -21,4 +21,8 @@ namespace Skypiea.Components
             this.Type = (WeaponType)(-1);
         }
     }
+
+    public class CLifeDrop : PoolableComponent
+    {        
+    }
 }

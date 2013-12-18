@@ -10,7 +10,7 @@ namespace Skypiea.Model.Boosters
 
     public class BoosterState : IBoosterState
     {
-        public Booster ActiveBooster { get; private set; }
+        public Booster ActiveBooster { get; set; }
 
         public bool IsActive<T>()
             where T : Booster
@@ -22,11 +22,6 @@ namespace Skypiea.Model.Boosters
             where T : Booster
         {
             return (T)this.ActiveBooster;
-        }
-
-        public void SetActive(Booster booster)
-        {
-            this.ActiveBooster = booster;
         }
     }
 }

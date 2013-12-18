@@ -2,23 +2,36 @@
 using Flai;
 using Flai.CBES.Systems;
 using Flai.General;
+using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Model.Boosters;
+using System;
 
 namespace Skypiea.Systems
 {
     public class BoosterManagerSystem : EntitySystem
-    {
+    { 
         private readonly BoosterState _boosterState = new BoosterState();
         private readonly Timer _nextBoosterTimer = new Timer(float.MaxValue);
+        private CPlayerInfo _playerInfo;
+        private int _previousBoosterIndex = -1;
 
         protected override void PreInitialize()
         {
             this.EntityWorld.Services.Add<IBoosterState>(_boosterState);
             this.SetNextBoosterTimer();
+            _playerInfo = this.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>();
         }
 
         protected override void Update(UpdateContext updateContext)
         {
+            if (!_playerInfo.IsAlive)
+            {
+                _boosterState.ActiveBooster = null;
+                this.SetNextBoosterTimer();
+                return;
+            }
+
             if (_boosterState.ActiveBooster != null)
             {
                 this.UpdateActiveBooster(updateContext);
@@ -38,39 +51,53 @@ namespace Skypiea.Systems
             _boosterState.ActiveBooster.Update(updateContext);
             if (_boosterState.ActiveBooster.HasFinished)
             {
-                _boosterState.SetActive(null);
+                _boosterState.ActiveBooster = null;
                 this.SetNextBoosterTimer();
             }
         }
 
         private void SetNextBoosterTimer()
         {
-            _nextBoosterTimer.SetTickPeriod(Global.Random.NextFloat(25, 60));
+            _nextBoosterTimer.SetTickTime(Global.Random.NextFloat(20, 60));
             _nextBoosterTimer.Restart();
         }
 
         private void GenerateRandomBooster()
         {
-            float random = Global.Random.NextFloat();
-            if (random < 0.2f)
+            const int BoosterCount = 5;
+
+            // don't allow two same boosters consecutively
+            int newIndex = _previousBoosterIndex;
+            while(newIndex == _previousBoosterIndex)
             {
-                _boosterState.SetActive(new PlayerSpeedBooster());
+                newIndex = FlaiMath.Clamp((int)(Global.Random.NextFloat() * BoosterCount), 0, BoosterCount - 1);
             }
-            else if (random < 0.4f)
+
+            _boosterState.ActiveBooster = this.CreateBooster(newIndex);
+            _previousBoosterIndex = newIndex;
+        }
+
+        private Booster CreateBooster(int index)
+        {
+            switch (index)
             {
-                _boosterState.SetActive(new PlayerInvulnerabilityBooster());
-            }
-            else if (random < 0.6f)
-            {
-                _boosterState.SetActive(new PlayerAttackSpeedBooster());
-            }
-            else if (random < 0.8f)
-            {
-                _boosterState.SetActive(new ZombieSpeedBooster());
-            }
-            else
-            {
-                _boosterState.SetActive(new ZombieDamageReductionBooster());
+                case 0:
+                    return new PlayerSpeedBooster();
+
+                case 1:
+                    return new PlayerInvulnerabilityBooster();
+
+                case 2:
+                    return new PlayerAttackSpeedBooster();
+
+                case 3:
+                    return new ZombieSpeedBooster();
+
+                case 4:
+                    return new ZombieDamageReductionBooster();
+
+                default:
+                    throw new ArgumentOutOfRangeException("index");
             }
         }
     }

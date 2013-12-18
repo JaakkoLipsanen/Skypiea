@@ -46,7 +46,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Windows Phone\Release</OutputPath>
-    <DefineConstants>TRACE;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS_PHONE CBES_3D</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -60,6 +60,9 @@
     <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
+    <Reference Include="Scoreloop.CoreSocial">
+      <HintPath>..\..\..\Flai\3rd Party Libraries\Scoreloop\Scoreloop.CoreSocial.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -68,25 +71,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Achievements\AchievementHelper.cs" />
+    <Compile Include="Achievements\AchievementInfo.cs" />
     <Compile Include="Achievements\Trackers\KillZombiesTracker.cs" />
     <Compile Include="Achievements\Trackers\PersistentRunningTracker.cs" />
     <Compile Include="Components\CBasicZombieAI.cs" />
     <Compile Include="Components\CBullet.cs" />
-    <Compile Include="Components\CCamera2D.cs" />
+    <Compile Include="Components\CPlayerCamera2D.cs" />
+    <Compile Include="Components\CDrop.cs" />
     <Compile Include="Components\CHealth.cs" />
-    <Compile Include="Components\CLifeTime.cs" />
-    <Compile Include="Components\CParticleEmitter.cs" />
     <Compile Include="Components\CPlayerInfo.cs" />
+    <Compile Include="Components\CRicochetBullet.cs" />
     <Compile Include="Components\CRusherZombieAI.cs" />
-    <Compile Include="Components\CVelocity.cs" />
-    <Compile Include="Components\CVirtualThumbStick.cs" />
     <Compile Include="Components\CWeapon.cs" />
     <Compile Include="Components\CWeaponDrop.cs" />
     <Compile Include="Components\CZombieInfo.cs" />
+    <Compile Include="Leaderboards\HighscoreHelper.cs" />
+    <Compile Include="Leaderboards\HighscoreManager.cs" />
+    <Compile Include="Leaderboards\LeaderboardHelper.cs" />
+    <Compile Include="Messages\GameExitMessage.cs" />
+    <Compile Include="Messages\GameOverMessage.cs" />
     <Compile Include="Messages\PlayerKilledMessage.cs" />
     <Compile Include="Messages\ZombieKilledMessage.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
+    <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\SkypieaConstants.cs" />
     <Compile Include="Misc\TestingGlobals.cs" />
     <Compile Include="Misc\ZombieHelper.cs" />
@@ -98,12 +106,17 @@
     <Compile Include="Model\Boosters\PlayerSpeedBooster.cs" />
     <Compile Include="Model\Boosters\ZombieDamageReductionBooster.cs" />
     <Compile Include="Model\Boosters\ZombieSpeedBooster.cs" />
+    <Compile Include="Model\DropType.cs" />
     <Compile Include="Model\Level.cs" />
+    <Compile Include="Model\PassiveHelper.cs" />
+    <Compile Include="Model\PlayerPassiveStats.cs" />
     <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
     <Compile Include="Model\Weapons\BulletWeapon.cs" />
+    <Compile Include="Model\Weapons\Flamethrower.cs" />
     <Compile Include="Model\Weapons\Laser.cs" />
     <Compile Include="Model\Weapons\Minigun.cs" />
+    <Compile Include="Model\Weapons\RicochetGun.cs" />
     <Compile Include="Model\Weapons\RocketLauncher.cs" />
     <Compile Include="Model\Weapons\Shotgun.cs" />
     <Compile Include="Model\Weapons\Weapon.cs" />
@@ -113,8 +126,11 @@
     <Compile Include="Model\WorldGenerator.cs" />
     <Compile Include="Model\WorldType.cs" />
     <Compile Include="Model\ZombieType.cs" />
+    <Compile Include="Prefabs\Bullets\FlamethrowerBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
+    <Compile Include="Prefabs\Bullets\RicochetBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\RocketLauncherBulletPrefab.cs" />
+    <Compile Include="Prefabs\LifeDropPrefab.cs" />
     <Compile Include="Prefabs\PlayerPrefab.cs" />
     <Compile Include="Prefabs\Zombies\FatZombiePrefab.cs" />
     <Compile Include="Prefabs\Zombies\RusherZombiePrefab.cs" />
@@ -122,8 +138,10 @@
     <Compile Include="Prefabs\WeaponDropPrefab.cs" />
     <Compile Include="Prefabs\Zombies\BasicZombiePrefab.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screens\AchievementScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
+    <Compile Include="Screens\LeaderboardScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Services\ZombieSpatialMap.cs" />
@@ -131,9 +149,12 @@
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
+    <Compile Include="Systems\HighscoreSystem.cs" />
+    <Compile Include="Systems\LifeDropGeneratorSystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />
     <Compile Include="Systems\Player\PlayerManagerSystem.cs" />
-    <Compile Include="Systems\Player\PlayerWeaponPickupSystem.cs" />
+    <Compile Include="Systems\Player\PlayerDropPickupSystem.cs" />
+    <Compile Include="Systems\Player\PlayerPassiveSystem.cs" />
     <Compile Include="Systems\Player\PlayerWeaponManagerSystem.cs" />
     <Compile Include="Systems\Zombie\RusherZombieAISystem.cs" />
     <Compile Include="Systems\SystemProcessOrder.cs" />
@@ -146,12 +167,15 @@
     <Compile Include="View\AchievementRenderer.cs" />
     <Compile Include="View\BoosterStateRenderer.cs" />
     <Compile Include="View\BulletRenderer.cs" />
+    <Compile Include="View\DropArrowRenderer.cs" />
+    <Compile Include="View\GraphicalQuality.cs" />
     <Compile Include="View\LevelRenderer.cs" />
     <Compile Include="View\ParticleEffectRenderer.cs" />
     <Compile Include="View\PlayerRenderer.cs" />
     <Compile Include="View\MapRenderer.cs" />
+    <Compile Include="View\SkypieaViewConstants.cs" />
     <Compile Include="View\VirtualThumbStickRenderer.cs" />
-    <Compile Include="View\WeaponDropRenderer.cs" />
+    <Compile Include="View\DropRenderer.cs" />
     <Compile Include="View\WeaponRenderer.cs" />
     <Compile Include="View\WorldRenderer.cs" />
     <Compile Include="Systems\Zombie\ZombieExplosionManagerSystem.cs" />
@@ -165,6 +189,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Flai\Flai.Scoreloop\Flai.Scoreloop.csproj">
+      <Project>{23BDD915-0A32-4B08-9042-04A9434B1181}</Project>
+      <Name>Flai.Scoreloop</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Flai\Flai\Flai.WP7.csproj">
       <Project>{0D5202D6-AA21-4682-83A6-5052136DE1F4}</Project>
       <Name>Flai.WP7</Name>

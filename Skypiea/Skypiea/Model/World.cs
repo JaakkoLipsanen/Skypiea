@@ -1,7 +1,7 @@
-﻿using System;
-using Flai;
+﻿using Flai;
 using Flai.CBES;
 using Flai.Graphics.Particles;
+using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Services;
 using Skypiea.Systems;
@@ -61,6 +61,11 @@ namespace Skypiea.Model
             _entityWorld.Initialize();
         }
 
+        public void Shutdown()
+        {
+            _entityWorld.Shutdown();
+        }
+
         public void Update(UpdateContext updateContext)
         {
             _particleEngine.Update(updateContext);
@@ -79,16 +84,21 @@ namespace Skypiea.Model
 
             _entityWorld.AddSystem<PlayerControllerSystem>();
             _entityWorld.AddSystem<PlayerManagerSystem>();
-            _entityWorld.AddSystem<PlayerWeaponPickupSystem>();
+            _entityWorld.AddSystem<PlayerDropPickupSystem>();
             _entityWorld.AddSystem<PlayerWeaponManagerSystem>();
 
             _entityWorld.AddSystem<BulletCollisionSystem>();
             _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
 
-            _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
+            _entityWorld.AddSystem<LifeDropGeneratorSystem>();
+
+            _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<BoosterManagerSystem>();
+            _entityWorld.AddSystem<PlayerPassiveSystem>();
+
             _entityWorld.AddSystem<AchievementSystem>();
+            _entityWorld.AddSystem<HighscoreSystem>();
         }
     }
 }

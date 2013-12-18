@@ -47,7 +47,7 @@ namespace Skypiea.Services
 
         public ReadOnlyBag<Entity> GetZombiesWithinRange(Vector2 position, float range)
         {
-            Ensure.ValidNumber(range);
+            Ensure.IsValid(range);
             Ensure.True(range > 0);
 
             _returnEntities.Clear();
@@ -75,7 +75,7 @@ namespace Skypiea.Services
 
         public ReadOnlyBag<Entity> GetZombiesWithCenterInRange(Vector2 position, float range)
         {
-            Ensure.ValidNumber(range);
+            Ensure.IsValid(range);
             Ensure.True(range > 0);
 
             _returnEntities.Clear();
@@ -111,7 +111,7 @@ namespace Skypiea.Services
 
         public ReadOnlyBag<Entity> GetZombiesIntersecting(Segment2D segment, float maxBias)
         {
-            Ensure.ValidNumber(maxBias);
+            Ensure.IsValid(maxBias);
             Ensure.True(maxBias > 0);
 
             _returnEntities.Clear();

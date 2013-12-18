@@ -1,4 +1,5 @@
 using Flai;
+using Flai.General;
 
 namespace Skypiea.Model.Boosters
 {
@@ -28,5 +29,11 @@ namespace Skypiea.Model.Boosters
                 _timeRemaining = 0;
             }
         }
+    }
+
+    public static class Booster<T>
+        where T : Booster
+    {
+        public static readonly int ID = (int)TypeID<Booster>.GetID<T>();
     }
 }

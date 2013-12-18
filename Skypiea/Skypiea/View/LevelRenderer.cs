@@ -1,9 +1,12 @@
 ﻿using Flai;
+using Flai.CBES.Components;
 using Flai.Graphics;
+using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
 using Skypiea.Model;
+using Settings = Skypiea.Misc.Settings;
 
 namespace Skypiea.View
 {
@@ -39,15 +42,24 @@ namespace Skypiea.View
             _worldRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            this.DrawUI(graphicsContext);
-            this.DrawNoise(graphicsContext);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            this.DrawWithoutCamera(graphicsContext);
+            graphicsContext.SpriteBatch.End();
+        }
+
+        private void DrawWithoutCamera(GraphicsContext graphicsContext)
+        {
+            _worldRenderer.DrawUI(graphicsContext);
+            if (Settings.Current.GraphicalQuality == GraphicalQuality.High)
+            {
+                this.DrawNoise(graphicsContext);
+                this.DrawVignette(graphicsContext);
+            }
         }
 
         // todo: move to it's own class along with vignette etc
         private void DrawNoise(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-
             Texture2D noiseTexture = _contentProvider.DefaultManager.LoadTexture("Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
@@ -56,19 +68,12 @@ namespace Skypiea.View
                     graphicsContext.SpriteBatch.Draw(noiseTexture, new Vector2(x, y), Color.White * 0.1f);
                 }
             }
-
-            graphicsContext.SpriteBatch.End();
         }
 
-        private void DrawUI(GraphicsContext graphicsContext)
+        private void DrawVignette(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-            _worldRenderer.DrawUI(graphicsContext);
-
-            // vignette in DrawUI -method? maybe not.. :P
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette"));
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
-            graphicsContext.SpriteBatch.End();
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
         }
     }
 }

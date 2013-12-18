@@ -1,9 +1,11 @@
 ﻿using Flai;
 using Flai.CBES;
+using Flai.CBES.Components;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
+using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Model.Weapons;
 
@@ -12,9 +14,13 @@ namespace Skypiea.View
     public class PlayerRenderer : FlaiRenderer
     {
         private readonly Entity _player;
+        private readonly IHighscoreManager _highscoreManager;
+
         public PlayerRenderer(EntityWorld entityWorld)
         {
             _player = entityWorld.FindEntityByName(EntityNames.Player);
+            _highscoreManager = entityWorld.Services.Get<IHighscoreManager>();
+
             CCamera2D.Active = _player.Get<CCamera2D>();
         }
 
@@ -66,6 +72,7 @@ namespace Skypiea.View
         private void DrawScore(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
             graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, playerInfo.Score, new Vector2(8, 32), Color.White);
+            graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, "Best: " + _highscoreManager.Highscore, new Vector2(8, 64), Color.White);
         }
 
         private void DrawWeaponInfo(GraphicsContext graphicsContext)
@@ -74,7 +81,7 @@ namespace Skypiea.View
             CWeapon weaponComponent = _player.Get<CWeapon>();
 
             SpriteFont font = graphicsContext.FontContainer[FontName];
-            graphicsContext.SpriteBatch.DrawString(font, weaponComponent.Weapon.Type.GetDisplayName(), new Vector2(graphicsContext.ScreenSize.Width - 8, 8), Color.White, Corner.TopRight);
+            graphicsContext.SpriteBatch.DrawString(font, weaponComponent.Weapon.Type.GetDisplayName(), new Vector2(graphicsContext.ScreenSize.Width - 8, 8), Corner.TopRight, Color.White);
 
             Vector2 position = new Vector2(graphicsContext.ScreenSize.Width - 8, 32);
             int? bulletsRemaining = weaponComponent.Weapon.AmmoRemaining;

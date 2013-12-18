@@ -20,7 +20,7 @@ namespace Skypiea.View
         public AchievementRenderer(EntityWorld entityWorld)
         {
             _entityWorld = entityWorld;
-            _entityWorld.Services.Get<IAchievementListener>().AchievementUnlocked += this.OnAchievementUnlocked;
+            _entityWorld.Services.Get<IAchievementManager>().AchievementUnlocked += this.OnAchievementUnlocked;
         }
 
         protected override void UpdateInner(UpdateContext updateContext)

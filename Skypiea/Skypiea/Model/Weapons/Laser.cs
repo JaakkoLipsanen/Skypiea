@@ -2,7 +2,6 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
-using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Services;
 using System;
@@ -11,13 +10,13 @@ namespace Skypiea.Model.Weapons
 {
     public class Laser : Weapon
     {
-        private const float AmmoCount = 40;
+        private const float InitialAmmo = 40;
         private const float AmmoUsedPerSecond = 3;
         private const float DamagePerSecond = 60;
         private const float MaxHitDistance = 4;
         public const float Size = 16f;
 
-        private float _ammoRemaining = Laser.AmmoCount;
+        private float _ammoRemaining = Laser.InitialAmmo;
         public override WeaponType Type
         {
             get { return WeaponType.Laser; }
@@ -79,6 +78,11 @@ namespace Skypiea.Model.Weapons
             }
 
             return new Segment2D(ray.Position, rayEndPoint);
+        }
+
+        public override void OnNewInstancePickedUp()
+        {
+            _ammoRemaining += Laser.InitialAmmo;
         }
     }
 }

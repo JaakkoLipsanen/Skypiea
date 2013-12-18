@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
@@ -20,11 +19,11 @@ namespace Skypiea.Systems
             _zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CBullet bullet)
+        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity2D)
         {
             foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 8))
             {
-                if (bullet.InvokeCallback(zombie))
+                if (velocity2D.InvokeCallback(updateContext, zombie))
                 {
                     break;
                 }

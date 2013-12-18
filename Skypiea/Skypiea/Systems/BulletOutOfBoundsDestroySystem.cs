@@ -1,5 +1,6 @@
 using Flai;
 using Flai.CBES;
+using Flai.CBES.Components;
 using Flai.CBES.Systems;
 using Skypiea.Components;
 using Skypiea.Misc;
@@ -20,10 +21,10 @@ namespace Skypiea.Systems
             _world = this.EntityWorld.Services.Get<World>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CBullet bullet)
+        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity2D)
         {
             RectangleF cameraArea = SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active);
-            RectangleF bulletArea = bullet.Area;
+            RectangleF bulletArea = velocity2D.Area;
 
             if (!bulletArea.Intersects(cameraArea))
             {

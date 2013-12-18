@@ -14,7 +14,7 @@ namespace Skypiea.Systems
     // todo: "WeaponDropLifeTimeSystem"? destroyes them after a certain amount of time
     public class WeaponDropGeneratorSystem : EntitySystem
     {
-        private const float WeaponDropTestInterval = 4f;
+        private const float WeaponDropTestInterval = 7;
         private readonly Timer _weaponDropTimer = new Timer(WeaponDropGeneratorSystem.WeaponDropTestInterval);
         private CPlayerInfo _playerInfo;
 
@@ -34,7 +34,8 @@ namespace Skypiea.Systems
             if (_weaponDropTimer.HasFinished)
             {
                 _weaponDropTimer.Restart();
-                const float DropOdds = 0.5f;
+
+                const float DropOdds = 0.6f;
                 if (Global.Random.NextFromOdds(DropOdds))
                 {
                     this.CreateWeaponDrop();
@@ -48,7 +49,7 @@ namespace Skypiea.Systems
             CTransform2D playerTransform =
                 this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
 
-            const float MinDistanceFromBorder = Tile.Size * 5;
+            const float MinDistanceFromBorder = Tile.Size * 6;
             Vector2 dropPosition = FlaiAlgorithms.GenerateRandomVector2(
                 new Range(MinDistanceFromBorder, world.Width * Tile.Size - MinDistanceFromBorder),
                 new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),

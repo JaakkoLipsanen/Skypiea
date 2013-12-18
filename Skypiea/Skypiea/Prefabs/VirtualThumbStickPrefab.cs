@@ -1,6 +1,6 @@
 using Flai.CBES;
+using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
-using Skypiea.Components;
 using Skypiea.Misc;
 
 namespace Skypiea.Prefabs

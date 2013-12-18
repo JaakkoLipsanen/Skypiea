@@ -32,7 +32,7 @@ namespace Skypiea.Model.Weapons
             this.DecreaseBulletCount();
         }
 
-        public override bool OnBulletHitCallback(CBullet bullet, Entity entityHit)
+        public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
             if (entityHit != null)
             {

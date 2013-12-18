@@ -1,10 +1,9 @@
-using System;
 using Flai;
 using Flai.Graphics;
 using Flai.ScreenManagement;
-using Flai.ScreenManagement.Screens;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Skypiea.Screens
 {
@@ -64,7 +63,7 @@ namespace Skypiea.Screens
 
         private void OnExitClicked()
         {
-            LoadingScreen.Load(this.ScreenManager, false, new MainMenuScreen());
+            this.ScreenManager.LoadScreen(new MainMenuScreen());
         }
 
     }

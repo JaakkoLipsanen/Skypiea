@@ -9,7 +9,7 @@ namespace Skypiea.Misc
         public const uint MovementThumbStick = 2;
         public const uint RotationThumbStick = 3;
         public const uint Zombie = 4;
-        public const uint WeaponDrop = 5;
+        public const uint Drop = 5;
         public const uint ZombieExplosionParticle = 6;
     }
 

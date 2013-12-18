@@ -1,4 +1,5 @@
 using Flai;
+using Flai.CBES.Components;
 using Flai.Graphics;
 using Flai.Graphics.Particles;
 using Flai.Graphics.Particles.EmitterStyles;

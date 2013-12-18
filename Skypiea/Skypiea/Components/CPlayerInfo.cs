@@ -61,6 +61,12 @@ namespace Skypiea.Components
             _respawnInvulnerabilityTimer.Update(updateContext);
         }
 
+        public void AddLife()
+        {
+            this.LivesRemaining++;
+            this.TotalLives = FlaiMath.Max(this.TotalLives, this.LivesRemaining);
+        }
+
         // todo: subscribe to message?
         public void KillPlayer()
         {

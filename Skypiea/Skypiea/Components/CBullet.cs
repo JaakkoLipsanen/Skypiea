@@ -18,9 +18,9 @@ namespace Skypiea.Components
             get { return RectangleF.CreateCentered(this.Entity.Transform.Position, this.Size); }
         }
 
-        public bool InvokeCallback(Entity entityHit)
+        public bool InvokeCallback(UpdateContext updateContext, Entity entityHit)
         {
-            return this.Weapon.OnBulletHitCallback(this, entityHit);
+            return this.Weapon.OnBulletHitCallback(updateContext, this, entityHit);
         }
 
         public void Initialize(SizeF size, BulletWeapon weapon)

@@ -25,7 +25,7 @@ namespace Skypiea.Model.Weapons
         protected BulletWeapon(int? bullets, float timeBetweenShots)
         {
             Ensure.True(timeBetweenShots > 0);
-            Ensure.ValidNumber(timeBetweenShots);
+            Ensure.IsValid(timeBetweenShots);
 
             _initialBulletCount = bullets;
             _bulletsRemaining = bullets;
@@ -34,7 +34,10 @@ namespace Skypiea.Model.Weapons
 
         public sealed override void Update(UpdateContext updateContext, EntityWorld entityWorld)
         {
-            _bulletTimer.Update(updateContext.DeltaSeconds * BoosterHelper.GetPlayerAttackSpeedMultiplier(entityWorld.Services.Get<IBoosterState>()));
+            float boosterAttackSpeedMultiplier = BoosterHelper.GetPlayerAttackSpeedMultiplier(entityWorld.Services.Get<IBoosterState>());
+            float passiveAttackSpeedMultiplier = entityWorld.Services.Get<IPlayerPassiveStats>().FireRateMultiplier;
+            _bulletTimer.Update(updateContext.DeltaSeconds * boosterAttackSpeedMultiplier * passiveAttackSpeedMultiplier);
+
             this.UpdateInner(updateContext);
         }
 
@@ -50,7 +53,7 @@ namespace Skypiea.Model.Weapons
         protected virtual void UpdateInner(UpdateContext updateContext) { }
         protected abstract void ShootInner(UpdateContext updateContext, Entity playerEntity);
 
-        public virtual bool OnBulletHitCallback(CBullet bullet, Entity entityHit)
+        public virtual bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
             return false;
         }

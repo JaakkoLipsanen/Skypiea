@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skypiea", "Skypiea\Skypiea\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkypieaContent", "Skypiea\SkypieaContent\SkypieaContent.contentproj", "{BDB81562-3CC3-44B0-B723-5B575DEC8273}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Flai.Scoreloop", "..\Flai\Flai.Scoreloop\Flai.Scoreloop.csproj", "{23BDD915-0A32-4B08-9042-04A9434B1181}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{BDB81562-3CC3-44B0-B723-5B575DEC8273}.Release|Any CPU.ActiveCfg = Release|Windows Phone
 		{BDB81562-3CC3-44B0-B723-5B575DEC8273}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
 		{BDB81562-3CC3-44B0-B723-5B575DEC8273}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Debug|Any CPU.ActiveCfg = Debug|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Debug|Mixed Platforms.ActiveCfg = Debug|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Debug|Mixed Platforms.Build.0 = Debug|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Debug|Windows Phone.ActiveCfg = Debug|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Debug|Windows Phone.Build.0 = Debug|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Release|Any CPU.ActiveCfg = Release|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Release|Mixed Platforms.ActiveCfg = Release|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Release|Mixed Platforms.Build.0 = Release|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Release|Windows Phone.ActiveCfg = Release|Windows Phone
+		{23BDD915-0A32-4B08-9042-04A9434B1181}.Release|Windows Phone.Build.0 = Release|Windows Phone
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

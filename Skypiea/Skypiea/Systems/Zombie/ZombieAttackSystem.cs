@@ -3,6 +3,7 @@ using Flai.CBES;
 using Flai.CBES.Systems;
 using Flai.DataStructures;
 using Skypiea.Components;
+using Skypiea.Messages;
 using Skypiea.Misc;
 using Skypiea.Services;
 
@@ -36,12 +37,18 @@ namespace Skypiea.Systems.Zombie
                 return;
             }
 
+            float range = _playerInfo.IsInvulnerable ? 8 : 2;
             IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
-            foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(_player.Transform, 2))
+            foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(_player.Transform, range))
             {
                 if (!_playerInfo.IsInvulnerable)
                 {
                     _playerInfo.KillPlayer();
+                    if (_playerInfo.LivesRemaining == 0)
+                    {
+                        this.EntityWorld.BroadcastMessage(new GameOverMessage());
+                    }
+
                     return;
                 }
 
