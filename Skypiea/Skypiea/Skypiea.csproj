@@ -164,6 +164,7 @@
     <Compile Include="Systems\Zombie\ZombieAttackSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieHealthSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpawnManagerSystem.cs" />
+    <Compile Include="Systems\Zombie\ZombieStatsSystem.cs" />
     <Compile Include="View\AchievementRenderer.cs" />
     <Compile Include="View\BoosterStateRenderer.cs" />
     <Compile Include="View\BulletRenderer.cs" />

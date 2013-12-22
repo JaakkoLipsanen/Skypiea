@@ -13,9 +13,9 @@ namespace Skypiea.Systems
             get { return SystemProcessOrder.PreCollision; } // ..? post-update?
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CVelocity2D velocity2D)
+        public override void Process(UpdateContext updateContext, Entity entity, CVelocity2D velocity)
         {
-            entity.Transform.Position += velocity2D.Direction * velocity2D.Speed * updateContext.DeltaSeconds;
+            entity.Transform.Position += velocity.Direction * velocity.Speed * updateContext.DeltaSeconds;
         }
     }
 }

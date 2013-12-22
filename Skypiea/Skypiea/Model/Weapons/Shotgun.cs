@@ -16,7 +16,7 @@ namespace Skypiea.Model.Weapons
         }
 
         public Shotgun()
-            : base(Shotgun.BulletCount, 0.325f)
+            : base(Shotgun.BulletCount, 0.375f)
         {
         }
 

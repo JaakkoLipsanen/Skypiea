@@ -31,7 +31,7 @@ namespace Skypiea.Components
             get
             {
                 _boosterState = _boosterState ?? this.EntityWorld.Services.Get<IBoosterState>();
-                return !_respawnInvulnerabilityTimer.HasFinished || BoosterHelper.IsPlayerInvulnerable(this.EntityWorld.Services.Get<IBoosterState>());
+                return !_respawnInvulnerabilityTimer.HasFinished || BoosterHelper.IsPlayerInvulnerable(_boosterState);
             }
         }
 
@@ -40,7 +40,7 @@ namespace Skypiea.Components
             get
             {
                 _boosterState = _boosterState ?? this.EntityWorld.Services.Get<IBoosterState>();
-                return _boosterState.IsActive<PlayerInvulnerabilityBooster>() || (_respawnInvulnerabilityTimer.ElapsedTime < CPlayerInfo.RespawnInvulnerabilityTime - 1.5f);
+                return BoosterHelper.IsPlayerInvulnerable(_boosterState) || (_respawnInvulnerabilityTimer.ElapsedTime < CPlayerInfo.RespawnInvulnerabilityTime - 1f);
             }
         }
 

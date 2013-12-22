@@ -34,6 +34,11 @@ namespace Skypiea.View
 
         private void DrawArrow(GraphicsContext graphicsContext, Entity entity)
         {
+            if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
+            {
+                return;
+            }
+
             CDrop drop = entity.Get<CDrop>();
             Vector2 screenPosition = this.GetArrowScreenBorderPosition(graphicsContext, entity.Transform.Position);
 

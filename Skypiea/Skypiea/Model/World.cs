@@ -96,6 +96,7 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<BoosterManagerSystem>();
             _entityWorld.AddSystem<PlayerPassiveSystem>();
+            _entityWorld.AddSystem<ZombieStatsSystem>();
 
             _entityWorld.AddSystem<AchievementSystem>();
             _entityWorld.AddSystem<HighscoreSystem>();

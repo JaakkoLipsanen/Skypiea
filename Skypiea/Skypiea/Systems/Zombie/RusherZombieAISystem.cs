@@ -12,98 +12,185 @@ namespace Skypiea.Systems.Zombie
     public class RusherZombieAISystem : ComponentProcessingSystem<CRusherZombieAI>
     {
         private const float MinDistanceForRushing = Tile.Size * 6;
+        private const float WanderingSpeed = Tile.Size * 1.5f;
         private Entity _player;
+        private CPlayerInfo _playerInfo;
+
+        private IBoosterState _boosterState;
+        private IZombieStatsProvider _zombieStatsProvider;
 
         protected override void Initialize()
         {
             _player = this.EntityWorld.FindEntityByName(EntityNames.Player);
+            _playerInfo = _player.Get<CPlayerInfo>();
+
+            _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
+            _zombieStatsProvider = this.EntityWorld.Services.Get<IZombieStatsProvider>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CRusherZombieAI velocity2D)
+        public override void Process(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
         {
             // should only happen at first frame after zombie has spawned
-            if (velocity2D.State == RusherZombieState.None)
+            if (rusherAI.State == RusherZombieState.None)
             {
-                this.GenerateWanderingTarget(velocity2D);
-                velocity2D.State = RusherZombieState.Wandering;
+                this.GenerateWanderingTarget(rusherAI);
+                rusherAI.State = RusherZombieState.Wandering;
             }
 
-            if (velocity2D.State == RusherZombieState.Wandering)
+            if (rusherAI.State == RusherZombieState.Wandering)
             {
-                this.UpdateWandering(updateContext, entity, velocity2D);
+                this.UpdateWandering(updateContext, zombie, rusherAI);
             }
-            else if (velocity2D.State == RusherZombieState.Rushing)
+            else if (rusherAI.State == RusherZombieState.WanderingAwayFromPlayer)
             {
-                this.UpdateRushing(updateContext, entity, velocity2D);
+                this.UpdateWanderingAwayFromPlayer(updateContext, zombie, rusherAI);
             }
-            else if (velocity2D.State == RusherZombieState.RushingStun)
+            else if (rusherAI.State == RusherZombieState.Rushing)
             {
-                if (velocity2D.RushingStunTimer.HasFinished)
+                this.UpdateRushing(updateContext, zombie, rusherAI);
+            }
+            else if (rusherAI.State == RusherZombieState.RushingStun)
+            {
+                if (rusherAI.RushingStunTimer.HasFinished)
                 {
-                    velocity2D.State = RusherZombieState.Wandering;
-                    velocity2D.NextRushAllowedTimer.Restart();
-                    this.GenerateWanderingTarget(velocity2D);
+                    rusherAI.NextRushAllowedTimer.Restart();
+                    this.GenerateWanderingTarget(rusherAI);
+                    rusherAI.State = RusherZombieState.Wandering;
                 }
             }
         }
 
-        private void UpdateWandering(UpdateContext updateContext, Entity entity, CRusherZombieAI rusherAI)
+        private void UpdateWanderingAwayFromPlayer(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
         {
-            const float Speed = Tile.Size * 1.5f;
-            if (Vector2.Distance(entity.Transform.Position, _player.Transform.Position) < RusherZombieAISystem.MinDistanceForRushing && rusherAI.NextRushAllowedTimer.HasFinished)
+            // if player is alive, set the state back to wandering
+            if (_playerInfo.IsAlive)
             {
-                Vector2 target = _player.Transform.Position + _player.Get<CPlayerInfo>().MovementVector * 0.25f; // target where the player would be in 0.25s 
-                rusherAI.Target = target - (entity.Transform.Position - target) * 0.75f; // rush 75% "over" the player
-                entity.Transform.LookAt(rusherAI.Target);
-                rusherAI.State = RusherZombieState.Rushing;
+                // what this does is that basically for a short time 
+                // after the player has come out of being dead, the rusher can't rush
+                rusherAI.NextRushAllowedTimer.Restart();
+                this.GenerateWanderingTarget(rusherAI);
+                rusherAI.State = RusherZombieState.Wandering;
+                return;
+            }
+            
+            float speedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(_boosterState) * _zombieStatsProvider.SpeedMultiplier;
+            this.MoveTowardsTarget(zombie, rusherAI, WanderingSpeed * speedMultiplier * updateContext.DeltaSeconds);
+        }
+
+        private void UpdateWandering(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
+        {
+            if (!_playerInfo.IsAlive)
+            {
+                this.GenerateWanderingAwayTarget(rusherAI);
+                rusherAI.State = RusherZombieState.WanderingAwayFromPlayer;
+                return;
+            }
+            else if (this.ShouldRush(zombie, rusherAI))
+            {
+                this.StartRushing(zombie, rusherAI);
                 return;
             }
 
-            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
-            float movementAmount = Speed * boosterSpeedMultiplier * updateContext.DeltaSeconds;
-            if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movementAmount)
+            // if the rusher target is too far away from player, generate new target
+            const float AllowedDistanceFromTargetToPlayer = SkypieaConstants.MapHeight * Tile.Size * 0.5f;
+            float distanceFromTargetToPlayer = Vector2.Distance(rusherAI.Target, _player.Transform.Position);
+            if (distanceFromTargetToPlayer > AllowedDistanceFromTargetToPlayer)
             {
-                entity.Transform.Position = rusherAI.Target;
                 this.GenerateWanderingTarget(rusherAI);
             }
-            else
+
+            // move rusher towards the target
+            float speedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(_boosterState) * _zombieStatsProvider.SpeedMultiplier;
+            if (this.MoveTowardsTarget(zombie, rusherAI, WanderingSpeed * speedMultiplier * updateContext.DeltaSeconds))
             {
-                entity.Transform.Position -= Vector2.Normalize(entity.Transform.Position - rusherAI.Target) * movementAmount;
-                entity.Transform.LookAt(rusherAI.Target);
+                // target reached -> generate new target
+                this.GenerateWanderingTarget(rusherAI);
             }
         }
 
-        private void UpdateRushing(UpdateContext updateContext, Entity entity, CRusherZombieAI rusherAI)
+        private void UpdateRushing(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
         {
             const float MaxRushingSpeed = Tile.Size * 12;
             const float RushingAcceleration = Tile.Size * 12;
 
+            // update the rushing speed (it is accelerating)
             rusherAI.RushingSpeed = FlaiMath.Min(MaxRushingSpeed, rusherAI.RushingSpeed + RushingAcceleration * updateContext.DeltaSeconds);
 
-            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
-            float movement = rusherAI.RushingSpeed * boosterSpeedMultiplier * updateContext.DeltaSeconds;
-            if (Vector2.Distance(entity.Transform.Position, rusherAI.Target) < movement)
+            // move rusher towards target
+            float speedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(_boosterState) * _zombieStatsProvider.SpeedMultiplier;
+            if (this.MoveTowardsTarget(zombie, rusherAI, rusherAI.RushingSpeed * speedMultiplier * updateContext.DeltaSeconds))
             {
-                entity.Transform.Position = rusherAI.Target;
+                this.StartRushingStun(rusherAI);
+            }
+        }
 
-                rusherAI.State = RusherZombieState.RushingStun;
-                rusherAI.RushingStunTimer.Restart();
-                rusherAI.RushingSpeed = 0;
+        // returns true if the target is reached
+        private bool MoveTowardsTarget(Entity zombie, CRusherZombieAI rusherAI, float movementAmount)
+        {
+            float distanceToTarget = Vector2.Distance(zombie.Transform.Position, rusherAI.Target);
+            if (distanceToTarget < movementAmount)
+            {
+                zombie.Transform.Position = rusherAI.Target;
+                return true;
             }
             else
             {
-                entity.Transform.Position += Vector2.Normalize(rusherAI.Target - entity.Transform.Position) * movement;
+                // move towards target
+                zombie.Transform.Position += Vector2.Normalize(rusherAI.Target - zombie.Transform.Position) * movementAmount;
+                zombie.Transform.LookAt(rusherAI.Target);
+                return false;
             }
+        }
+
+        private bool ShouldRush(Entity zombie, CRusherZombieAI rusherAI)
+        {
+            float distanceToPlayer = Vector2.Distance(zombie.Transform.Position, _player.Transform.Position);
+            return rusherAI.State == RusherZombieState.Wandering && distanceToPlayer < RusherZombieAISystem.MinDistanceForRushing && rusherAI.NextRushAllowedTimer.HasFinished;
+        }
+
+        private void StartRushing(Entity zombie, CRusherZombieAI rusherAI)
+        {
+            // start rushing
+            Vector2 target = _player.Transform.Position + _playerInfo.MovementVector * 0.25f; // target where the player would be in 0.25s 
+            rusherAI.Target = target - (zombie.Transform.Position - target) * 0.75f; // rush 75% "over" the player
+            zombie.Transform.LookAt(rusherAI.Target);
+            rusherAI.State = RusherZombieState.Rushing;
+        }
+
+        private void StartRushingStun(CRusherZombieAI rusherAI)
+        {
+            rusherAI.State = RusherZombieState.RushingStun;
+            rusherAI.RushingStunTimer.Restart();
+            rusherAI.RushingSpeed = 0;
         }
 
         private void GenerateWanderingTarget(CRusherZombieAI rusherAI)
         {
+            // generate wandering target that is near the player
             const float MaxDistance = MinDistanceForRushing * 1.3f;
-            const float MinDistance = MaxDistance / 2f;
+            const float MinDistance = MaxDistance / 3f;
             rusherAI.Target = FlaiAlgorithms.GenerateRandomVector2(
                 new Range(_player.Transform.Position.X - MaxDistance, _player.Transform.Position.X + MaxDistance),
                 new Range(_player.Transform.Position.Y - MaxDistance, _player.Transform.Position.Y + MaxDistance),
                 _player.Transform.Position, MinDistance);
+        }
+
+        private void GenerateWanderingAwayTarget(CRusherZombieAI rusherAI)
+        {
+            // such corner case that it's okay if rusher doesn't do anything in this case
+            if (rusherAI.Transform.Position == _player.Transform.Position)
+            {
+                return;
+            }
+          
+            const float MinTargetDistance = 500;
+            const float MaxTargetDistance = 750;
+
+            float rotationPlayerToRusher = FlaiMath.GetAngle(rusherAI.Transform.Position - _player.Transform.Position);
+            float rotationOffset = Global.Random.NextFloat(-0.25f, 0.25f);
+
+            // generates target that is away from the player with [-0.25, 0.25] rotational offset (radians)
+            rusherAI.Target = rusherAI.Transform.Position + FlaiMath.GetAngleVector(rotationPlayerToRusher + rotationOffset)*Global.Random.NextFloat(MinTargetDistance, MaxTargetDistance);
         }
     }
 }

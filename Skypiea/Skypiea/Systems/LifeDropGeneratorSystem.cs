@@ -12,7 +12,7 @@ namespace Skypiea.Systems
 {
     public class LifeDropGeneratorSystem : EntitySystem
     {
-        private float _tickTime = Global.Random.NextFloat(45, 75);
+        private float _tickTime = Global.Random.NextFloat(75, 95);
         private readonly Timer _lifeDropTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;
         protected override void Initialize()
@@ -31,7 +31,7 @@ namespace Skypiea.Systems
             _lifeDropTimer.Update(updateContext);
             if (_lifeDropTimer.HasFinished)
             {
-                _tickTime *= Global.Random.NextFloat(1f, 1.5f);
+                _tickTime *= Global.Random.NextFloat(1.25f, 1.75f);
                 _lifeDropTimer.SetTickTime(_tickTime);
                 _lifeDropTimer.Restart();
 

@@ -11,7 +11,7 @@ namespace Skypiea.View
 {
     public class AchievementRenderer : FlaiRenderer
     {
-        private const float AchievementShowTime = 5f;
+        private const float AchievementShowTime = 4f;
 
         private readonly EntityWorld _entityWorld;
         private readonly Timer _achievementShowTimer = new Timer(AchievementRenderer.AchievementShowTime);
@@ -52,7 +52,11 @@ namespace Skypiea.View
 
                 // background
                 graphicsContext.PrimitiveRenderer.DrawRectangle(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * 0.75f * alpha);
+                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * 0.6f * alpha);
+
+                // background outlines
+                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(
+                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * alpha, 1);
 
                 // name
                 graphicsContext.SpriteBatch.DrawStringCentered(

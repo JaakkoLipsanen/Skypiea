@@ -25,10 +25,7 @@ namespace Skypiea.Systems
             }
 
             var leaderboardManager = LeaderboardHelper.CreateLeaderboardManager();
-            leaderboardManager.SubmitScore(playerInfo.Score, 0, response =>
-            {
-                Debug.WriteLine("{0}: {1}", response.Success, response.Data.Result);
-            });
+            leaderboardManager.SubmitScore(playerInfo.Score, 0, response => Debug.WriteLine("HIGHSCORE: Success?: {0}. Result: {1}", response.Success, response.Data.Result));
         }
     }
 }

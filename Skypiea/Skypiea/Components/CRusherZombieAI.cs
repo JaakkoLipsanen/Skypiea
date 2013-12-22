@@ -1,7 +1,6 @@
 using Flai;
 using Flai.CBES;
 using Flai.General;
-using Flai.Misc;
 using Microsoft.Xna.Framework;
 
 namespace Skypiea.Components
@@ -10,6 +9,7 @@ namespace Skypiea.Components
     {
         None,
         Wandering,
+        WanderingAwayFromPlayer,
         Rushing,
         RushingStun,
     }
@@ -17,7 +17,7 @@ namespace Skypiea.Components
     public class CRusherZombieAI : PoolableComponent
     {
         private const float RushingStunTime = 1f;
-        private const float RushingMinInterval = 1f;
+        private const float RushingMinInterval = 1.5f;
         private readonly Timer _rushingStunTimer = new Timer(CRusherZombieAI.RushingStunTime);
         private readonly Timer _rushingAllowedTimer = new Timer(CRusherZombieAI.RushingMinInterval);
 

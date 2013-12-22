@@ -32,20 +32,15 @@ namespace Skypiea.View
 
         private void DrawWeaponDrop(GraphicsContext graphicsContext, Entity entity)
         {
+            if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
+            {
+                return;
+            }
+
             const float Size = 27;
             const string FontName = "Minecraftia.16";
 
-            CLifeTime lifeTime = entity.TryGet<CLifeTime>();
-            if (lifeTime)
-            {
-                if (lifeTime.TimeRemaining < 5 && lifeTime.TimeRemaining % 0.4f < 0.1f)
-                {
-                    return;
-                }
-            }
-
             CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
-
             //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("SpecialDropBase"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
             //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Special Drops/Life"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
             graphicsContext.PrimitiveRenderer.DrawRectangle(entity.Transform.Position, Size, new Color(72, 72, 228));
@@ -66,9 +61,23 @@ namespace Skypiea.View
                 graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, Color.PaleVioletRed * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.5f);
             }
 
+            // if the drop is blinking, then don't render the "heart"
+            if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
+            {
+                return;
+            }
+
             // heart
             const float Scale = SkypieaViewConstants.PixelSize * 1.5f;
-            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f)); 
+            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f));
+        }
+    }
+
+    public static class DropHelper
+    {
+        public static bool IsBlinking(CLifeTime lifeTime)
+        {
+            return lifeTime.TimeRemaining < 5 && lifeTime.TimeRemaining % 0.4f < 0.1f;
         }
     }
 }

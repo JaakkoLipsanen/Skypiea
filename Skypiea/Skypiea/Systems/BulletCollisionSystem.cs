@@ -19,11 +19,11 @@ namespace Skypiea.Systems
             _zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity2D)
+        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity)
         {
             foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 8))
             {
-                if (velocity2D.InvokeCallback(updateContext, zombie))
+                if (velocity.InvokeCallback(updateContext, zombie))
                 {
                     break;
                 }

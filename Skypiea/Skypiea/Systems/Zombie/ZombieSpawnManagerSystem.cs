@@ -13,10 +13,9 @@ namespace Skypiea.Systems.Zombie
     // ZombieSpawnManagerSystem ? -> do it probably
     public class ZombieSpawnManagerSystem : EntitySystem
     {
-        private const float StartSpawnTime = 0.85f;
-        private readonly Timer _zombieTimer = new Timer(ZombieSpawnManagerSystem.StartSpawnTime);
-        private float _playTime = 0f;
+        private readonly Timer _zombieTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;
+        private IZombieStatsProvider _zombieStatsProvider;
 
         protected override int ProcessOrder
         {
@@ -26,6 +25,7 @@ namespace Skypiea.Systems.Zombie
         protected override void Initialize()
         {
             _playerInfo = this.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>();
+            _zombieStatsProvider = this.EntityWorld.Services.Get<IZombieStatsProvider>();
         }
 
         protected override void Update(UpdateContext updateContext)
@@ -35,10 +35,9 @@ namespace Skypiea.Systems.Zombie
                 return;
             }
 
-            _playTime += updateContext.DeltaSeconds;
-            _zombieTimer.SetTickTime(ZombieSpawnManagerSystem.StartSpawnTime / FlaiMath.Max(0.001f, FlaiMath.Pow(_playTime / 3f, 0.333333f)));
-
+            _zombieTimer.SetTickTime(_zombieStatsProvider.SpawnRate);
             _zombieTimer.Update(updateContext);
+
             if (_zombieTimer.HasFinished)
             {
                 this.SpawnZombie();

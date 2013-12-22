@@ -26,12 +26,12 @@ namespace Skypiea.Systems.Player
             _playerInfo = _player.Get<CPlayerInfo>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CDrop velocity2D)
+        public override void Process(UpdateContext updateContext, Entity entity, CDrop velocity)
         {
             const float MinDistance = Tile.Size;
             if (Vector2.Distance(_player.Transform.Position, entity.Transform.Position) < MinDistance)
             {
-                if (velocity2D.DropType == DropType.Weapon)
+                if (velocity.DropType == DropType.Weapon)
                 {
                     this.OnWeaponDropPicked(entity);
                 }

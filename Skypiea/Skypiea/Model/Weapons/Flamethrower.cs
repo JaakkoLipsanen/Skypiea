@@ -9,7 +9,7 @@ namespace Skypiea.Model.Weapons
     public class Flamethrower : BulletWeapon
     {
         private const int InitialAmmo = 400;
-        private const float TimeBetweenShots = 0.1f;
+        private const float TimeBetweenShots = 0.8f;
         private float _bulletCounter = 0f;
 
         public Flamethrower()

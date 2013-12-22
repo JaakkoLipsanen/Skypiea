@@ -1,4 +1,3 @@
-using System.Threading;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
@@ -14,6 +13,9 @@ namespace Skypiea.Systems.Zombie
 {
     public class BasicZombieAISystem : ProcessingSystem
     {
+        private IBoosterState _boosterState;
+        private IZombieStatsProvider _zombieStatsProvider;
+
         protected override int ProcessOrder
         {
             get { return SystemProcessOrder.Update; }
@@ -24,11 +26,17 @@ namespace Skypiea.Systems.Zombie
         {
         }
 
+        protected override void Initialize()
+        {
+            _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
+            _zombieStatsProvider = this.EntityWorld.Services.Get<IZombieStatsProvider>();
+        }
+
         protected override void Process(UpdateContext updateContext, ReadOnlyBag<Entity> entities)
         {
             Entity player = this.EntityWorld.FindEntityByName(EntityNames.Player);
             CPlayerInfo playerInfo = player.Get<CPlayerInfo>();
-            float boosterSpeedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
+            float speedMultiplier = BoosterHelper.GetZombieSpeedMultiplier(_boosterState)*_zombieStatsProvider.SpeedMultiplier;
 
             bool isFleeing = !playerInfo.IsAlive;
             for (int i = 0; i < entities.Count; i++)
@@ -42,7 +50,7 @@ namespace Skypiea.Systems.Zombie
                 // todo: >> also maybe the rotation could depend also on separationVelocity, but be smoothed so that the rotation isn't that jittery... also not 100% sure if GetSeparationVector works correctly (the smoothing far away -> close)
                 Vector2 separationVelocity = this.GetSeparationVector(zombieEntity, entities) * 0.5f;
 
-                float speed = zombieEntity.Get<CBasicZombieAI>().Speed * boosterSpeedMultiplier * (isFleeing ? 0.75f : 1);
+                float speed = zombieEntity.Get<CBasicZombieAI>().Speed * speedMultiplier * (isFleeing ? 0.75f : 1);
                 Vector2 finalVelocity = Vector2.Normalize(targetVelocity + separationVelocity) * speed * updateContext.DeltaSeconds;
                 zombieEntity.Transform.Position += finalVelocity;
                 zombieEntity.Transform.RotationVector = targetVelocity;

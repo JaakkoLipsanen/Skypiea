@@ -21,10 +21,10 @@ namespace Skypiea.Systems
             _world = this.EntityWorld.Services.Get<World>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity2D)
+        public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity)
         {
             RectangleF cameraArea = SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active);
-            RectangleF bulletArea = velocity2D.Area;
+            RectangleF bulletArea = velocity.Area;
 
             if (!bulletArea.Intersects(cameraArea))
             {
