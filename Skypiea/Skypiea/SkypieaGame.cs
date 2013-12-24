@@ -14,7 +14,7 @@ namespace Skypiea
     {
         public SkypieaGame()
         {
-            base.ClearColor = Color.White; // don't clear
+            base.ClearColor = Color.Black;
             this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory });
             base.IsFixedTimeStep = false;
         }
@@ -36,6 +36,7 @@ namespace Skypiea
 
         protected override void AddInitialScreens()
         {
+            _screenManager.AddScreen(new MenuBackgroundScreen());
             _screenManager.AddScreen(new MainMenuScreen());
         }
 

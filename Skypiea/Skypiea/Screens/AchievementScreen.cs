@@ -1,8 +1,9 @@
+using System;
 using Flai;
 using Flai.Achievements;
+using Flai.General;
 using Flai.Graphics;
 using Flai.ScreenManagement;
-using Flai.ScreenManagement.Screens;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -15,31 +16,43 @@ namespace Skypiea.Screens
         private const float SlotHeight = 120;
 
         private readonly AchievementManager _achievementManager = AchievementHelper.CreateAchivementManager();
-        private float _offset = 0;
+        private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
+
+        public override bool IsPopup
+        {
+            get { return true; }
+        }
+
+        public AchievementScreen()
+        {
+            _scroller.ScrollingRange = new Range(0, _achievementManager.Achievements.Count * SlotHeight);
+
+            this.EnabledGestures = GestureType.Flick;
+            this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
+            this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
+            this.FadeBackBufferToBlack = false;
+        }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
+            _scroller.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                LoadingScreen.Load(this.ScreenManager, false, new MainMenuScreen());
+                this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen());
+                this.ExitScreen();
             }
-
-            foreach (TouchLocation touchLocation in updateContext.InputState.TouchLocations)
-            {
-                TouchLocation previousLocation;
-                if (touchLocation.State == TouchLocationState.Moved && touchLocation.TryGetPreviousLocation(out previousLocation))
-                {
-                    _offset -= touchLocation.Position.Y - previousLocation.Position.Y;
-                }
-            }
-
-            _offset = FlaiMath.Clamp(_offset, 0, _achievementManager.Achievements.Count * AchievementScreen.SlotHeight);
         }
 
+        // todo: implement scroller "properly"
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.GraphicsDevice.Clear(Color.Black);
             graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(this.TransitionAlpha);
 
             const float OffsetFromTop = 128;
             const float TextOffsetFromBorder = 8;
@@ -49,7 +62,7 @@ namespace Skypiea.Screens
 
             for (int i = 0; i < _achievementManager.Achievements.Count; i++)
             {
-                float y = OffsetFromTop + i * AchievementScreen.SlotHeight - _offset;
+                float y = OffsetFromTop + i * AchievementScreen.SlotHeight - _scroller.ScrollValue;
 
                 Achievement achievement = _achievementManager.Achievements[i];
                 AchievementInfo achievementInfo = (AchievementInfo)achievement.Tag;
@@ -70,6 +83,7 @@ namespace Skypiea.Screens
                 }
             }
 
+            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
             graphicsContext.SpriteBatch.End();
         }
     }

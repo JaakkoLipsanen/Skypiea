@@ -45,11 +45,11 @@ namespace Skypiea.Systems
             CTransform2D playerTransform =
                 this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
 
-            const float MinDistanceFromBorder = Tile.Size * 5;
+            const float MinDistanceFromBorder = SkypieaConstants.PixelsPerMeter * 5;
             Vector2 dropPosition = FlaiAlgorithms.GenerateRandomVector2(
-                new Range(MinDistanceFromBorder, world.Width * Tile.Size - MinDistanceFromBorder),
-                new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),
-                playerTransform.Position, Tile.Size * 5);
+                new Range(MinDistanceFromBorder, SkypieaConstants.MapWidthInPixels - MinDistanceFromBorder),
+                new Range(MinDistanceFromBorder, SkypieaConstants.MapHeightInPixels - MinDistanceFromBorder),
+                playerTransform.Position, SkypieaConstants.PixelsPerMeter * 5);
 
             this.EntityWorld.CreateEntityFromPrefab<LifeDropPrefab>(dropPosition);
         }

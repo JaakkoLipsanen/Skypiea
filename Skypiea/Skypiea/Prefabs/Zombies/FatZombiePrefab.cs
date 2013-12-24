@@ -9,7 +9,7 @@ namespace Skypiea.Prefabs.Zombies
     public class FatZombiePrefab : Prefab
     {
         private const float Size = 46;
-        private const float Speed = Tile.Size * 1.75f;
+        private const float Speed = SkypieaConstants.PixelsPerMeter * 1.75f;
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
             entity.Transform.Position = parameters.Get<Vector2>(0);

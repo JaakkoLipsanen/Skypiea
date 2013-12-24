@@ -7,6 +7,7 @@ using Flai.Diagnostics;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using System;

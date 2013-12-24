@@ -27,16 +27,6 @@ namespace Skypiea.Model
             get { return _particleEngine; }
         }
 
-        public int Width
-        {
-            get { return SkypieaConstants.MapWidth; }
-        }
-
-        public int Height
-        {
-            get { return SkypieaConstants.MapHeight; }
-        }
-
         public WorldType WorldType
         {
             get { return _worldType; }

@@ -2,6 +2,7 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
 
@@ -12,7 +13,7 @@ namespace Skypiea.Prefabs.Bullets
         private static readonly SizeF BulletSize = new SizeF(12, 12);
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
-            const float Speed = Tile.Size * 14.25f;
+            const float Speed = SkypieaConstants.PixelsPerMeter * 14.25f;
             CTransform2D transform = parameters.Get<CTransform2D>(0);
             BulletWeapon weapon = parameters.Get<BulletWeapon>(1);
             float angleOffset = Global.Random.NextFloat(-0.3f, 0.3f);

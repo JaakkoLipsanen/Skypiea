@@ -1,6 +1,5 @@
 using Flai;
 using Flai.CBES.Components;
-using Skypiea.Components;
 
 namespace Skypiea.Misc
 {
@@ -9,6 +8,10 @@ namespace Skypiea.Misc
         public const int PixelsPerMeter = 32;
         public const int MapWidth = 58; // in tiles
         public const int MapHeight = 30; // in tiles
+        public const int MapWidthInPixels = SkypieaConstants.MapWidth * SkypieaConstants.PixelsPerMeter;
+        public const int MapHeightInPixels = SkypieaConstants.MapHeight * SkypieaConstants.PixelsPerMeter;
+        public static readonly Vector2i MapSizeInPixels = new Vector2i(SkypieaConstants.MapWidthInPixels, SkypieaConstants.MapHeightInPixels);
+        public static readonly RectangleF MapAreaInPixels = new RectangleF(0, 0, SkypieaConstants.MapWidthInPixels, SkypieaConstants.MapHeightInPixels);
 
         public const float ScreenSizeBias = 96;
 

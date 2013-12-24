@@ -47,14 +47,14 @@ namespace Skypiea.Systems.Zombie
 
         private void SpawnZombie()
         {
-            const float MinDistanceFromBorder = -Tile.Size * 4;
-            const float MinDistanceFromPlayer = 400f; // Tile.Size * 10;
+            const float MinDistanceFromBorder = -SkypieaConstants.PixelsPerMeter * 4;
+            const float MinDistanceFromPlayer = 400f; // SkypieaConstants.PixelsPerMeter * 10;
 
             World world = this.EntityWorld.Services.Get<World>();
             CTransform2D playerTransform = this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
             Vector2 position = FlaiAlgorithms.GenerateRandomVector2(
-                new Range(MinDistanceFromBorder, world.Width * Tile.Size - MinDistanceFromBorder),
-                new Range(MinDistanceFromBorder, world.Height * Tile.Size - MinDistanceFromBorder),
+                new Range(MinDistanceFromBorder, SkypieaConstants.MapWidthInPixels - MinDistanceFromBorder),
+                new Range(MinDistanceFromBorder, SkypieaConstants.MapHeightInPixels - MinDistanceFromBorder),
                 playerTransform.Position, MinDistanceFromPlayer);
 
             if (Global.Random.NextFromOdds(TestingGlobals.SpawnOnlyRushers ? 1 : 0.04f))

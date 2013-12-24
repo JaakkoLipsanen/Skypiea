@@ -52,7 +52,7 @@ namespace Skypiea.View
 
                 // background
                 graphicsContext.PrimitiveRenderer.DrawRectangle(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * 0.6f * alpha);
+                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * 0.5f * alpha);
 
                 // background outlines
                 graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(

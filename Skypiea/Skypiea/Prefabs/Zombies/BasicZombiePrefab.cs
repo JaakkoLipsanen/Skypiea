@@ -8,8 +8,8 @@ namespace Skypiea.Prefabs.Zombies
 {
     public class BasicZombiePrefab : Prefab
     {
-        private const float Size = 32;
-        private const float Speed = Tile.Size * 2;
+        private const float Size = SkypieaConstants.PixelsPerMeter;
+        private const float Speed = SkypieaConstants.PixelsPerMeter * 2;
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
             entity.Transform.Position = parameters.Get<Vector2>(0);

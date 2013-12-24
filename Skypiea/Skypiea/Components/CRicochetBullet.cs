@@ -1,9 +1,12 @@
+using System.Collections.Generic;
+using Flai;
 using Flai.CBES;
 
 namespace Skypiea.Components
 {
     public class CRicochetBullet : PoolableComponent
     {
+        private readonly HashSet<Entity> _zombiesHits = new HashSet<Entity>(); 
         public int HitsRemaining { get; private set; }
 
         public void Initialize(int totalHits)
@@ -11,14 +14,24 @@ namespace Skypiea.Components
             this.HitsRemaining = totalHits;
         }
 
-        public void OnEnemyHit()
+        public bool HasHit(Entity zombie)
         {
-            this.HitsRemaining--;
+            return _zombiesHits.Contains(zombie);
         }
 
         protected override void Cleanup()
         {
             this.HitsRemaining = -1;
+            _zombiesHits.Clear();
+        }
+
+        public bool OnHit(Entity entityHit)
+        {
+            Assert.False(_zombiesHits.Contains(entityHit));
+            _zombiesHits.Add(entityHit);
+            this.HitsRemaining--;
+
+            return --this.HitsRemaining > 0;
         }
     }
 }

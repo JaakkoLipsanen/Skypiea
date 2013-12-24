@@ -63,8 +63,9 @@ namespace Skypiea.Screens
 
         private void OnExitClicked()
         {
-            this.ScreenManager.LoadScreen(new MainMenuScreen());
+            this.ScreenManager.RemoveAllScreens();
+            this.ScreenManager.AddScreen(new MenuBackgroundScreen());
+            this.ScreenManager.AddScreen(new MainMenuScreen());
         }
-
     }
 }

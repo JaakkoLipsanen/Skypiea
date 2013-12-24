@@ -3,6 +3,7 @@ using Flai.CBES.Components;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Skypiea.Misc;
 using Skypiea.Model;
 
 namespace Skypiea.View
@@ -21,7 +22,7 @@ namespace Skypiea.View
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
             // draws the actual map texture
-            Vector2i size = new Vector2i(_world.Width, _world.Height) * Tile.Size / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
+            Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
                  graphicsContext.ContentProvider.DefaultManager.LoadTexture(_world.WorldType.GetMapTextureName()),
                  -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, SkypieaViewConstants.PixelSize);
@@ -38,35 +39,35 @@ namespace Skypiea.View
             {
                 graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(-SkypieaViewConstants.FadeLength, cameraArea.Bottom), SkypieaViewConstants.ClearColor);
             }
-            else if (cameraArea.Right > _world.Width * Tile.Size + SkypieaViewConstants.FadeLength)
+            else if (cameraArea.Right > SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength)
             {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(_world.Width * Tile.Size + SkypieaViewConstants.FadeLength, cameraArea.Top), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
+                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength, cameraArea.Top), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
             }
 
             if (cameraArea.Top < -SkypieaViewConstants.FadeLength)
             {
                 graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(cameraArea.Right, -SkypieaViewConstants.FadeLength), SkypieaViewConstants.ClearColor);
             }
-            else if (cameraArea.Bottom > _world.Height * Tile.Size + SkypieaViewConstants.FadeLength)
+            else if (cameraArea.Bottom > SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength)
             {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(cameraArea.Left, _world.Height * Tile.Size + SkypieaViewConstants.FadeLength), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
+                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(cameraArea.Left, SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
             }
         }
 
         private void DrawSides(GraphicsContext graphicsContext)
         {
             Texture2D texture = _contentProvider.DefaultManager.LoadTexture("Map/SideFadeTexture");
-            Rectangle horizontalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, _world.Width * Tile.Size / SkypieaViewConstants.PixelSize));
-            Rectangle verticalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, _world.Height * Tile.Size / SkypieaViewConstants.PixelSize));
+            Rectangle horizontalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapWidthInPixels / SkypieaViewConstants.PixelSize));
+            Rectangle verticalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapHeightInPixels / SkypieaViewConstants.PixelSize));
 
             // left/right
             graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, Corner.TopRight, verticalSourceRectangle, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize); // left
-            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitX * _world.Width * Tile.Size, Corner.TopLeft, verticalSourceRectangle, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally); // right
+            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitX * SkypieaConstants.MapWidthInPixels, Corner.TopLeft, verticalSourceRectangle, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally); // right
 
             // top/bottom
             graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, Corner.TopLeft, horizontalSourceRectangle, SkypieaViewConstants.ClearColor, -FlaiMath.PiOver2, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally); // top
             graphicsContext.SpriteBatch.Draw(
-                texture, Vector2.UnitY * _world.Height * Tile.Size + Vector2.UnitY * texture.Width * SkypieaViewConstants.PixelSize,
+                texture, Vector2.UnitY * SkypieaConstants.MapHeightInPixels + Vector2.UnitY * texture.Width * SkypieaViewConstants.PixelSize,
                 Corner.TopLeft, horizontalSourceRectangle, SkypieaViewConstants.ClearColor, -FlaiMath.PiOver2, SkypieaViewConstants.PixelSize); // bottom
         }
 
@@ -76,11 +77,11 @@ namespace Skypiea.View
 
             // top
             graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, Corner.BottomRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize); // top-left
-            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitX * _world.Width * Tile.Size, Corner.BottomLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally); // top-right
+            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitX * SkypieaConstants.MapWidthInPixels, Corner.BottomLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally); // top-right
 
             // bottom
-            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitY * _world.Height * Tile.Size, Corner.TopRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipVertically); // bottom-left
-            graphicsContext.SpriteBatch.Draw(texture, new Vector2(_world.Width, _world.Height) * Tile.Size, Corner.TopLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically); // bottom-right
+            graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitY * SkypieaConstants.MapHeightInPixels, Corner.TopRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipVertically); // bottom-left
+            graphicsContext.SpriteBatch.Draw(texture, SkypieaConstants.MapSizeInPixels, Corner.TopLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically); // bottom-right
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Skypiea.Prefabs
 {
     public class LifeDropPrefab : Prefab
     {
-        private const float LifeTime = 20;
+        private const float LifeTime = 25;
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
             entity.Transform.Position = parameters.Get<Vector2>(0);

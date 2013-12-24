@@ -37,11 +37,11 @@ namespace Skypiea.Systems.Zombie
                 }
                 else if (_totalPlayTime < ZombieStatsSystem.UpdateOnlySpeedEnd)
                 {
-                    return ZombieStatsSystem.UpdateOnlySpawnRateEnd;
+                    return ZombieStatsSystem.UpdateOnlySpawnRateEnd + (_totalPlayTime - ZombieStatsSystem.UpdateOnlySpawnRateEnd) / 2f;
                 }
                 else
                 {
-                    return _totalPlayTime - (ZombieStatsSystem.UpdateOnlySpeedEnd - ZombieStatsSystem.UpdateOnlySpawnRateEnd);
+                    return ZombieStatsSystem.UpdateOnlySpawnRateEnd + (_totalPlayTime - ZombieStatsSystem.UpdateOnlySpawnRateEnd) / 2f + (_totalPlayTime - ZombieStatsSystem.UpdateOnlySpeedEnd);
                 }
             }
         }

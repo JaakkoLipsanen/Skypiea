@@ -1,3 +1,4 @@
+using System;
 using Flai;
 using Flai.General;
 using Flai.Graphics;
@@ -27,12 +28,20 @@ namespace Skypiea.Screens
         private LeaderboardButton _dailyLeaderboardButton;
         private LeaderboardButton _overallLeaderboardButton;
 
+        public override bool IsPopup
+        {
+            get { return true; }
+        }
+
         public LeaderboardScreen()
         {
-            this.EnabledGestures = GestureType.Flick;
-
             _leaderboard = new ScrollingScoreloopLeaderboard(LeaderboardHelper.CreateLeaderboardManager(), 0, 25);
             _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+
+            this.EnabledGestures = GestureType.Flick;
+            this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
+            this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
+            this.FadeBackBufferToBlack = false;
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -47,23 +56,29 @@ namespace Skypiea.Screens
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
             _scoller.Update(updateContext);
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                this.ScreenManager.LoadScreen(new MainMenuScreen());
+                this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen());
+                this.ExitScreen();
             }
         }
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.GraphicsDevice.Clear(Color.Black);
-
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(this.TransitionAlpha);
             graphicsContext.SpriteBatch.Begin(_scoller.GetTransformMatrix(graphicsContext.ScreenSize));
             this.DrawScores(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
             _uiContainer.Draw(graphicsContext, false);
+            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
         }
 
         private void DrawScores(GraphicsContext graphicsContext)

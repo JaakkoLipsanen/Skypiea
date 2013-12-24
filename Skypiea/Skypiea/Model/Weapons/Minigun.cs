@@ -20,7 +20,7 @@ namespace Skypiea.Model.Weapons
 
         protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, 0f, Tile.Size * 40f);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, 0f, SkypieaConstants.PixelsPerMeter * 40f);
             this.DecreaseBulletCount();
         }
 

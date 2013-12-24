@@ -13,7 +13,7 @@ namespace Skypiea.Model.Weapons
         private const float InitialAmmo = 40;
         private const float AmmoUsedPerSecond = 3;
         private const float DamagePerSecond = 60;
-        private const float MaxHitDistance = 4;
+        public const float MaxHitDistance = 4;
         public const float Size = 16f;
 
         private float _ammoRemaining = Laser.InitialAmmo;

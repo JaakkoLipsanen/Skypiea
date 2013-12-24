@@ -11,8 +11,8 @@ namespace Skypiea.Systems.Zombie
 {
     public class RusherZombieAISystem : ComponentProcessingSystem<CRusherZombieAI>
     {
-        private const float MinDistanceForRushing = Tile.Size * 6;
-        private const float WanderingSpeed = Tile.Size * 1.5f;
+        private const float MinDistanceForRushing = SkypieaConstants.PixelsPerMeter * 6;
+        private const float WanderingSpeed = SkypieaConstants.PixelsPerMeter * 1.5f;
         private Entity _player;
         private CPlayerInfo _playerInfo;
 
@@ -92,7 +92,7 @@ namespace Skypiea.Systems.Zombie
             }
 
             // if the rusher target is too far away from player, generate new target
-            const float AllowedDistanceFromTargetToPlayer = SkypieaConstants.MapHeight * Tile.Size * 0.5f;
+            const float AllowedDistanceFromTargetToPlayer = SkypieaConstants.MapHeight * SkypieaConstants.PixelsPerMeter * 0.5f;
             float distanceFromTargetToPlayer = Vector2.Distance(rusherAI.Target, _player.Transform.Position);
             if (distanceFromTargetToPlayer > AllowedDistanceFromTargetToPlayer)
             {
@@ -110,8 +110,8 @@ namespace Skypiea.Systems.Zombie
 
         private void UpdateRushing(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
         {
-            const float MaxRushingSpeed = Tile.Size * 12;
-            const float RushingAcceleration = Tile.Size * 12;
+            const float MaxRushingSpeed = SkypieaConstants.PixelsPerMeter * 12;
+            const float RushingAcceleration = SkypieaConstants.PixelsPerMeter * 12;
 
             // update the rushing speed (it is accelerating)
             rusherAI.RushingSpeed = FlaiMath.Min(MaxRushingSpeed, rusherAI.RushingSpeed + RushingAcceleration * updateContext.DeltaSeconds);

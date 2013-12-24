@@ -48,8 +48,8 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
-            const float PositionClampOffset = -Tile.Size;
-            const float DefaultSpeed = Tile.Size * 4.5f;
+            const float PositionClampOffset = -SkypieaConstants.PixelsPerMeter;
+            const float DefaultSpeed = SkypieaConstants.PixelsPerMeter * 4.5f;
 
             float boosterMovementSpeedMultiplier = BoosterHelper.GetPlayerSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
             float passiveMovementSpeedMultiplier = this.EntityWorld.Services.Get<IPlayerPassiveStats>().MovementSpeedMultiplier;
@@ -58,7 +58,7 @@ namespace Skypiea.Systems.Player
             // movement
             Vector2 previousPosition = player.Transform.Position;
             player.Transform.Position += _movementThumbstick.ThumbStick.Direction * speed * updateContext.DeltaSeconds;
-            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, new Vector2(_world.Width, _world.Height) * Tile.Size - Vector2.One * PositionClampOffset);
+            player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, SkypieaConstants.MapSizeInPixels - Vector2.One * PositionClampOffset);
             _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
 
             // rotation

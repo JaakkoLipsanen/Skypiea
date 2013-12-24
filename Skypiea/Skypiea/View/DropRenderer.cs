@@ -6,6 +6,7 @@ using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
 
@@ -70,14 +71,6 @@ namespace Skypiea.View
             // heart
             const float Scale = SkypieaViewConstants.PixelSize * 1.5f;
             graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f));
-        }
-    }
-
-    public static class DropHelper
-    {
-        public static bool IsBlinking(CLifeTime lifeTime)
-        {
-            return lifeTime.TimeRemaining < 5 && lifeTime.TimeRemaining % 0.4f < 0.1f;
         }
     }
 }

@@ -19,7 +19,7 @@ namespace Skypiea.Prefabs.Bullets
         // todo: instead of doing something like this, how about make a callback "OnCollided(Entity entity (or Vector2 position tms))" and then the weapon itself (whos callback it will be calling) decides the damage etc. this.. could be A LOT better!
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
-            const float Speed = Tile.Size * 25;
+            const float Speed = SkypieaConstants.PixelsPerMeter * 25;
             CTransform2D transform = parameters.Get<CTransform2D>(0);
 
             entity.Transform.Position = transform.Position;

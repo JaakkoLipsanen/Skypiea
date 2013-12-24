@@ -92,6 +92,7 @@
     <Compile Include="Messages\GameOverMessage.cs" />
     <Compile Include="Messages\PlayerKilledMessage.cs" />
     <Compile Include="Messages\ZombieKilledMessage.cs" />
+    <Compile Include="Misc\DropHelper.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
     <Compile Include="Misc\Settings.cs" />
@@ -110,7 +111,6 @@
     <Compile Include="Model\Level.cs" />
     <Compile Include="Model\PassiveHelper.cs" />
     <Compile Include="Model\PlayerPassiveStats.cs" />
-    <Compile Include="Model\Tile.cs" />
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
     <Compile Include="Model\Weapons\BulletWeapon.cs" />
     <Compile Include="Model\Weapons\Flamethrower.cs" />

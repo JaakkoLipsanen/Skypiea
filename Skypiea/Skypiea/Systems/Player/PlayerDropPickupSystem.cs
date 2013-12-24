@@ -28,7 +28,7 @@ namespace Skypiea.Systems.Player
 
         public override void Process(UpdateContext updateContext, Entity entity, CDrop velocity)
         {
-            const float MinDistance = Tile.Size;
+            const float MinDistance = SkypieaConstants.PixelsPerMeter;
             if (Vector2.Distance(_player.Transform.Position, entity.Transform.Position) < MinDistance)
             {
                 if (velocity.DropType == DropType.Weapon)

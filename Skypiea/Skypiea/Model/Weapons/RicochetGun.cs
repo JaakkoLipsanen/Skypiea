@@ -15,26 +15,30 @@ namespace Skypiea.Model.Weapons
         }
 
         public RicochetGun()
-            : base(40, 0.4f)
+            : base(40, 0.5f)
         {
         }
 
         protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(playerEntity.Transform, this);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(playerEntity.Transform, this, -0.125f);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(playerEntity.Transform, this, 0.125f);
             this.DecreaseBulletCount();
         }
 
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
             CRicochetBullet ricochetBullet = bullet.Entity.Get<CRicochetBullet>();
-            CVelocity2D velocity2D = bullet.Entity.Get<CVelocity2D>();
-            ricochetBullet.OnEnemyHit();
+            if (ricochetBullet.HasHit(entityHit))
+            {
+                return false;
+            }
 
-            if (ricochetBullet.HitsRemaining > 0)
+            CVelocity2D velocity = bullet.Entity.Get<CVelocity2D>();
+            if (ricochetBullet.OnHit(entityHit))
             {
                 ZombieHelper.TakeDamageOrDelete(entityHit, 20);
-                velocity2D.Direction = velocity2D.Direction.Rotate(Global.Random.NextFloat(-1f, 1f));
+                velocity.Direction = velocity.Direction.Rotate(Global.Random.NextFloat(-1f, 1f));
                 return false;
             }
 
