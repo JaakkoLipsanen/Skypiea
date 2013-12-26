@@ -1,6 +1,7 @@
 using System;
 using Flai;
 using Flai.Achievements;
+using Flai.DataStructures;
 using Flai.General;
 using Flai.Graphics;
 using Flai.ScreenManagement;
@@ -16,6 +17,7 @@ namespace Skypiea.Screens
         private const float SlotHeight = 120;
 
         private readonly AchievementManager _achievementManager = AchievementHelper.CreateAchivementManager();
+        private readonly ReadOnlyArray<Achievement> _achievements;
         private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
 
         public override bool IsPopup
@@ -25,7 +27,9 @@ namespace Skypiea.Screens
 
         public AchievementScreen()
         {
-            _scroller.ScrollingRange = new Range(0, _achievementManager.Achievements.Count * SlotHeight);
+            // get achievements with only one achievements per group
+            _achievements = new ReadOnlyArray<Achievement>(_achievementManager.GetAchievementsWithoutGroups());
+            _scroller.ScrollingRange = new Range(0, _achievements.Count * SlotHeight);
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
@@ -60,17 +64,17 @@ namespace Skypiea.Screens
             SpriteFont nameFont = graphicsContext.FontContainer["Minecraftia.24"];
             SpriteFont descriptionFont = graphicsContext.FontContainer["Minecraftia.16"];
 
-            for (int i = 0; i < _achievementManager.Achievements.Count; i++)
+            for (int i = 0; i < _achievements.Length; i++)
             {
                 float y = OffsetFromTop + i * AchievementScreen.SlotHeight - _scroller.ScrollValue;
 
-                Achievement achievement = _achievementManager.Achievements[i];
+                Achievement achievement = _achievements[i];
                 AchievementInfo achievementInfo = (AchievementInfo)achievement.Tag;
 
-                Color color = achievement.IsUnlocked ? new Color(32, 192, 32) : new Color(255, 64, 64);
+                Color color = achievement.IsUnlocked ? new Color(32, 48, 32) : new Color(48, 32, 32);
                 RectangleF slotArea = new RectangleF(0, y, graphicsContext.ScreenSize.Width, SlotHeight);
-                graphicsContext.PrimitiveRenderer.DrawRectangle(slotArea, color);
-                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(slotArea, Color.Black, 1);
+                graphicsContext.PrimitiveRenderer.DrawRectangle(slotArea, color * 0.25f);
+                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(slotArea, Color.Black, 2);
 
                 graphicsContext.SpriteBatch.DrawString(nameFont, achievement.Name, new Vector2(TextOffsetFromBorder, y + TextOffsetFromBorder), Color.White);
                 graphicsContext.SpriteBatch.DrawString(descriptionFont, achievement.Description, new Vector2(TextOffsetFromBorder, y + TextOffsetFromBorder + nameFont.GetCharacterHeight() * 0.75f), Color.White);

@@ -183,13 +183,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Textures\Arrow.png">
-      <Name>Arrow</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Textures\RicochetBullet.png">
       <Name>RicochetBullet</Name>
       <Importer>TextureImporter</Importer>

@@ -1,8 +1,6 @@
 ﻿using Flai;
 using Flai.CBES;
 using Flai.Graphics.Particles;
-using Skypiea.Leaderboards;
-using Skypiea.Misc;
 using Skypiea.Services;
 using Skypiea.Systems;
 using Skypiea.Systems.Player;
@@ -39,7 +37,6 @@ namespace Skypiea.Model
             _entityWorld = new EntityWorld();
             _particleEngine = new ParticleEngine();
 
-            _entityWorld.Services.Add(this);
             _entityWorld.Services.Add<IParticleEngine>(_particleEngine);
             _entityWorld.Services.Add<IZombieSpatialMap>(new ZombieSpatialMap(_entityWorld));
 

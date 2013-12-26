@@ -41,7 +41,6 @@ namespace Skypiea.Systems
 
         private void CreateLifeDrop()
         {
-            World world = this.EntityWorld.Services.Get<World>();
             CTransform2D playerTransform =
                 this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
 

@@ -1,4 +1,5 @@
 
+using System.Text;
 using Skypiea.Model.Weapons;
 
 namespace Skypiea.Misc

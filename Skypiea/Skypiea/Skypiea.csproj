@@ -144,6 +144,7 @@
     <Compile Include="Screens\LeaderboardScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
+    <Compile Include="Screens\SkypieaSplashScreen.cs" />
     <Compile Include="Services\ZombieSpatialMap.cs" />
     <Compile Include="Systems\AchievementSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />

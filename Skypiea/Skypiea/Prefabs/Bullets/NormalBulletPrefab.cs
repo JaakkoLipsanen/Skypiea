@@ -18,7 +18,7 @@ namespace Skypiea.Prefabs.Bullets
             CTransform2D transform = parameters.Get<CTransform2D>(0);
             BulletWeapon weapon = parameters.Get<BulletWeapon>(1);
             float angleOffset = parameters.GetOrDefault<float>(2);
-            float speed = parameters.HasIndex(3) ? parameters.Get<float>(3) : DefaultSpeed;
+            float speed = parameters.GetOrDefault<float>(3, DefaultSpeed);
 
             entity.Transform.Position = transform.Position;
             entity.Transform.Rotation = transform.Rotation + angleOffset;

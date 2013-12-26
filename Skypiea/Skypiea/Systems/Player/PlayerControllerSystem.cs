@@ -16,8 +16,6 @@ namespace Skypiea.Systems.Player
         private CWeapon _weapon;
         private CVirtualThumbstick _movementThumbstick;
         private CVirtualThumbstick _rotationThumbstick;
-
-        private World _world;
         private IBoosterState _boosterState;
 
         protected override int ProcessOrder
@@ -37,7 +35,6 @@ namespace Skypiea.Systems.Player
             _movementThumbstick = this.EntityWorld.FindEntityByName(EntityNames.MovementThumbStick).Get<CVirtualThumbstick>();
             _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>();
 
-            _world = this.EntityWorld.Services.Get<World>();
             _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
         }
 

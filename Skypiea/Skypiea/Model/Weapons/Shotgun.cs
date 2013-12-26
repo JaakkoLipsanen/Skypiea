@@ -1,5 +1,6 @@
 using Flai;
 using Flai.CBES;
+using Flai.CBES.Components;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
@@ -36,7 +37,7 @@ namespace Skypiea.Model.Weapons
         {
             if (entityHit != null)
             {
-                if (!ZombieHelper.TakeDamageOrDelete(entityHit, 10))
+                if (!ZombieHelper.TakeDamageOrDelete(entityHit, 10, bullet.Entity.Get<CVelocity2D>().Velocity / 4f))
                 {
                     ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform);
                 }

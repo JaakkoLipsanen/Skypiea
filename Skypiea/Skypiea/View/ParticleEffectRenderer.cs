@@ -7,11 +7,14 @@ using Flai.Graphics.Particles.Modifiers;
 using Flai.Graphics.Particles.Renderers;
 using Flai.Graphics.Particles.TriggerHandlers;
 using Microsoft.Xna.Framework;
-using Skypiea.Components;
 using Skypiea.Misc;
 
 namespace Skypiea.View
 {
+    public static class ParticleEffectHelper
+    {
+        public static readonly Range ZombieExplosionDefaultSpeed = new Range(4, 100);
+    }
 
     public class ParticleEffectRenderer : FlaiRenderer
     {
@@ -43,16 +46,16 @@ namespace Skypiea.View
             {
                 Emitters = new ParticleEmitterCollection
                 {
-                    new ParticleEmitter(500, 1f, new PointEmitter(true))
+                    new ParticleEmitter(500, 1f, new RotationalPointEmitter(true, Range.FullRotation))
                     {
                         ReleaseParameters = new ReleaseParameters
                         {
-                            Quantity = new RangeInt(30, 40),
+                            Quantity = new RangeInt(20, 30),
                             Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
                             Color = Color.DarkRed,
                             Opacity = 0.5f,
                             Scale = 10,
-                            Speed = new Range(0, 100),
+                            Speed = ParticleEffectHelper.ZombieExplosionDefaultSpeed,
                         },
 
                         Modifiers = new ParticleModifierCollection
@@ -60,8 +63,30 @@ namespace Skypiea.View
                             new VelocityDampingModifier() { DampingPower =  2f },
                             new OpacityFadeModifier() { InitialOpacity = 0.75f },
                             new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
+                            new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 8, Median = 0.333f, FinalScale = 15 },
+                            new RotationModifier() { RotationRate = 4f },
+                        },
+                    },
+
+                    new ParticleEmitter(250, 1f, new PointEmitter(true))
+                    {
+                        ReleaseParameters = new ReleaseParameters
+                        {
+                            Quantity = new RangeInt(10, 20),
+                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                            Color = Color.DarkRed,
+                            Opacity = 0.5f,
+                            Scale = 10,
+                            Speed = new Range(10, ParticleEffectHelper.ZombieExplosionDefaultSpeed.Max) 
+                        },
+
+                        Modifiers = new ParticleModifierCollection
+                        {
+                            new VelocityDampingModifier() { DampingPower =  2f },
+                            new OpacityFadeModifier() { InitialOpacity = 0.4f },
+                            new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
                             new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 10, Median = 0.333f, FinalScale = 20 },
-                            new RotationModifier() { RotationRate = 4f }
+                            new RotationModifier() { RotationRate = 4f },
                         },
                     },
                 },
@@ -189,5 +214,4 @@ namespace Skypiea.View
             return SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active).Contains(triggerContext.Position);
         }
     }
-
 }

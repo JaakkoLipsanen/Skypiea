@@ -36,8 +36,7 @@ namespace Skypiea
 
         protected override void AddInitialScreens()
         {
-            _screenManager.AddScreen(new MenuBackgroundScreen());
-            _screenManager.AddScreen(new MainMenuScreen());
+            _screenManager.AddScreen(new SkypieaSplashScreen());
         }
 
         protected override void InitializeGraphicsSettings()

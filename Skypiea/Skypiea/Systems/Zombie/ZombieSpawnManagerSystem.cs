@@ -50,7 +50,6 @@ namespace Skypiea.Systems.Zombie
             const float MinDistanceFromBorder = -SkypieaConstants.PixelsPerMeter * 4;
             const float MinDistanceFromPlayer = 400f; // SkypieaConstants.PixelsPerMeter * 10;
 
-            World world = this.EntityWorld.Services.Get<World>();
             CTransform2D playerTransform = this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
             Vector2 position = FlaiAlgorithms.GenerateRandomVector2(
                 new Range(MinDistanceFromBorder, SkypieaConstants.MapWidthInPixels - MinDistanceFromBorder),

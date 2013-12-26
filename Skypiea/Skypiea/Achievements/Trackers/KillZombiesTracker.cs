@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Flai;
 using Flai.Achievements;
 using Flai.CBES;
@@ -20,6 +21,7 @@ namespace Skypiea.Achievements.Trackers
         private void OnZombieKilled(ZombieKilledMessage message)
         {
             ((IntegerProgression)_achievement.Progression).Current++;
+            Debug.WriteLine(((IntegerProgression)_achievement.Progression).Current);
             if (_achievement.IsUnlocked)
             {
                 _entityWorld.UnsubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);

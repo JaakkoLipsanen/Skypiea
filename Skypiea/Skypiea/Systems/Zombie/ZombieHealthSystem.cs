@@ -3,7 +3,6 @@ using Flai.CBES;
 using Flai.CBES.Systems;
 using Skypiea.Components;
 using Skypiea.Messages;
-using Skypiea.Misc;
 
 namespace Skypiea.Systems.Zombie
 {

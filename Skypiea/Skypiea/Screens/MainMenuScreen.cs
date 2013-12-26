@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Flai;
 using Flai.General;
 using Flai.Graphics;
@@ -128,14 +127,18 @@ namespace Skypiea.Screens
         {
             graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
             graphicsContext.SpriteBatch.DrawFullscreen(this.ContentProvider.DefaultManager.LoadTexture("MainMenuBackground"), new Color(64, 64, 64));
+            graphicsContext.SpriteBatch.End();
+        }
 
+        protected override void PostDraw(GraphicsContext graphicsContext)
+        {
             if (Settings.Current.GraphicalQuality == GraphicalQuality.High)
             {
+                graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
                 this.DrawNoise(graphicsContext);
                 this.DrawVignette(graphicsContext);
+                graphicsContext.SpriteBatch.End();
             }
-
-            graphicsContext.SpriteBatch.End();
         }
 
         private void DrawVignette(GraphicsContext graphicsContext)

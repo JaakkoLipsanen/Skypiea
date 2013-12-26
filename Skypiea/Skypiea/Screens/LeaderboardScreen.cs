@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Flai;
 using Flai.General;
 using Flai.Graphics;
@@ -9,7 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Leaderboards;
-
+using Range = Flai.Range;
 using ScoreloopScore = Scoreloop.CoreSocial.API.Model.Score;
 
 namespace Skypiea.Screens
@@ -21,12 +22,15 @@ namespace Skypiea.Screens
     {
         private const float ScoreSlotHeight = 32;
 
-        private readonly ScrollingScoreloopLeaderboard _leaderboard;
+        private readonly ScrollingLeaderboard _leaderboard;
         private readonly Scroller _scoller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
 
         private LeaderboardButton _dailyLeaderboardButton;
         private LeaderboardButton _overallLeaderboardButton;
+
+        private readonly Dictionary<LeaderboardScope, int> _ranks = new Dictionary<LeaderboardScope, int>();
+        private bool _hasFailed = false;
 
         public override bool IsPopup
         {
@@ -35,8 +39,10 @@ namespace Skypiea.Screens
 
         public LeaderboardScreen()
         {
-            _leaderboard = new ScrollingScoreloopLeaderboard(LeaderboardHelper.CreateLeaderboardManager(), 0, 25);
+            _leaderboard = new ScrollingLeaderboard(LeaderboardHelper.CreateLeaderboardManager(), 0, 25);
             _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+            _leaderboard.GetRank(LeaderboardScope.Daily, this.OnRankLoaded);
+            _leaderboard.GetRank(LeaderboardScope.AllTime, this.OnRankLoaded);
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
@@ -52,6 +58,11 @@ namespace Skypiea.Screens
             }
 
             this.CreateUI();
+        }
+
+        protected override void UnloadContent()
+        {
+            _leaderboard.ScoreloopManager.Close();
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -83,16 +94,33 @@ namespace Skypiea.Screens
 
         private void DrawScores(GraphicsContext graphicsContext)
         {
+            SpriteFont scoreFont = graphicsContext.FontContainer["Minecraftia.20"];
+            if (_hasFailed)
+            {
+                graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "Something went wrong. Please try again later", new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
+            }
+
+            if (_ranks.ContainsKey(_leaderboard.CurrentScope))
+            {
+                int rank = _ranks[_leaderboard.CurrentScope];
+                if (rank == 0) // user doesn't have a rank on this leaderboard
+                {
+                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You have no rank on this leaderboard", new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                }
+                else // user has a rank on this leaderboard
+                {
+                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You are " + rank, Common.GetOrdinalSuffix(rank), new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                }
+            }
+
             if (_leaderboard.Scores.Count == 0)
             {
                 return;
             }
 
             const float HorizontalOffset = 8;
-            const float OffsetFromTop = 104;
+            const float OffsetFromTop = 164;
             const float ScoreHeight = 32;
-
-            SpriteFont scoreFont = graphicsContext.FontContainer["Minecraftia.20"];
 
             RectangleF scrollerArea = _scoller.GetArea(graphicsContext.ScreenSize);
             int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight, 0, _leaderboard.Scores.Count);
@@ -117,11 +145,6 @@ namespace Skypiea.Screens
             }
         }
 
-        private void OnScoresLoaded(ScoreloopResponse<LeaderboardScores> scores)
-        {
-            _scoller.ScrollingRange = new Range(0, _leaderboard.Scores.Count * ScoreSlotHeight + ScoreSlotHeight * 100);
-        }
-
         private void CreateUI()
         {
             _uiContainer.Add(_dailyLeaderboardButton = new LeaderboardButton("Daily", new Vector2(this.Game.ScreenSize.Width / 4f, 64), _scoller, this.OnDailyButtonClicked) { Font = "Minecraftia.24", Color = Color.White });
@@ -144,12 +167,36 @@ namespace Skypiea.Screens
 
         private void ChangeScope(LeaderboardScope scope)
         {
-            if (_leaderboard.CurrentScope != scope)
+            if (!_hasFailed && _leaderboard.CurrentScope != scope)
             {
                 _leaderboard.CurrentScope = scope;
                 _leaderboard.LoadMoreScores(this.OnScoresLoaded);
             }
         }
+
+        private void OnScoresLoaded(ScoreloopResponse<LeaderboardScoresResponse> response)
+        {
+            if (!response.Success)
+            {
+                _hasFailed = true;
+                return;
+            }
+
+            _scoller.ScrollingRange = new Range(0, _leaderboard.Scores.Count * ScoreSlotHeight + ScoreSlotHeight * 100);
+        }
+
+        private void OnRankLoaded(ScoreloopResponse<RankResponse> response)
+        {
+            if (!response.Success)
+            {
+                _hasFailed = true;
+                return;
+            }
+
+            _ranks.Add(response.Data.Scope, response.Data.Rank);
+        }
+
+        #region Leaderboard Button
 
         private class LeaderboardButton : TextButton
         {
@@ -168,16 +215,13 @@ namespace Skypiea.Screens
                 this.SetVerticalOffset(_scroller.ScrollValue);
             }
 
-            public override void Draw(GraphicsContext graphicsContext)
-            {
-                base.Draw(graphicsContext);
-            }
-
             private void SetVerticalOffset(float verticalOffset)
             {
                 _centerPosition.Y = _initialVerticalPosition - verticalOffset;
                 this.UpdateArea();
             }
         }
+
+        #endregion
     }
 }

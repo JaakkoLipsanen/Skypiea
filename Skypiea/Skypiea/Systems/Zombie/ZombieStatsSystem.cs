@@ -91,10 +91,6 @@ namespace Skypiea.Systems.Zombie
             if (i++ == 10)
             {
                 i = 0;
-                Debug.WriteLine("Time : " + _totalPlayTime);
-                Debug.WriteLine("Spawn Rate: " + _spawnRate);
-                Debug.WriteLine("Speed: " + _speedMultiplier);
-                Debug.WriteLine("");
             }
         }
 

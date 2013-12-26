@@ -10,13 +10,14 @@ namespace Skypiea.Systems.Zombie
         private IParticleEngine _particleEngine;
         protected override void Initialize()
         {
-            this.EntityWorld.SubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);
+         // this.EntityWorld.SubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);
             _particleEngine = this.EntityWorld.Services.Get<IParticleEngine>();
         }
 
         private void OnZombieKilled(ZombieKilledMessage message)
         {
             ParticleEffect explosionParticleEffect = _particleEngine[ParticleEffectID.ZombieExplosion];
+          //  explosionParticleEffect.Emitters[0].ReleaseParameters.Rotation = message.
             explosionParticleEffect.Trigger(message.Zombie.Transform);
         }
     }

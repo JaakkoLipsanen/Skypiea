@@ -34,7 +34,7 @@ namespace Skypiea.Model.Weapons
 
         public static char ToChar(this WeaponType weaponType)
         {
-            return EnumHelper.GetName(weaponType)[0]; // hack but whatever
+            return _weaponDisplayNames[(int) weaponType][0]; // first char of the display string
         }
     }
 }

@@ -17,6 +17,7 @@ namespace Skypiea.Prefabs
             entity.AddFromPool<CDrop>().Initialize(DropType.Weapon);
             entity.AddFromPool<CWeaponDrop>().Initialize(parameters.Get<WeaponType>(1));
             entity.AddFromPool<CLifeTime>().Initialize(WeaponDropPrefab.LifeTime);
+
             entity.Tag = EntityTags.Drop;
         }
     }

@@ -10,15 +10,9 @@ namespace Skypiea.Systems
 {
     public class BulletOutOfBoundsDestroySystem : ComponentProcessingSystem<CBullet>
     {
-        private World _world;
         protected override int ProcessOrder
         {
             get { return SystemProcessOrder.PostFrame; }
-        }
-
-        protected override void Initialize()
-        {
-            _world = this.EntityWorld.Services.Get<World>();
         }
 
         public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity)

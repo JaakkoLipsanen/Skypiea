@@ -5,7 +5,6 @@ using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using Skypiea.Prefabs;
 
@@ -14,7 +13,7 @@ namespace Skypiea.Systems
     // todo: "WeaponDropLifeTimeSystem"? destroyes them after a certain amount of time
     public class WeaponDropGeneratorSystem : EntitySystem
     {
-        private const float WeaponDropTestInterval = 6;
+        private const float WeaponDropTestInterval = 12;
         private readonly Timer _weaponDropTimer = new Timer(WeaponDropGeneratorSystem.WeaponDropTestInterval);
         private CPlayerInfo _playerInfo;
 
@@ -45,7 +44,6 @@ namespace Skypiea.Systems
 
         private void CreateWeaponDrop()
         {
-            World world = this.EntityWorld.Services.Get<World>();
             CTransform2D playerTransform =
                 this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
 
