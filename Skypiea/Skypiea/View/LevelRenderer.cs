@@ -1,12 +1,10 @@
 ﻿using Flai;
 using Flai.CBES.Components;
 using Flai.Graphics;
-using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Skypiea.Components;
+using Skypiea.Misc;
 using Skypiea.Model;
-using Settings = Skypiea.Misc.Settings;
 
 namespace Skypiea.View
 {
@@ -50,7 +48,7 @@ namespace Skypiea.View
         private void DrawWithoutCamera(GraphicsContext graphicsContext)
         {
             _worldRenderer.DrawUI(graphicsContext);
-            if (Settings.Current.GraphicalQuality == GraphicalQuality.High)
+            if (TestingGlobals.GraphicalQuality == GraphicalQuality.High)
             {
                 this.DrawNoise(graphicsContext);
                 this.DrawVignette(graphicsContext);

@@ -12,8 +12,6 @@ using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using Skypiea.View;
 using System;
-using System.Linq;
-using Settings = Skypiea.Misc.Settings;
 
 namespace Skypiea.Screens
 {
@@ -46,10 +44,11 @@ namespace Skypiea.Screens
                 return;
             }
 
-            _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 200), this.OnPlayClicked) { InflateAmount = -8 });
-            _uiContainer.Add(new TextButton("Achievements", new Vector2(this.Game.ScreenSize.Width / 2F, 260), this.OnAchievementsClicked) { InflateAmount = -8 });
-            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2F, 320), this.OnLeaderboardsClicked) { InflateAmount = -8 });
-            _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2F, 380), this.OnExitClicked) { InflateAmount = -8 });
+            _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 160), this.OnPlayClicked) { InflateAmount = -0 });
+            _uiContainer.Add(new TextButton("Achievements", new Vector2(this.Game.ScreenSize.Width / 2f, 220), this.OnAchievementsClicked) { InflateAmount = -0 });
+            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2f, 280), this.OnLeaderboardsClicked) { InflateAmount = -0 });
+            _uiContainer.Add(new TextButton("Options", new Vector2(this.Game.ScreenSize.Width / 2f, 340), this.OnOptionsClicked) { InflateAmount = -0 });
+            _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0 });
 
             // DEBUG STUFF
             _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
@@ -62,8 +61,8 @@ namespace Skypiea.Screens
             _uiContainer.Add(new TextButton("Reset Achievements", new Vector2(this.Game.ScreenSize.Width / 4f * 3 + 30, 440), AchievementHelper.ResetAchievements) { Font = "SegoeWP.24" });
             _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, this.Game.ScreenSize.Height - 18)) { Color = Color.White * 0.075f, Font = "SegoeWP.16" });
 
-            _graphicsToggleButton.SetSelectedValue(Settings.Current.GraphicalQuality);
-            _graphicsToggleButton.Click += () => Settings.Current.GraphicalQuality = _graphicsToggleButton.SelectedValue;
+            _graphicsToggleButton.SetSelectedValue(TestingGlobals.GraphicalQuality);
+            _graphicsToggleButton.Click += () => TestingGlobals.GraphicalQuality = _graphicsToggleButton.SelectedValue;
         }
 
         private void OnPlayClicked()
@@ -75,7 +74,7 @@ namespace Skypiea.Screens
 
             TestingGlobals.SpawnOnlyRushers = !_zombiesToggleButton.IsToggled;
             TestingGlobals.DefaultWeaponType = _weaponTypeToggleButton.SelectedValue;
-            Settings.Current.GraphicalQuality = _graphicsToggleButton.SelectedValue;
+            TestingGlobals.GraphicalQuality = _graphicsToggleButton.SelectedValue;
 
             this.FadeOut = FadeDirection.Up;
             this.ScreenManager.LoadScreen(new GameplayScreen(_worldTypeToggleButton.SelectedValue));
@@ -103,11 +102,20 @@ namespace Skypiea.Screens
             }
         }
 
+        private void OnOptionsClicked()
+        {
+            if (!this.IsExiting)
+            {
+                // this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
+                this.FadeOut = FadeDirection.Down;
+                this.ExitScreen();
+                this.ScreenManager.AddScreen(new OptionsScreen(), new Delay(0.25f));
+            }
+        }
+
         private void OnExitClicked()
         {
-            this.Exited += () => this.Game.Exit();
-            this.FadeOut = FadeDirection.Down;
-            this.ExitScreen();
+            this.Game.Exit();
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)

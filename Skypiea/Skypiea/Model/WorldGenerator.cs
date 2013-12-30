@@ -1,7 +1,4 @@
-﻿using Flai;
-using Flai.CBES.Components;
-using Microsoft.Xna.Framework;
-using Skypiea.Misc;
+﻿using Skypiea.Misc;
 using Skypiea.Prefabs;
 
 namespace Skypiea.Model
@@ -21,8 +18,7 @@ namespace Skypiea.Model
         {
             world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, SkypieaConstants.MapSizeInPixels / 2f);
 
-            world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, new Vector2(120f, FlaiGame.Current.ScreenSize.Height - 120f)).Get<CVirtualThumbstick>().ThumbStick.SmoothingPower = 0;
-            world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, new Vector2(FlaiGame.Current.ScreenSize.Width - 60, FlaiGame.Current.ScreenSize.Height - 120f)).Get<CVirtualThumbstick>().ThumbStick.SmoothingPower = 0.35f;
+            // virtual thumbsticks are now created on VirtualThumbstickSystem
         }
     }
 }

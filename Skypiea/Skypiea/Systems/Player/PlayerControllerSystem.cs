@@ -2,6 +2,7 @@
 using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.CBES.Systems;
+using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
@@ -14,8 +15,8 @@ namespace Skypiea.Systems.Player
     {
         private CPlayerInfo _playerInfo;
         private CWeapon _weapon;
-        private CVirtualThumbstick _movementThumbstick;
-        private CVirtualThumbstick _rotationThumbstick;
+        private VirtualThumbstick _movementThumbstick;
+        private VirtualThumbstick _rotationThumbstick;
         private IBoosterState _boosterState;
         private IPlayerPassiveStats _playerPassiveStats;
 
@@ -33,8 +34,8 @@ namespace Skypiea.Systems.Player
         {
             _playerInfo = base.Entity.Get<CPlayerInfo>();
             _weapon = base.Entity.Get<CWeapon>();
-            _movementThumbstick = this.EntityWorld.FindEntityByName(EntityNames.MovementThumbStick).Get<CVirtualThumbstick>();
-            _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>();
+            _movementThumbstick = this.EntityWorld.FindEntityByName(EntityNames.MovementThumbStick).Get<CVirtualThumbstick>().Thumbstick;
+            _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>().Thumbstick;
 
             _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
             _playerPassiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
@@ -58,23 +59,23 @@ namespace Skypiea.Systems.Player
 
             // movement
             Vector2 previousPosition = player.Transform.Position;
-            player.Transform.Position += _movementThumbstick.ThumbStick.Direction * speed * updateContext.DeltaSeconds;
+            player.Transform.Position += _movementThumbstick.Direction.GetValueOrDefault() * speed * updateContext.DeltaSeconds;
             player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, SkypieaConstants.MapSizeInPixels - Vector2.One * PositionClampOffset);
             _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
 
             // rotation
-            if (_rotationThumbstick.ThumbStick.Direction != Vector2.Zero)
+            if (_rotationThumbstick.Direction.HasValue && _rotationThumbstick.Direction != Vector2.Zero)
             {
-                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_rotationThumbstick.ThumbStick.Direction);
+                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_rotationThumbstick.Direction.GetValueOrDefault());
                 if (_weapon.Weapon.CanShoot)
                 {
                     _weapon.Weapon.Shoot(updateContext, player); // normalized thumbstick direction
                 }
             }
             // If rotation thumbstick is not pressed, then the movement determines the direction
-            else if (_movementThumbstick.ThumbStick.Direction != Vector2.Zero)
+            else if (_movementThumbstick.Direction.HasValue && _movementThumbstick.Direction != Vector2.Zero)
             {
-                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_movementThumbstick.ThumbStick.Direction);
+                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_movementThumbstick.Direction.GetValueOrDefault());
             }
         }
     }

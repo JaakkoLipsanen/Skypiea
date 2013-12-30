@@ -131,7 +131,7 @@ namespace Skypiea.Achievements
             CreateAchievementTrackerDelegate trackerCreator = (am, ew, a) => new LivesAtAnyPointOfGameTracker(am, ew, a.Name, LivesNeeded);
             PassiveSkill reward = PassiveHelper.CreateDropIncreasePassive(0.35f);
 
-            achievements.Add(new Achievement("The Life Harvester", "Have at least 4 lives in a game", "Have 4 lives in a game", new BooleanProgression(false)) { Tag = new AchievementInfo(trackerCreator, reward) });
+            achievements.Add(new Achievement("The Life Harvester", "Have at least 4 lives at any point of a game", "Have 4 lives in a game", new BooleanProgression(false)) { Tag = new AchievementInfo(trackerCreator, reward) });
         }
 
         #endregion

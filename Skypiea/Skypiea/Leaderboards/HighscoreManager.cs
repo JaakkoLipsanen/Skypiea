@@ -28,7 +28,7 @@ namespace Skypiea.Leaderboards
             this.LoadFromFile();
         }
 
-        public bool UpdateHighscore(int newScore)
+        public virtual bool UpdateHighscore(int newScore)
         {
             if (newScore > _highscore)
             {
@@ -46,6 +46,7 @@ namespace Skypiea.Leaderboards
                 using (BinaryWriter writer = new BinaryWriter(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Create)))
                 {
                     writer.Write(_highscore);
+                    this.SaveInner(writer);
                 }
             }
         }
@@ -59,9 +60,13 @@ namespace Skypiea.Leaderboards
                     using (BinaryReader reader = new BinaryReader(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Open)))
                     {
                         _highscore = reader.ReadInt32();
+                        this.LoadInner(reader);
                     }
                 }
             }
         }
+
+        protected virtual void SaveInner(BinaryWriter writer) { }
+        protected virtual void LoadInner(BinaryReader reader) { }
     }
 }

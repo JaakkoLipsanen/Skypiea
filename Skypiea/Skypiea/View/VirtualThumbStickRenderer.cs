@@ -2,6 +2,7 @@
 using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
+using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
 
@@ -20,21 +21,30 @@ namespace Skypiea.View
             this.DrawThumbStick(graphicsContext, virtualThumbstick);
         }
 
-        private void DrawThumbStick(GraphicsContext graphicsContext, CVirtualThumbstick virtualThumbstick)
+        private void DrawThumbStick(GraphicsContext graphicsContext, CVirtualThumbstick virtualThumbstickComponent)
         {
             const float MaxDistance = 60f;
-           // graphicsContext.PrimitiveRenderer.DrawRectangle(virtualThumbstick.ThumbStick.CenterPosition, 12f, Color.Blue);
-            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), virtualThumbstick.ThumbStick.CenterPosition, Color.Gray * 0.75f);
 
-            if (virtualThumbstick.ThumbStick.Direction != Vector2.Zero)
+            VirtualThumbstick thumbstick = virtualThumbstickComponent.Thumbstick;
+            if (thumbstick.CenterPosition.HasValue)
             {
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), virtualThumbstick.ThumbStick.CenterPosition + virtualThumbstick.ThumbStick.Direction*MaxDistance, Color.LightGray*0.5f, 0, 0.5f);
+                // base
+                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value, Color.Gray * 0.75f);
+
+                if (thumbstick.Direction.HasValue)
+                {
+                    // if the thumbstick style is relative, then never draw the "name of the thumbstick", if the style is fixed then draw the name only if the direction IS zero
+                    if (thumbstick.Style == ThumbstickStyle.Relative || thumbstick.Direction != Vector2.Zero)
+                    {
+                        graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f, 0, 0.5f);
+                    }
+                    else
+                    {
+                        string name = virtualThumbstickComponent.Entity.Name == EntityNames.MovementThumbStick ? "MOVEMENT" : "SHOOTING";
+                        graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], name, thumbstick.CenterPosition.Value, Color.White * 0.5f);
+                    }
+                }
             }
-            else
-            {
-                string name = virtualThumbstick.Entity.Name == EntityNames.MovementThumbStick ? "MOVEMENT" : "ROTATION";
-                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], name, virtualThumbstick.ThumbStick.CenterPosition, Color.White * 0.5f);
-            }            
         }
     }
 }

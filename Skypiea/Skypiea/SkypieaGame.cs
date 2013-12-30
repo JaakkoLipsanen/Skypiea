@@ -4,6 +4,7 @@ using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Screens;
+using Skypiea.Settings;
 
 namespace Skypiea
 {
@@ -17,6 +18,8 @@ namespace Skypiea
             base.ClearColor = Color.Black;
             this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory });
             base.IsFixedTimeStep = false;
+
+            _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
         }
 
         protected override void InitializeInner()

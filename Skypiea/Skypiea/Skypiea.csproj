@@ -104,7 +104,6 @@
     <Compile Include="Misc\DropHelper.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
-    <Compile Include="Misc\Settings.cs" />
     <Compile Include="Misc\SkypieaConstants.cs" />
     <Compile Include="Misc\TestingGlobals.cs" />
     <Compile Include="Misc\ZombieHelper.cs" />
@@ -153,8 +152,11 @@
     <Compile Include="Screens\LeaderboardScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuBackgroundScreen.cs" />
+    <Compile Include="Screens\OptionsScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Screens\SkypieaSplashScreen.cs" />
+    <Compile Include="Settings\SettingsHelper.cs" />
+    <Compile Include="Settings\SkypieaSettings.cs" />
     <Compile Include="Systems\AchievementSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Systems\Player\PlayerDropPickupSystem.cs" />
     <Compile Include="Systems\Player\PlayerPassiveSystem.cs" />
     <Compile Include="Systems\Player\PlayerWeaponManagerSystem.cs" />
+    <Compile Include="Systems\VirtualThumbstickSystem.cs" />
     <Compile Include="Systems\Zombie\RusherZombieAISystem.cs" />
     <Compile Include="Systems\SystemProcessOrder.cs" />
     <Compile Include="Systems\VelocitySystem.cs" />

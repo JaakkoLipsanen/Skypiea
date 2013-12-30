@@ -74,8 +74,8 @@ namespace Skypiea.Screens
             _world = new World(WorldType.Grass);
 
             _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
-            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
-            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
+            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
+            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
 
             _world.Initialize();
 

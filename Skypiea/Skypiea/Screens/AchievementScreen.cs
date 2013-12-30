@@ -60,7 +60,6 @@ namespace Skypiea.Screens
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                // this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Right));
                 _achievementManager.SaveToFile();
                 this.ExitScreen();
                 this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Right), new Delay(0.25f));
@@ -97,7 +96,7 @@ namespace Skypiea.Screens
 
         private void DrawTitle(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], "Achievements", new Vector2(graphicsContext.ScreenSize.Width / 2f, 50));
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.32"], "Achievements", new Vector2(graphicsContext.ScreenSize.Width / 2f, 50));
         }
 
         private void DrawSlotBackground(GraphicsContext graphicsContext, Achievement achievement, RectangleF slotArea)

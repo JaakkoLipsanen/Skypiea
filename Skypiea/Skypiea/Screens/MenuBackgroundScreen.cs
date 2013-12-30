@@ -27,7 +27,7 @@ namespace Skypiea.Screens
 
         protected override void PostDraw(GraphicsContext graphicsContext)
         {
-            if (Settings.Current.GraphicalQuality == GraphicalQuality.High)
+            if (TestingGlobals.GraphicalQuality == GraphicalQuality.High)
             {
                 graphicsContext.SpriteBatch.Begin(SamplerState.PointWrap);
                 this.DrawNoise(graphicsContext);
