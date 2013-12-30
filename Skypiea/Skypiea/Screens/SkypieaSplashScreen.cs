@@ -1,73 +1,122 @@
-using System.Linq;
+using System.Diagnostics;
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
 using Flai.Content;
 using Flai.Graphics;
+using Flai.ScreenManagement;
 using Flai.ScreenManagement.Screens;
 using Microsoft.Xna.Framework;
+using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using Skypiea.Prefabs;
 using Skypiea.Prefabs.Bullets;
 using Skypiea.Prefabs.Zombies;
+using Skypiea.Systems;
 using Skypiea.View;
+using System.Linq;
 
 namespace Skypiea.Screens
 {
     public class SkypieaSplashScreen : PreloadAssetsScreen
     {
-        public SkypieaSplashScreen() 
-            : base(new MenuBackgroundScreen(), new MainMenuScreen())
+        private World _world;
+        private ParticleEffectRenderer _particleEffectRenderer;
+        public SkypieaSplashScreen()
+            : base(new MenuBackgroundScreen(), new MainMenuScreen(FadeDirection.Down))
         {
+        }
+
+        protected override void LoadContent(bool instancePreserved)
+        {
+            LeaderboardHelper.CreateLeaderboardManager().Close(); // preload assembiel etc
+            // todo todo todo todo
+
+            Stopwatch sw = Stopwatch.StartNew();
+            this.SimulateEntityWorld();
+            Debug.WriteLine("simulation: " + sw.Elapsed.TotalMilliseconds);
+            this.LoadAssets();
+            Debug.WriteLine("assets: " + sw.Elapsed.TotalMilliseconds);
         }
 
         protected override void PreloadAssets()
         {
-            // todo todo todo todo
-            return;
-            this.SimulateEntityWorld();
-            this.LoadAssets();
+            // do the simulation in LoadContent since we aren't drawing anything while loading and we WANT to draw some stuff offscreen when the "only" draw is made
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
-        {
+        {return;
+            DropRenderer dropRenderer = new DropRenderer(_world.EntityWorld);
+            dropRenderer.LoadContent();
+
+            DropArrowRenderer dropArrowRenderer = new DropArrowRenderer(_world.EntityWorld);
+            dropArrowRenderer.LoadContent();
+
+            graphicsContext.SpriteBatch.Begin();
+            dropRenderer.Draw(graphicsContext);
+            dropArrowRenderer.Draw(graphicsContext);
+            _particleEffectRenderer.Draw(graphicsContext);
+            graphicsContext.SpriteBatch.End();
+
             graphicsContext.GraphicsDevice.Clear(Color.Black);
-        }
 
-        private void SimulateEntityWorld()
-        {
-            World world = new World(WorldType.Grass);
-            ParticleEffectRenderer particleEffectRenderer = new ParticleEffectRenderer(world.ParticleEngine);
-            particleEffectRenderer.LoadContent();
-
-            this.CreateAllPrefabs(world.EntityWorld);
-            world.Initialize();
-
-            world.Update(UpdateContext.Null);
-            ZombieHelper.TriggerBloodSplatter(world.EntityWorld.FindEntityByName(EntityNames.Player).Transform);
-            world.Update(UpdateContext.Null);
-
-            foreach (Entity entity in world.EntityWorld.AllEntities.ToArray())
+            foreach (Entity entity in _world.EntityWorld.AllEntities.ToArray())
             {
                 entity.Delete();
             }
 
-            world.Shutdown();
+            _world.Shutdown();
+        }
+
+        private void SimulateEntityWorld()
+        {return;
+            _world = new World(WorldType.Grass);
+
+            _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
+            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
+            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
+
+            _world.Initialize();
+
+            _particleEffectRenderer = new ParticleEffectRenderer(_world.EntityWorld, _world.ParticleEngine);
+            _particleEffectRenderer.LoadContent();
+
+            this.CreateAllPrefabs(_world.EntityWorld);
+
+            ZombieHelper.TriggerBloodSplatter(_world.EntityWorld.FindEntityByName(EntityNames.Player).Transform);
+            _world.Update(UpdateContext.Null);
+            _world.EntityWorld.GetSystem<WeaponDropGeneratorSystem>().CreateWeaponDrop();
+
+            LeaderboardScreen leaderboardScreen = new LeaderboardScreen();
+            AchievementScreen achievementScreen = new AchievementScreen();
+            this.ScreenManager.AddScreen(leaderboardScreen);
+            this.ScreenManager.AddScreen(achievementScreen);
+
+            GameScreenSimulator.Update(UpdateContext.Null, leaderboardScreen);
+            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, leaderboardScreen);
+
+            GameScreenSimulator.Update(UpdateContext.Null, achievementScreen);
+            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, achievementScreen);
+
+            this.ScreenManager.RemoveScreen(leaderboardScreen);
+            this.ScreenManager.RemoveScreen(achievementScreen);
+
         }
 
         private void CreateAllPrefabs(EntityWorld entityWorld)
         {
-            Entity player = entityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
-            entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
-            entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
+            //Entity player = entityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
+            //entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
+            //entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
+
+            Entity player = entityWorld.FindEntityByName(EntityNames.Player);
 
             // bullets
-            entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(player.Transform, new Flamethrower());
-            entityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(player.Transform, new Flamethrower(), 0f);
-            entityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(player.Transform, new RicochetGun(), 0f);
-            entityWorld.CreateEntityFromPrefab<RocketLauncherBulletPrefab>(player.Transform, new RocketLauncher(), 0f);
+            entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(player.Transform, new Flamethrower(1));
+            entityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(player.Transform, new Flamethrower(1), 0f);
+            entityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(player.Transform, new RicochetGun(1), 0f);
+            entityWorld.CreateEntityFromPrefab<RocketLauncherBulletPrefab>(player.Transform, new RocketLauncher(1), 0f);
 
             // zombies
             entityWorld.CreateEntityFromPrefab<BasicZombiePrefab>(Vector2.Zero);
@@ -83,10 +132,11 @@ namespace Skypiea.Screens
         {
             WeaponType.AssaultRifle.ToChar();
             WeaponType.AssaultRifle.GetDisplayName();
-        //  Common.CharacterToString('c');
+            //  Common.CharacterToString('c');
 
             FlaiContentManager texureContentManager = this.ContentProvider.DefaultManager;
 
+            // todo: segoes aren't probably needed in final versio, remember to remove them
             this.FontContainer.GetFont("Minecraftia.16");
             this.FontContainer.GetFont("Minecraftia.20");
             this.FontContainer.GetFont("Minecraftia.24");
@@ -94,28 +144,29 @@ namespace Skypiea.Screens
             this.FontContainer.GetFont("SegoeWP.16");
             this.FontContainer.GetFont("SegoeWP.24");
 
-            texureContentManager.LoadTexture("Drops/Life");
-            texureContentManager.LoadTexture("Map/CombineTest");
-            texureContentManager.LoadTexture("Map/CornerFadeTexture");
-            texureContentManager.LoadTexture("Map/DesertMap");
-            texureContentManager.LoadTexture("Map/GrassMap");
-            texureContentManager.LoadTexture("Map/SideFadeTexture");
-            texureContentManager.LoadTexture("Map/Snow");
+            // todo: spritesheet. reduces loading time too probably by a lot
+            //   texureContentManager.LoadTexture("Drops/Life");
+            //   texureContentManager.LoadTexture("Map/CombineTest");
+            //   texureContentManager.LoadTexture("Map/CornerFadeTexture");
+            //   texureContentManager.LoadTexture("Map/DesertMap");
+            //   texureContentManager.LoadTexture("Map/GrassMap");
+            //   texureContentManager.LoadTexture("Map/SideFadeTexture");
+            //   texureContentManager.LoadTexture("Map/Snow");
 
-            texureContentManager.LoadTexture("BoosterTextBackground");
-            texureContentManager.LoadTexture("Bullet");
-            texureContentManager.LoadTexture("Fan");
-            texureContentManager.LoadTexture("Heart");
-            texureContentManager.LoadTexture("Laser");
-            texureContentManager.LoadTexture("MainMenuBackground");
-            texureContentManager.LoadTexture("Noise");
-            texureContentManager.LoadTexture("RicochetBullet");
-            texureContentManager.LoadTexture("Rocket");
-            texureContentManager.LoadTexture("SpecialDropBase");
-            texureContentManager.LoadTexture("Vignette");
-            texureContentManager.LoadTexture("VignetteDithered");
-            texureContentManager.LoadTexture("Zombie");
-            texureContentManager.LoadTexture("ZombieShadow");
+            //   texureContentManager.LoadTexture("BoosterTextBackground");
+            //   texureContentManager.LoadTexture("Bullet");
+            //   texureContentManager.LoadTexture("Fan");
+            //   texureContentManager.LoadTexture("Heart");
+            //   texureContentManager.LoadTexture("Laser");
+            //   texureContentManager.LoadTexture("MainMenuBackground");
+            //   texureContentManager.LoadTexture("Noise");
+            //   texureContentManager.LoadTexture("RicochetBullet");
+            //   texureContentManager.LoadTexture("Rocket");
+            //// texureContentManager.LoadTexture("SpecialDropBase");
+            //   texureContentManager.LoadTexture("Vignette");
+            //   texureContentManager.LoadTexture("VignetteDithered");
+            //   texureContentManager.LoadTexture("Zombie");
+            //   texureContentManager.LoadTexture("ZombieShadow");
         }
     }
 }

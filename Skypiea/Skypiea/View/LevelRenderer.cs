@@ -60,7 +60,7 @@ namespace Skypiea.View
         // todo: move to it's own class along with vignette etc
         private void DrawNoise(GraphicsContext graphicsContext)
         {
-            Texture2D noiseTexture = _contentProvider.DefaultManager.LoadTexture("Noise");
+            TextureDefinition noiseTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
                 for (int y = Global.Random.Next(-360, 0); y < graphicsContext.ScreenSize.Height; y += noiseTexture.Height)
@@ -72,8 +72,8 @@ namespace Skypiea.View
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
+            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Vignette")); // ...
+            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Vignette")); // ...
         }
     }
 }

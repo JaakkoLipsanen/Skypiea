@@ -28,10 +28,9 @@ namespace Skypiea.Components
         public bool OnHit(Entity entityHit)
         {
             Assert.False(_zombiesHits.Contains(entityHit));
-            _zombiesHits.Add(entityHit);
-            this.HitsRemaining--;
 
-            return --this.HitsRemaining > 0;
+            _zombiesHits.Add(entityHit);
+            return --this.HitsRemaining >= 0;
         }
     }
 }

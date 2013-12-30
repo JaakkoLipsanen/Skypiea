@@ -42,17 +42,15 @@ namespace Skypiea.View
             const string FontName = "Minecraftia.16";
 
             CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
-            //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("SpecialDropBase"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
-            //graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Special Drops/Life"), Vector2i.Round(entity.Transform.Position), Color.White, 0, Scale);
             graphicsContext.PrimitiveRenderer.DrawRectangle(entity.Transform.Position, Size, new Color(72, 72, 228));
-           graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), entity.Transform.Position, 0, 0.85f);
+            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), entity.Transform.Position, 0, 0.85f);
             graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(entity.Transform.Position, Size), Color.White, 2);
         }
 
         private void DrawLifeDrop(GraphicsContext graphicsContext, Entity entity)
         {
             // fans
-            Texture2D fanTexture = _contentProvider.DefaultManager.LoadTexture("Fan");
+            TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
             float rotationOffset = graphicsContext.TotalSeconds;
 
             const int Fans = 6;
@@ -70,7 +68,7 @@ namespace Skypiea.View
 
             // heart
             const float Scale = SkypieaViewConstants.PixelSize * 1.5f;
-            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f));
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f));
         }
     }
 }

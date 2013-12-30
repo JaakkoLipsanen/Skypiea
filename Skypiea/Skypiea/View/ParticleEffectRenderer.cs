@@ -1,4 +1,5 @@
 using Flai;
+using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.Graphics;
 using Flai.Graphics.Particles;
@@ -8,21 +9,24 @@ using Flai.Graphics.Particles.Renderers;
 using Flai.Graphics.Particles.TriggerHandlers;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
+using Skypiea.Model;
 
 namespace Skypiea.View
 {
     public static class ParticleEffectHelper
     {
-        public static readonly Range ZombieExplosionDefaultSpeed = new Range(4, 100);
+        public static readonly Range ZombieExplosionDefaultSpeed = new Range(4, 150);
     }
 
     public class ParticleEffectRenderer : FlaiRenderer
     {
+        private readonly EntityWorld _entityWorld;
         private readonly ParticleEngine _particleEngine;
         private readonly SpriteBatchParticleRenderer _particleRenderer = new SpriteBatchParticleRenderer() { IsSpriteBatchAlreadyRunning = true };
 
-        public ParticleEffectRenderer(ParticleEngine particleEngine)
+        public ParticleEffectRenderer(EntityWorld entityWorld, ParticleEngine particleEngine)
         {
+            _entityWorld = entityWorld;
             _particleEngine = particleEngine;
         }
 
@@ -42,60 +46,7 @@ namespace Skypiea.View
         {
             #region Zombie Explosion
 
-            _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
-            {
-                Emitters = new ParticleEmitterCollection
-                {
-                    new ParticleEmitter(500, 1f, new RotationalPointEmitter(true, Range.FullRotation))
-                    {
-                        ReleaseParameters = new ReleaseParameters
-                        {
-                            Quantity = new RangeInt(20, 30),
-                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
-                            Color = Color.DarkRed,
-                            Opacity = 0.5f,
-                            Scale = 10,
-                            Speed = ParticleEffectHelper.ZombieExplosionDefaultSpeed,
-                        },
-
-                        Modifiers = new ParticleModifierCollection
-                        {
-                            new VelocityDampingModifier() { DampingPower =  2f },
-                            new OpacityFadeModifier() { InitialOpacity = 0.75f },
-                            new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
-                            new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 8, Median = 0.333f, FinalScale = 15 },
-                            new RotationModifier() { RotationRate = 4f },
-                        },
-                    },
-
-                    new ParticleEmitter(250, 1f, new PointEmitter(true))
-                    {
-                        ReleaseParameters = new ReleaseParameters
-                        {
-                            Quantity = new RangeInt(10, 20),
-                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
-                            Color = Color.DarkRed,
-                            Opacity = 0.5f,
-                            Scale = 10,
-                            Speed = new Range(10, ParticleEffectHelper.ZombieExplosionDefaultSpeed.Max) 
-                        },
-
-                        Modifiers = new ParticleModifierCollection
-                        {
-                            new VelocityDampingModifier() { DampingPower =  2f },
-                            new OpacityFadeModifier() { InitialOpacity = 0.4f },
-                            new ColorInterpolatorModifier() { InitialColor = Color.DarkRed, FinalColor = Color.Black },
-                            new ScaleTriInterpolatorModifier() { InitialScale =  0, MedianScale = 10, Median = 0.333f, FinalScale = 20 },
-                            new RotationModifier() { RotationRate = 4f },
-                        },
-                    },
-                },
-
-                TriggerHandlers = new ParticleTriggerHandlerCollection()
-                {
-                    new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
-                }
-            });
+            this.CreateZombieExplosion();
 
             #endregion
 
@@ -205,6 +156,124 @@ namespace Skypiea.View
             });
 
             #endregion
+        }
+
+        private void CreateZombieExplosion()
+        {
+            IPlayerPassiveStats passiveStats = _entityWorld.Services.Get<IPlayerPassiveStats>();
+            if (!passiveStats.ZombieBirthdayParty)
+            {
+                _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
+                {
+                    Emitters = new ParticleEmitterCollection
+                    {
+                        new ParticleEmitter(1000, 1, new RotationalPointEmitter(true, Range.FullRotation))
+                        {
+                            ReleaseParameters = new ReleaseParameters
+                            {
+                                Quantity = new RangeInt(30, 40),
+                                Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                                Color = Color.DarkRed,
+                                Opacity = 0.5f,
+                                Scale = 10,
+                                Speed = ParticleEffectHelper.ZombieExplosionDefaultSpeed,
+                            },
+
+                            Modifiers = new ParticleModifierCollection
+                            {
+                                new VelocityDampingModifier() {DampingPower = 1.75f},
+                                new OpacityFadeModifier() {InitialOpacity = 0.75f},
+                                new ColorInterpolatorModifier() {InitialColor = Color.DarkRed, FinalColor = Color.Black},
+                                new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 18},
+                                //   new RotationModifier() { RotationRate = 4f },
+                            },
+                        },
+
+                        new ParticleEmitter(500, 1, new PointEmitter(true))
+                        {
+                            ReleaseParameters = new ReleaseParameters
+                            {
+                                Quantity = new RangeInt(10, 20),
+                                Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                                Color = Color.DarkRed,
+                                Opacity = 0.5f,
+                                Scale = 10,
+                                Speed = new Range(10, ParticleEffectHelper.ZombieExplosionDefaultSpeed.Max/2f)
+                            },
+
+                            Modifiers = new ParticleModifierCollection
+                            {
+                                new VelocityDampingModifier() {DampingPower = 1.75f},
+                                new OpacityFadeModifier() {InitialOpacity = 0.4f},
+                                new ColorInterpolatorModifier() {InitialColor = Color.DarkRed, FinalColor = Color.Black},
+                                new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 20},
+                                //    new RotationModifier() { RotationRate = 4f },
+                            },
+                        },
+                    },
+
+                    TriggerHandlers = new ParticleTriggerHandlerCollection()
+                    {
+                        new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
+                    }
+                });
+            }
+            else
+            {
+                _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
+                {
+                    Emitters = new ParticleEmitterCollection
+                    {
+                        new ParticleEmitter(1000, 1, new RotationalPointEmitter(true, Range.FullRotation))
+                        {
+                            ReleaseParameters = new ReleaseParameters
+                            {
+                                Quantity = new RangeInt(30, 40),
+                                Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                                Color = ColorRange.FromHSV(new Range(0, 360), 1, new Range(0.5f, 1)), // new ColorRange(new Range<byte>(64, 224), new Range<byte>(64, 224), new Range<byte>(64, 224)),
+                                Opacity = 0.5f,
+                                Scale = 10,
+                                Speed = ParticleEffectHelper.ZombieExplosionDefaultSpeed,
+                            },
+
+                            Modifiers = new ParticleModifierCollection
+                            {
+                                new VelocityDampingModifier() {DampingPower = 1.75f},
+                                new OpacityFadeModifier() {InitialOpacity = 0.75f},
+                                new HueShiftModifier() { HueShiftAmount = 360f },
+                                new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 18},
+                            },
+                        },
+
+                        new ParticleEmitter(500, 1, new PointEmitter(true))
+                        {
+                            ReleaseParameters = new ReleaseParameters
+                            {
+                                Quantity = new RangeInt(10, 20),
+                                Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                                Color = ColorRange.FromHSV(new Range(0, 360), 1, new Range(0.5f, 1)), // new ColorRange(new Range<byte>(64, 255), new Range<byte>(64, 255), new Range<byte>(64, 255)),
+                                Opacity = 0.5f,
+                                Scale = 10,
+                                Speed = new Range(10, ParticleEffectHelper.ZombieExplosionDefaultSpeed.Max/2f)
+                            },
+
+                            Modifiers = new ParticleModifierCollection
+                            {
+                                new VelocityDampingModifier() {DampingPower = 1.75f},
+                                new OpacityFadeModifier() {InitialOpacity = 0.4f},
+                                new HueShiftModifier() { HueShiftAmount = 360f },
+                                new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 20},
+                                //    new RotationModifier() { RotationRate = 4f },
+                            },
+                        },
+                    },
+
+                    TriggerHandlers = new ParticleTriggerHandlerCollection()
+                    {
+                        new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
+                    }
+                });
+            }
         }
 
         #endregion

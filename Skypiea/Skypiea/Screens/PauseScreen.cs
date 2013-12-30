@@ -19,7 +19,6 @@ namespace Skypiea.Screens
         {
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = false;
 
             this.CreateUiElements();
         }
@@ -28,6 +27,11 @@ namespace Skypiea.Screens
         {
             if (this.IsActive)
             {
+                if (updateContext.InputState.IsBackButtonPressed)
+                {
+                    this.OnExitClicked();
+                }
+
                 _uiContainer.Update(updateContext);
                 if (updateContext.InputState.IsBackButtonPressed)
                 {
@@ -58,14 +62,24 @@ namespace Skypiea.Screens
 
         private void OnContinueClicked()
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
             this.ExitScreen();
         }
 
         private void OnExitClicked()
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
             this.ScreenManager.RemoveAllScreens();
             this.ScreenManager.AddScreen(new MenuBackgroundScreen());
-            this.ScreenManager.AddScreen(new MainMenuScreen());
+            this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
         }
     }
 }

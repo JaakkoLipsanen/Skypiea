@@ -13,6 +13,6 @@ namespace Skypiea.Model.Boosters
             get { return false; }
         }
 
-        public readonly float SpeedMultiplier = 1.5f;
+        public readonly float SpeedMultiplier = 1.4f;
     }
 }

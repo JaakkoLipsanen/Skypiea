@@ -3,7 +3,6 @@ using Flai.CBES;
 using Flai.CBES.Components;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Model.Weapons;
 
 namespace Skypiea.Prefabs.Bullets
@@ -25,7 +24,7 @@ namespace Skypiea.Prefabs.Bullets
             entity.AddFromPool<CBullet>().Initialize(RicochetBulletPrefab.BulletSize, parameters.Get<RicochetGun>(1));
             entity.AddFromPool<CVelocity2D>().Initialize(FlaiMath.GetAngleVector(transform.Rotation + rotationOffset), Speed);
             entity.AddFromPool<CRotater2D>().Initialize(RicochetBulletPrefab.RotationAmount);
-            entity.AddFromPool<CRicochetBullet>().Initialize(6);
+            entity.AddFromPool<CRicochetBullet>().Initialize(3);
         }
     }
 }

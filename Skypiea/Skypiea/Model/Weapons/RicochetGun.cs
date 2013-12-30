@@ -9,13 +9,14 @@ namespace Skypiea.Model.Weapons
 {
     public class RicochetGun : BulletWeapon
     {
+        private const int BulletCount = 40;
         public override WeaponType Type
         {
             get { return WeaponType.Ricochet; }
         }
 
-        public RicochetGun()
-            : base(40, 0.5f)
+        public RicochetGun(float ammoMultiplier)
+            : base((int)(RicochetGun.BulletCount * ammoMultiplier), 0.575f)
         {
         }
 
@@ -37,8 +38,8 @@ namespace Skypiea.Model.Weapons
             CVelocity2D velocity = bullet.Entity.Get<CVelocity2D>();
             if (ricochetBullet.OnHit(entityHit))
             {
-                ZombieHelper.TakeDamageOrDelete(entityHit, 20);
-                velocity.Direction = velocity.Direction.Rotate(Global.Random.NextFloat(-1f, 1f));
+                ZombieHelper.TakeDamage(entityHit, 20, velocity.Velocity / 3f);
+                velocity.Direction = velocity.Direction.Rotate(Global.Random.NextFloat(-1f, 1f)); // change the direction to random
                 return false;
             }
 

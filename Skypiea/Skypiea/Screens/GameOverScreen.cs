@@ -22,14 +22,21 @@ namespace Skypiea.Screens
             _gameContainer = gameContainer;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = false;
 
             this.CreateUiElements();
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
-            _uiContainer.Update(updateContext);
+            if (this.IsActive)
+            {
+                if (updateContext.InputState.IsBackButtonPressed)
+                {
+                    this.OnExitClicked();
+                }
+
+                _uiContainer.Update(updateContext);
+            }
         }
 
         protected override void Draw(GraphicsContext graphicsContext)
@@ -54,15 +61,25 @@ namespace Skypiea.Screens
 
         private void OnReplayClicked()
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
             this.ExitScreen();
             _gameContainer.Restart();
         }
 
         private void OnExitClicked()
         {
+            if (this.IsExiting)
+            {
+                return;
+            }
+
             this.ScreenManager.RemoveAllScreens();
             this.ScreenManager.AddScreen(new MenuBackgroundScreen());
-            this.ScreenManager.AddScreen(new MainMenuScreen());
+            this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
         }
     }
 }

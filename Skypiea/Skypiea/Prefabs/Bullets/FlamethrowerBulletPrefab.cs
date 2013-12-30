@@ -3,7 +3,6 @@ using Flai.CBES;
 using Flai.CBES.Components;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Model.Weapons;
 
 namespace Skypiea.Prefabs.Bullets

@@ -6,7 +6,7 @@ namespace Skypiea.Misc
     public static class SkypieaConstants
     {
         public const int PixelsPerMeter = 32;
-        public const int MapWidth = 58; // in tiles
+        public const int MapWidth = 56; // in tiles // was 58, change *possibly* broke something
         public const int MapHeight = 30; // in tiles
         public const int MapWidthInPixels = SkypieaConstants.MapWidth * SkypieaConstants.PixelsPerMeter;
         public const int MapHeightInPixels = SkypieaConstants.MapHeight * SkypieaConstants.PixelsPerMeter;

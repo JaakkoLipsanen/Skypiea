@@ -3,6 +3,7 @@ using Flai.CBES.Systems;
 using Skypiea.Components;
 using Skypiea.Messages;
 using Skypiea.Misc;
+using Skypiea.Model;
 
 namespace Skypiea.Systems.Player
 {
@@ -18,6 +19,11 @@ namespace Skypiea.Systems.Player
 
             this.EntityWorld.SubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);
             this.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
+
+            if (this.EntityWorld.Services.Get<IPlayerPassiveStats>().SpawnWithThreeLives)
+            {
+                _playerInfo.AddLife();
+            }
         }
 
         private void OnZombieKilled(ZombieKilledMessage message)

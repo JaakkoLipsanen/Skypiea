@@ -15,10 +15,11 @@ namespace Skypiea.Systems
         private float _tickTime = Global.Random.NextFloat(75, 95);
         private readonly Timer _lifeDropTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;
+
         protected override void Initialize()
         {
             _playerInfo = this.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>();
-            _lifeDropTimer.SetTickTime(_tickTime);
+            _lifeDropTimer.SetTickTime(_tickTime / this.EntityWorld.Services.Get<IPlayerPassiveStats>().DropIncreaseMultiplier);
         }
 
         protected override void Update(UpdateContext updateContext)

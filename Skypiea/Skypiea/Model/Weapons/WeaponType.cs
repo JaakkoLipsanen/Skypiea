@@ -14,6 +14,7 @@ namespace Skypiea.Model.Weapons
         Minigun = 4,
         Ricochet = 5,
         Flamethrower = 6,
+        Waterblaster = 7,
     }
 
     public static class WeaponTypeHelper
@@ -24,7 +25,7 @@ namespace Skypiea.Model.Weapons
         {
             // this could do some weighting or something.. 
             // exclude assault rifle
-            return _weaponTypes[Global.Random.Next((int)WeaponType.Shotgun, _weaponTypes.Length)];
+            return _weaponTypes[Global.Random.Next((int)WeaponType.Shotgun, (int)WeaponType.Waterblaster)]; // Waterthrower *IS NOT* included
         }
 
         public static string GetDisplayName(this WeaponType weaponType)

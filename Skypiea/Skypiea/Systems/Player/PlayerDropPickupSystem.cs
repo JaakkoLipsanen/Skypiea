@@ -3,6 +3,7 @@ using Flai.CBES;
 using Flai.CBES.Systems;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
+using Skypiea.Messages;
 using Skypiea.Misc;
 using Skypiea.Model;
 
@@ -13,6 +14,7 @@ namespace Skypiea.Systems.Player
         private Entity _player;
         private CWeapon _playerWeapon;
         private CPlayerInfo _playerInfo;
+        private IPlayerPassiveStats _passiveStats;
 
         public PlayerDropPickupSystem()
             : base(Aspect.Any<CWeaponDrop, CLifeDrop>())
@@ -24,6 +26,7 @@ namespace Skypiea.Systems.Player
             _player = this.EntityWorld.FindEntityByName(EntityNames.Player);
             _playerWeapon = _player.Get<CWeapon>();
             _playerInfo = _player.Get<CPlayerInfo>();
+            _passiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
         }
 
         public override void Process(UpdateContext updateContext, Entity entity, CDrop velocity)
@@ -51,7 +54,11 @@ namespace Skypiea.Systems.Player
             }
             else
             {
-                _playerWeapon.Weapon = weaponDrop.BuildWeapon();
+                WeaponChangedMessage message = this.EntityWorld.FetchMessage<WeaponChangedMessage>();
+                message.Initialize(_playerWeapon.Weapon, weaponDrop.BuildWeapon(_passiveStats.AmmoMultiplier));
+                _playerWeapon.Weapon = message.NewWeapon;
+
+                this.EntityWorld.BroadcastMessage(message);
             }
 
             entity.Delete();

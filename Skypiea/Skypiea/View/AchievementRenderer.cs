@@ -42,29 +42,32 @@ namespace Skypiea.View
                 const float Height = 96;
                 const float VerticalPosition = 128;
 
+                const float BackgroundAlpha = 0.4f;
+                const float TextAlpha = 0.85f;
+
                 float alpha = FlaiMath.Min(_achievementShowTimer.ElapsedTime / FadeTime, (AchievementRenderer.AchievementShowTime - _achievementShowTimer.ElapsedTime) / FadeTime, 1);
 
                 SpriteFont font = graphicsContext.FontContainer["Minecraftia.16"];
-                float width = FlaiMath.Max(font.GetStringWidth(_currentAchievement.Name), font.GetStringWidth(_currentAchievement.Description)) + TextOffset * 2;
+                float width = FlaiMath.Max(font.GetStringWidth(_currentAchievement.Name), font.GetStringWidth(_currentAchievement.ShortDescription)) + TextOffset * 2;
 
                 float left = graphicsContext.ScreenSize.Width - OffsetFromBorder - width + (1 - alpha) * width / 2f;
                 float centerX = left + width / 2f;
 
                 // background
                 graphicsContext.PrimitiveRenderer.DrawRectangle(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * 0.5f * alpha);
+                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * BackgroundAlpha * alpha);
 
                 // background outlines
                 graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * alpha, 1);
+                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * alpha * TextAlpha, 1);
 
                 // name
                 graphicsContext.SpriteBatch.DrawStringCentered(
-                    font, _currentAchievement.Name, new Vector2(centerX, VerticalPosition + TextOffset + font.GetCharacterHeight() / 2f), Color.White * alpha);
+                    font, _currentAchievement.Name, new Vector2(centerX, VerticalPosition + TextOffset + font.GetCharacterHeight() / 2f), Color.White * alpha * TextAlpha);
 
                 // description
                 graphicsContext.SpriteBatch.DrawStringCentered(
-                    font, _currentAchievement.Description, new Vector2(centerX, VerticalPosition + TextOffset * 2 + font.GetCharacterHeight() * 3 / 2f), Color.White * alpha);
+                    font, _currentAchievement.ShortDescription, new Vector2(centerX, VerticalPosition + TextOffset * 2 + font.GetCharacterHeight() * 3 / 2f), Color.White * alpha * TextAlpha);
             }
         }
 

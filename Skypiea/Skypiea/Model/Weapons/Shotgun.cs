@@ -10,14 +10,13 @@ namespace Skypiea.Model.Weapons
     public class Shotgun : BulletWeapon
     {
         private const int BulletCount = 55;
-
         public override WeaponType Type
         {
             get { return WeaponType.Shotgun; }
         }
 
-        public Shotgun()
-            : base(Shotgun.BulletCount, 0.375f)
+        public Shotgun(float ammoMultiplier)
+            : base((int)(Shotgun.BulletCount * ammoMultiplier), 0.4f)
         {
         }
 
@@ -27,7 +26,7 @@ namespace Skypiea.Model.Weapons
             const float SpreadAngle = 0.3f;
             for (int i = 0; i < Bullets; i++)
             {
-                playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, -SpreadAngle / 2f + i / (float)Bullets * SpreadAngle);               
+                playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, -SpreadAngle / 2f + i / (float)Bullets * SpreadAngle);
             }
 
             this.DecreaseBulletCount();
@@ -35,14 +34,7 @@ namespace Skypiea.Model.Weapons
 
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
-            if (entityHit != null)
-            {
-                if (!ZombieHelper.TakeDamageOrDelete(entityHit, 10, bullet.Entity.Get<CVelocity2D>().Velocity / 4f))
-                {
-                    ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform);
-                }
-            }
-
+            ZombieHelper.TakeDamage(entityHit, 10, bullet.Entity.Get<CVelocity2D>().Velocity / 3f);
             bullet.Entity.Delete();
             return false; // okay this shouldn't return always false. but rather like "allow 2 first hits to go through, and the stop"
         }

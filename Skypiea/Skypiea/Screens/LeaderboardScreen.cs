@@ -9,7 +9,9 @@ using Flai.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Scoreloop.CoreSocial.API;
 using Skypiea.Leaderboards;
+using Skypiea.Ui;
 using Range = Flai.Range;
 using ScoreloopScore = Scoreloop.CoreSocial.API.Model.Score;
 
@@ -26,8 +28,8 @@ namespace Skypiea.Screens
         private readonly Scroller _scoller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
 
-        private LeaderboardButton _dailyLeaderboardButton;
-        private LeaderboardButton _overallLeaderboardButton;
+        private ScrollerButton _dailyLeaderboardButton;
+        private ScrollerButton _overallLeaderboardButton;
 
         private readonly Dictionary<LeaderboardScope, int> _ranks = new Dictionary<LeaderboardScope, int>();
         private bool _hasFailed = false;
@@ -40,14 +42,16 @@ namespace Skypiea.Screens
         public LeaderboardScreen()
         {
             _leaderboard = new ScrollingLeaderboard(LeaderboardHelper.CreateLeaderboardManager(), 0, 25);
-            _leaderboard.LoadMoreScores(this.OnScoresLoaded);
             _leaderboard.GetRank(LeaderboardScope.Daily, this.OnRankLoaded);
             _leaderboard.GetRank(LeaderboardScope.AllTime, this.OnRankLoaded);
+            _leaderboard.LoadMoreScores(this.OnScoresLoaded);
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = false;
+            this.FadeType = FadeType.FadeAlpha;
+            this.FadeIn = FadeDirection.Right;
+            this.FadeOut = FadeDirection.Right;
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -58,11 +62,6 @@ namespace Skypiea.Screens
             }
 
             this.CreateUI();
-        }
-
-        protected override void UnloadContent()
-        {
-            _leaderboard.ScoreloopManager.Close();
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -76,20 +75,22 @@ namespace Skypiea.Screens
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen());
+                //  this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left));
                 this.ExitScreen();
+                _leaderboard.ScoreloopManager.Close();
+                this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left), new Delay(0.25f));
             }
         }
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(this.TransitionAlpha);
             graphicsContext.SpriteBatch.Begin(_scoller.GetTransformMatrix(graphicsContext.ScreenSize));
             this.DrawScores(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            _uiContainer.Draw(graphicsContext, false);
-            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            _uiContainer.Draw(graphicsContext, true);
+            graphicsContext.SpriteBatch.End();
         }
 
         private void DrawScores(GraphicsContext graphicsContext)
@@ -118,19 +119,20 @@ namespace Skypiea.Screens
                 return;
             }
 
-            const float HorizontalOffset = 8;
+            const float HorizontalOffset = 32;
             const float OffsetFromTop = 164;
             const float ScoreHeight = 32;
+            const int TEMP_SCORES_DISPLAYED = 101;
 
             RectangleF scrollerArea = _scoller.GetArea(graphicsContext.ScreenSize);
-            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight, 0, _leaderboard.Scores.Count);
-            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreHeight), 0, _leaderboard.Scores.Count);
+            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight - 1, 0, TEMP_SCORES_DISPLAYED);
+            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreHeight), 0, TEMP_SCORES_DISPLAYED);
 
-            for (int i = 0; i < 105; i++)
+            for (int i = topVisible; i < bottomVisible; i++)
             {
                 float verticalPosition = OffsetFromTop + ScoreHeight * i;
                 ScoreloopScore score = _leaderboard.Scores[i % _leaderboard.Scores.Count];
-                ulong rank = (ulong)i; // score.Rank;
+                ulong rank = (ulong)(i + 1); // score.Rank;
                 int rankDigits = FlaiMath.DigitCount(rank);
 
                 // rank
@@ -147,8 +149,8 @@ namespace Skypiea.Screens
 
         private void CreateUI()
         {
-            _uiContainer.Add(_dailyLeaderboardButton = new LeaderboardButton("Daily", new Vector2(this.Game.ScreenSize.Width / 4f, 64), _scoller, this.OnDailyButtonClicked) { Font = "Minecraftia.24", Color = Color.White });
-            _uiContainer.Add(_overallLeaderboardButton = new LeaderboardButton("Overall", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 64), _scoller, this.OnOverallButtonClicked) { Font = "Minecraftia.24", Color = Color.DimGray });
+            _uiContainer.Add(_dailyLeaderboardButton = new ScrollerButton("Daily", new Vector2(this.Game.ScreenSize.Width / 4f, 64), _scoller, this.OnDailyButtonClicked) { Font = "Minecraftia.24", Color = Color.White });
+            _uiContainer.Add(_overallLeaderboardButton = new ScrollerButton("Overall", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 64), _scoller, this.OnOverallButtonClicked) { Font = "Minecraftia.24", Color = Color.DimGray });
         }
 
         private void OnOverallButtonClicked()
@@ -176,52 +178,28 @@ namespace Skypiea.Screens
 
         private void OnScoresLoaded(ScoreloopResponse<LeaderboardScoresResponse> response)
         {
-            if (!response.Success)
+            if (!response.Success && response.RequestSource.Error.Status != StatusCode.RequestCancelled)
             {
                 _hasFailed = true;
                 return;
             }
 
-            _scoller.ScrollingRange = new Range(0, _leaderboard.Scores.Count * ScoreSlotHeight + ScoreSlotHeight * 100);
+            _scoller.ScrollingRange = new Range(0, _leaderboard.Scores.Count * ScoreSlotHeight + ScoreSlotHeight * 101);
         }
 
         private void OnRankLoaded(ScoreloopResponse<RankResponse> response)
         {
             if (!response.Success)
             {
-                _hasFailed = true;
+                if (response.RequestSource.Error.Status != StatusCode.RequestCancelled)
+                {
+                    _hasFailed = true;
+                }
+
                 return;
             }
 
             _ranks.Add(response.Data.Scope, response.Data.Rank);
         }
-
-        #region Leaderboard Button
-
-        private class LeaderboardButton : TextButton
-        {
-            private readonly float _initialVerticalPosition;
-            private readonly Scroller _scroller;
-            public LeaderboardButton(string text, Vector2 position, Scroller scroller, GenericEvent clickFunction)
-                : base(text, position, clickFunction)
-            {
-                _initialVerticalPosition = position.Y;
-                _scroller = scroller;
-            }
-
-            public override void Update(UpdateContext updateContext)
-            {
-                base.Update(updateContext);
-                this.SetVerticalOffset(_scroller.ScrollValue);
-            }
-
-            private void SetVerticalOffset(float verticalOffset)
-            {
-                _centerPosition.Y = _initialVerticalPosition - verticalOffset;
-                this.UpdateArea();
-            }
-        }
-
-        #endregion
     }
 }

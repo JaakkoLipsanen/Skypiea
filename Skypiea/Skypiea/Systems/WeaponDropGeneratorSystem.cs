@@ -5,6 +5,7 @@ using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
+using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using Skypiea.Prefabs;
 
@@ -13,13 +14,16 @@ namespace Skypiea.Systems
     // todo: "WeaponDropLifeTimeSystem"? destroyes them after a certain amount of time
     public class WeaponDropGeneratorSystem : EntitySystem
     {
-        private const float WeaponDropTestInterval = 12;
-        private readonly Timer _weaponDropTimer = new Timer(WeaponDropGeneratorSystem.WeaponDropTestInterval);
+        private const float WeaponDropTestInterval = 8;
+        private readonly Timer _weaponDropTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;
+        private IPlayerPassiveStats _passiveStats;
 
         protected override void Initialize()
         {
             _playerInfo = this.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>();
+            _passiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
+            _weaponDropTimer.SetTickTime(WeaponDropGeneratorSystem.WeaponDropTestInterval / _passiveStats.DropIncreaseMultiplier);
         }
 
         protected override void Update(UpdateContext updateContext)
@@ -42,7 +46,7 @@ namespace Skypiea.Systems
             }
         }
 
-        private void CreateWeaponDrop()
+        public void CreateWeaponDrop()
         {
             CTransform2D playerTransform =
                 this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
@@ -53,7 +57,17 @@ namespace Skypiea.Systems
                 new Range(MinDistanceFromBorder, SkypieaConstants.MapHeightInPixels - MinDistanceFromBorder),
                 playerTransform.Position, SkypieaConstants.PixelsPerMeter * 5);
 
-            this.EntityWorld.CreateEntityFromPrefab<WeaponDropPrefab>(dropPosition, WeaponTypeHelper.GenerateWeaponDropType(/* some arguments maybe... */));
+            WeaponType dropType = WeaponTypeHelper.GenerateWeaponDropType();
+            if (dropType == WeaponType.Flamethrower && _passiveStats.ChanceForWaterBlaster)
+            {
+                // 50% chance... should it be lower?
+                if (Global.Random.NextFromOdds(0.5f))
+                {
+                    dropType = WeaponType.Waterblaster;
+                }
+            }
+
+            this.EntityWorld.CreateEntityFromPrefab<WeaponDropPrefab>(dropPosition, dropType);
         }
     }
 }

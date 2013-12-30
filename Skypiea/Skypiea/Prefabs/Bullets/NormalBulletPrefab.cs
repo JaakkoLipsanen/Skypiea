@@ -9,12 +9,12 @@ namespace Skypiea.Prefabs.Bullets
 {
     public class NormalBulletPrefab : Prefab
     {
+        public const float DefaultSpeed = SkypieaConstants.PixelsPerMeter*25f;
+
         // should bullets even have size? they could be just points... or maybe it's wise for them to have size..
         private static readonly SizeF BulletSize = new SizeF(6, 6);
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
-            const float DefaultSpeed = SkypieaConstants.PixelsPerMeter * 25f;
-
             CTransform2D transform = parameters.Get<CTransform2D>(0);
             BulletWeapon weapon = parameters.Get<BulletWeapon>(1);
             float angleOffset = parameters.GetOrDefault<float>(2);

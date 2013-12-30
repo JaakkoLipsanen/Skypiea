@@ -2,9 +2,10 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
+using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Services;
-using System;
+using Skypiea.Model.Boosters;
+using Skypiea.Systems.Zombie;
 
 namespace Skypiea.Model.Weapons
 {
@@ -35,6 +36,11 @@ namespace Skypiea.Model.Weapons
         public bool IsShooting { get; private set; }
         public Segment2D LaserSegment { get; private set; }
 
+        public Laser(float ammoMultiplier)
+        {
+            _ammoRemaining *= ammoMultiplier;
+        }
+
         public override void Update(UpdateContext updateContext, EntityWorld entityWorld)
         {
             // todo: there is some time between Update (Component.PreUpdate) and Shoot call.. so the "IsShooting" will be false there,
@@ -44,9 +50,13 @@ namespace Skypiea.Model.Weapons
 
         public override void Shoot(UpdateContext updateContext, Entity playerEntity)
         {
+            float boosterAttackSpeedMultiplier = BoosterHelper.GetPlayerAttackSpeedMultiplier(playerEntity.EntityWorld.Services.Get<IBoosterState>());
+            float passiveAttackSpeedMultiplier = playerEntity.EntityWorld.Services.Get<IPlayerPassiveStats>().FireRateMultiplier;
+            float attackSpeedMultiplier = boosterAttackSpeedMultiplier * passiveAttackSpeedMultiplier;
+
             if (this.CanShoot)
             {
-                _ammoRemaining -= updateContext.DeltaSeconds * Laser.AmmoUsedPerSecond;
+                _ammoRemaining -= updateContext.DeltaSeconds * attackSpeedMultiplier * Laser.AmmoUsedPerSecond;
                 if (_ammoRemaining < 0)
                 {
                     _ammoRemaining = 0;
@@ -54,9 +64,12 @@ namespace Skypiea.Model.Weapons
 
                 this.LaserSegment = this.GetLaserSegment(playerEntity.Transform, playerEntity.EntityWorld);
                 IZombieSpatialMap zombieSpatialMap = playerEntity.EntityWorld.Services.Get<IZombieSpatialMap>();
-                foreach (Entity zombie in zombieSpatialMap.GetZombiesIntersecting(this.LaserSegment, Laser.MaxHitDistance))
+                foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(this.LaserSegment, Laser.MaxHitDistance))
                 {
-                    ZombieHelper.TakeDamageOrDelete(zombie, Laser.DamagePerSecond * updateContext.DeltaSeconds);
+                    if (zombie.Get<CHealth>().IsAlive && ZombieHelper.TakeDamage(zombie, Laser.DamagePerSecond * attackSpeedMultiplier * updateContext.DeltaSeconds, null))
+                    {
+                        ZombieHelper.TriggerBloodExplosion(zombie.Transform, this.LaserSegment.Direction * SkypieaConstants.PixelsPerMeter * 10f);
+                    }
                 }
 
                 this.IsShooting = true;
@@ -74,7 +87,11 @@ namespace Skypiea.Model.Weapons
             Vector2 rayEndPoint;
             if (!ray.Intersects(cameraArea, out rayEndPoint))
             {
+#if DEBUG
                 throw new InvalidOperationException("camera is fucked up? or player isn't in the camera area");
+#else
+                return new Segment2D(-Vector2.One * 1000, -Vector2.One * 1000);
+#endif
             }
 
             return new Segment2D(ray.Position, rayEndPoint);

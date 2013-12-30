@@ -1,6 +1,7 @@
 using Flai;
 using Flai.General;
 using Flai.Graphics;
+using Flai.Misc;
 using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
@@ -12,6 +13,7 @@ using Skypiea.Model.Weapons;
 using Skypiea.View;
 using System;
 using System.Linq;
+using Settings = Skypiea.Misc.Settings;
 
 namespace Skypiea.Screens
 {
@@ -28,11 +30,13 @@ namespace Skypiea.Screens
             get { return true; }
         }
 
-        public MainMenuScreen()
+        public MainMenuScreen(FadeDirection fadeIn)
         {
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = false;
+            this.FadeType = FadeType.FadeAlpha;
+            this.FadeIn = fadeIn;
+            this.FadeOut = FadeDirection.Right;
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -47,13 +51,16 @@ namespace Skypiea.Screens
             _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2F, 320), this.OnLeaderboardsClicked) { InflateAmount = -8 });
             _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2F, 380), this.OnExitClicked) { InflateAmount = -8 });
 
-            _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray()) { Font = "SegoeWP.24" });
+            // DEBUG STUFF
+            _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
             _uiContainer.Add(_zombiesToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f, 440), 150), "All zombies", "Only Rushers") { Font = "SegoeWP.24" });
 
-            _uiContainer.Add(_weaponTypeToggleButton = new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray()) { Font = "SegoeWP.24" });
-            _uiContainer.Add(_graphicsToggleButton = new TextMultiToggleButton<GraphicalQuality>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 40), 150), EnumHelper.GetValues<GraphicalQuality>().ToArray()) { Font = "SegoeWP.24" });
+            _uiContainer.Add(_weaponTypeToggleButton = new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
+            _uiContainer.Add(_graphicsToggleButton = new TextMultiToggleButton<GraphicalQuality>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 40), 150), EnumHelper.GetValues<GraphicalQuality>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
 
+            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(100, 30), 50), "Debug", "No debug", isToggled => this.ScreenManager.Game.Components.Get<DebugInformationComponent>().ToggleVisibility()));
             _uiContainer.Add(new TextButton("Reset Achievements", new Vector2(this.Game.ScreenSize.Width / 4f * 3 + 30, 440), AchievementHelper.ResetAchievements) { Font = "SegoeWP.24" });
+            _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, this.Game.ScreenSize.Height - 18)) { Color = Color.White * 0.075f, Font = "SegoeWP.16" });
 
             _graphicsToggleButton.SetSelectedValue(Settings.Current.GraphicalQuality);
             _graphicsToggleButton.Click += () => Settings.Current.GraphicalQuality = _graphicsToggleButton.SelectedValue;
@@ -70,6 +77,7 @@ namespace Skypiea.Screens
             TestingGlobals.DefaultWeaponType = _weaponTypeToggleButton.SelectedValue;
             Settings.Current.GraphicalQuality = _graphicsToggleButton.SelectedValue;
 
+            this.FadeOut = FadeDirection.Up;
             this.ScreenManager.LoadScreen(new GameplayScreen(_worldTypeToggleButton.SelectedValue));
         }
 
@@ -77,8 +85,10 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                this.Exited += () => this.ScreenManager.AddScreen(new AchievementScreen());
-                this.ExitScreen();
+                // this.Exited += () => this.ScreenManager.AddScreen(new AchievementScreen());
+                this.FadeOut = FadeDirection.Right;
+                this.ExitScreen(); 
+                this.ScreenManager.AddScreen(new AchievementScreen(), new Delay(0.25f));
             }
         }
 
@@ -86,20 +96,29 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
+                // this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
+                this.FadeOut = FadeDirection.Left;
                 this.ExitScreen();
+                this.ScreenManager.AddScreen(new LeaderboardScreen(), new Delay(0.25f));
             }
         }
 
         private void OnExitClicked()
         {
-            this.Game.Exit();
+            this.Exited += () => this.Game.Exit();
+            this.FadeOut = FadeDirection.Down;
+            this.ExitScreen();
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
         {
             if (this.IsActive)
             {
+                if (updateContext.InputState.IsBackButtonPressed)
+                {
+                    this.OnExitClicked();
+                }
+
                 _uiContainer.Update(updateContext);
             }
         }
@@ -107,56 +126,8 @@ namespace Skypiea.Screens
         protected override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(this.TransitionAlpha);
             _uiContainer.Draw(graphicsContext, true);
-            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
             graphicsContext.SpriteBatch.End();
-        }
-    }
-
-    public class MenuBackgroundScreen : GameScreen
-    {
-        public MenuBackgroundScreen()
-        {
-            this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
-            this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = true;
-        }
-
-        protected override void Draw(GraphicsContext graphicsContext)
-        {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-            graphicsContext.SpriteBatch.DrawFullscreen(this.ContentProvider.DefaultManager.LoadTexture("MainMenuBackground"), new Color(64, 64, 64));
-            graphicsContext.SpriteBatch.End();
-        }
-
-        protected override void PostDraw(GraphicsContext graphicsContext)
-        {
-            if (Settings.Current.GraphicalQuality == GraphicalQuality.High)
-            {
-                graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-                this.DrawNoise(graphicsContext);
-                this.DrawVignette(graphicsContext);
-                graphicsContext.SpriteBatch.End();
-            }
-        }
-
-        private void DrawVignette(GraphicsContext graphicsContext)
-        {
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Vignette")); // ...
-        }
-
-        private void DrawNoise(GraphicsContext graphicsContext)
-        {
-            Texture2D noiseTexture = this.ContentProvider.DefaultManager.LoadTexture("Noise");
-            for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
-            {
-                for (int y = Global.Random.Next(-360, 0); y < graphicsContext.ScreenSize.Height; y += noiseTexture.Height)
-                {
-                    graphicsContext.SpriteBatch.Draw(noiseTexture, new Vector2(x, y), Color.White * 0.05f);
-                }
-            }
         }
     }
 }

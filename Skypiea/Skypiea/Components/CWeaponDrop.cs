@@ -13,7 +13,12 @@ namespace Skypiea.Components
 
         public Weapon BuildWeapon()
         {
-            return WeaponFactory.CreateWeapon(this.Type);
+            return this.BuildWeapon(1);
+        }
+
+        public Weapon BuildWeapon(float ammoMultiplier)
+        {
+            return WeaponFactory.CreateWeapon(this.Type, ammoMultiplier);
         }
 
         protected override void Cleanup()
@@ -23,6 +28,6 @@ namespace Skypiea.Components
     }
 
     public class CLifeDrop : PoolableComponent
-    {        
+    {
     }
 }

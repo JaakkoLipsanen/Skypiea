@@ -54,10 +54,10 @@
     <XnaCompressContent>false</XnaCompressContent>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
-    <Reference Include="Microsoft.Xna.Framework.GamerServices" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
     <Reference Include="Scoreloop.CoreSocial">
@@ -72,8 +72,16 @@
   <ItemGroup>
     <Compile Include="Achievements\AchievementHelper.cs" />
     <Compile Include="Achievements\AchievementInfo.cs" />
+    <Compile Include="Achievements\Trackers\KillWithInvulnerabilityBoosterTracker.cs" />
+    <Compile Include="Achievements\Trackers\KillRushersWhileRushingTracker.cs" />
+    <Compile Include="Achievements\Trackers\KillZombiesInTimeTracker.cs" />
     <Compile Include="Achievements\Trackers\KillZombiesTracker.cs" />
+    <Compile Include="Achievements\Trackers\LivesAtAnyPointOfGameTracker.cs" />
     <Compile Include="Achievements\Trackers\PersistentRunningTracker.cs" />
+    <Compile Include="Achievements\Trackers\ScoreTracker.cs" />
+    <Compile Include="Achievements\Trackers\SpendLaserAmmoWithoutHittingTracker.cs" />
+    <Compile Include="Achievements\Trackers\SurviveWithoutKillingTracker.cs" />
+    <Compile Include="Achievements\Trackers\SurviveWithoutMovingTracker.cs" />
     <Compile Include="Components\CBasicZombieAI.cs" />
     <Compile Include="Components\CBullet.cs" />
     <Compile Include="Components\CPlayerCamera2D.cs" />
@@ -91,6 +99,7 @@
     <Compile Include="Messages\GameExitMessage.cs" />
     <Compile Include="Messages\GameOverMessage.cs" />
     <Compile Include="Messages\PlayerKilledMessage.cs" />
+    <Compile Include="Messages\WeaponChangedMessage.cs" />
     <Compile Include="Messages\ZombieKilledMessage.cs" />
     <Compile Include="Misc\DropHelper.cs" />
     <Compile Include="Misc\EntityTags.cs" />
@@ -143,9 +152,9 @@
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Screens\LeaderboardScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
+    <Compile Include="Screens\MenuBackgroundScreen.cs" />
     <Compile Include="Screens\PauseScreen.cs" />
     <Compile Include="Screens\SkypieaSplashScreen.cs" />
-    <Compile Include="Services\ZombieSpatialMap.cs" />
     <Compile Include="Systems\AchievementSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
@@ -153,6 +162,7 @@
     <Compile Include="Systems\HighscoreSystem.cs" />
     <Compile Include="Systems\LifeDropGeneratorSystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />
+    <Compile Include="Systems\Player\PlayerDeathExplosionSystem.cs" />
     <Compile Include="Systems\Player\PlayerManagerSystem.cs" />
     <Compile Include="Systems\Player\PlayerDropPickupSystem.cs" />
     <Compile Include="Systems\Player\PlayerPassiveSystem.cs" />
@@ -164,8 +174,10 @@
     <Compile Include="Systems\WeaponDropGeneratorSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieAttackSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieHealthSystem.cs" />
+    <Compile Include="Systems\Zombie\ZombieSpatialMapSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpawnManagerSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieStatsSystem.cs" />
+    <Compile Include="Ui\ScollerButton.cs" />
     <Compile Include="View\AchievementRenderer.cs" />
     <Compile Include="View\BoosterStateRenderer.cs" />
     <Compile Include="View\BulletRenderer.cs" />

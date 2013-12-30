@@ -28,7 +28,7 @@ namespace Skypiea.Screens
             _worldType = worldType;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeBackBufferToBlack = true;
+            this.FadeType = Flai.ScreenManagement.FadeType.FadeToBlack;
 
             this.EnabledGestures = GestureType.DoubleTap;
         }

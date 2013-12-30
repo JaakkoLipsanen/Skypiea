@@ -1,7 +1,6 @@
 ﻿using Flai;
 using Flai.CBES;
 using Flai.Graphics.Particles;
-using Skypiea.Services;
 using Skypiea.Systems;
 using Skypiea.Systems.Player;
 using Skypiea.Systems.Zombie;
@@ -38,7 +37,6 @@ namespace Skypiea.Model
             _particleEngine = new ParticleEngine();
 
             _entityWorld.Services.Add<IParticleEngine>(_particleEngine);
-            _entityWorld.Services.Add<IZombieSpatialMap>(new ZombieSpatialMap(_entityWorld));
 
             this.CreateSystems();
         }
@@ -65,6 +63,7 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
             _entityWorld.AddSystem<ZombieHealthSystem>();
             _entityWorld.AddSystem<ZombieExplosionManagerSystem>();
+            _entityWorld.AddSystem<ZombieSpatialMapSystem>();
 
             _entityWorld.AddSystem<BasicZombieAISystem>();
             _entityWorld.AddSystem<RusherZombieAISystem>();
@@ -73,6 +72,7 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<PlayerManagerSystem>();
             _entityWorld.AddSystem<PlayerDropPickupSystem>();
             _entityWorld.AddSystem<PlayerWeaponManagerSystem>();
+            _entityWorld.AddSystem<PlayerDeathExplosionSystem>();
 
             _entityWorld.AddSystem<BulletCollisionSystem>();
             _entityWorld.AddSystem<BulletOutOfBoundsDestroySystem>();
@@ -82,11 +82,11 @@ namespace Skypiea.Model
 
             _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<BoosterManagerSystem>();
-            _entityWorld.AddSystem<PlayerPassiveSystem>();
             _entityWorld.AddSystem<ZombieStatsSystem>();
 
             _entityWorld.AddSystem<AchievementSystem>();
             _entityWorld.AddSystem<HighscoreSystem>();
+            _entityWorld.AddSystem<PlayerPassiveSystem>();
         }
     }
 }

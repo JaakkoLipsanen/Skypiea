@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with TexturePacker http://www.codeandweb.com/texturepacker-->
+<!-- $TexturePacker:SmartUpdate:a44180241a18c688e0f3da95a79ff628:425644ed7a66a6a2827e90683b34dabd:9bebaba4359037f3339c3fbaabe18e49$ -->
+<!--Format:
+n  => name of the sprite
+x  => sprite x pos in texture
+y  => sprite y pos in texture
+w  => sprite width (may be trimmed)
+h  => sprite height (may be trimmed)
+oX => sprite's x-corner offset (only available if trimmed)
+oY => sprite's y-corner offset (only available if trimmed)
+oW => sprite's original width (only available if trimmed)
+oH => sprite's original height (only available if trimmed)
+r => 'y' only set if sprite is rotated
+-->
+<TextureAtlas imagePath="TextureSpriteSheet.png" width="2048" height="2048">
+    <sprite n="BoosterTextBackground.png" x="1606" y="2" w="347" h="120"/>
+    <sprite n="Weapons/Bullet.png" x="1966" y="89" w="8" h="5"/>
+    <sprite n="Map/CombineTest.png" x="1030" y="484" w="512" h="512"/>
+    <sprite n="Map/CornerFadeTexture.png" x="1955" y="67" w="20" h="20"/>
+    <sprite n="Map/DesertMap.png" x="516" y="484" w="512" h="512"/>
+    <sprite n="Map/GrassMap.png" x="2" y="1030" w="512" h="512"/>
+    <sprite n="Heart.png" x="1977" y="85" w="11" h="10"/>
+    <sprite n="Weapons/Laser.png" x="1995" y="84" w="14" h="200"/>
+    <sprite n="Drops/Life.png" x="1995" y="67" w="15" h="15"/>
+    <sprite n="Drops/LifeDropFan.png" x="1808" y="124" w="98" h="199"/>
+    <sprite n="MenuBackground.png" x="1606" y="124" w="200" h="120"/>
+    <sprite n="PostProcessing/Noise.png" x="804" y="2" w="800" h="480"/>
+    <sprite n="Weapons/RicochetBullet.png" x="1977" y="67" w="16" h="16"/>
+    <sprite n="Weapons/RocketBullet.png" x="1955" y="89" w="9" h="4"/>
+    <sprite n="Map/SideFadeTexture.png" x="2020" y="2" w="20" h="512"/>
+    <sprite n="Map/Snow.png" x="2" y="516" w="512" h="512"/>
+    <sprite n="PostProcessing/Vignette.png" x="2" y="2" w="800" h="480"/>
+    <sprite n="Zombie.png" x="1955" y="2" w="63" h="63"/>
+</TextureAtlas>

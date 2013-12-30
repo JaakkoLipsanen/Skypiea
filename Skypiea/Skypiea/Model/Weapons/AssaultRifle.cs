@@ -1,7 +1,5 @@
 using Flai;
 using Flai.CBES;
-using Flai.CBES.Components;
-using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
@@ -29,14 +27,7 @@ namespace Skypiea.Model.Weapons
 
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
-            if (entityHit != null)
-            {
-                if (!ZombieHelper.TakeDamageOrDelete(entityHit, 10, bullet.Entity.Get<CVelocity2D>().Velocity / 4f))
-                {
-                    ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform, Vector2.Zero);
-                }
-            }
-
+            ZombieHelper.TakeDamage(entityHit, 10, bullet.Transform.RotationVector * NormalBulletPrefab.DefaultSpeed / 3.5f);
             bullet.Entity.Delete();
             return true;
         }

@@ -46,6 +46,7 @@ namespace Skypiea.Systems
 
         protected override void Shutdown()
         {
+            _achievementTrackerCollection.Shutdown();
             _achievementManager.SaveToFile();
         }
 
@@ -60,7 +61,10 @@ namespace Skypiea.Systems
             foreach (Achievement achievement in _achievementManager.Achievements)
             {
                 AchievementInfo achievementInfo = (AchievementInfo)achievement.Tag;
-                _achievementTrackerCollection.Add(achievementInfo.CreateTracker(_achievementManager, this.EntityWorld, achievement));
+                if (achievementInfo.HasTracker)
+                {
+                    _achievementTrackerCollection.Add(achievementInfo.CreateTracker(_achievementManager, this.EntityWorld, achievement));
+                }
             }
         }
 

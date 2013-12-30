@@ -1,10 +1,11 @@
 using Flai;
 using Flai.CBES;
 using Flai.Graphics.Particles;
+using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
-using Skypiea.Services;
+using Skypiea.Systems.Zombie;
 
 namespace Skypiea.Model.Weapons
 {
@@ -18,8 +19,8 @@ namespace Skypiea.Model.Weapons
             get { return WeaponType.RocketLauncher; }
         }
 
-        public RocketLauncher()
-            : base(RocketLauncher.BulletCount, 0.3f)
+        public RocketLauncher(float ammoMultiplier)
+            : base((int)(RocketLauncher.BulletCount * ammoMultiplier), 0.3f)
         {
         }
 
@@ -32,12 +33,9 @@ namespace Skypiea.Model.Weapons
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
             IZombieSpatialMap zombieSpatialMap = entityHit.EntityWorld.Services.Get<IZombieSpatialMap>();
-            foreach (Entity zombie in zombieSpatialMap.GetZombiesWithinRange(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
+            foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
             {
-                if (!ZombieHelper.TakeDamageOrDelete(zombie, 25))
-                {
-                    ZombieHelper.TriggerBloodSplatter(bullet.Entity.Transform);
-                }
+                ZombieHelper.TakeDamage(zombie, 25, Vector2.Zero); // Vector2.Normalize(zombie.Transform.Position - bullet.Transform.Position) * SkypieaConstants.PixelsPerMeter * 6f);
             }
 
             IParticleEngine particleEngine = bullet.Entity.EntityWorld.Services.Get<IParticleEngine>();

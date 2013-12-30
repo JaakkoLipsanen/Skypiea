@@ -30,7 +30,7 @@ namespace Skypiea.View
             _bulletRenderer = new BulletRenderer(_world.EntityWorld);
             _dropRenderer = new DropRenderer(_world.EntityWorld);
             _weaponRenderer = new WeaponRenderer(_world.EntityWorld);
-            _particleEffectRenderer = new ParticleEffectRenderer(_world.ParticleEngine);
+            _particleEffectRenderer = new ParticleEffectRenderer(_world.EntityWorld, _world.ParticleEngine);
 
             _boosterStateRenderer = new BoosterStateRenderer(_world.EntityWorld);
             _achievementRenderer = new AchievementRenderer(_world.EntityWorld);

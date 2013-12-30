@@ -12,52 +12,43 @@ namespace Skypiea.Misc
 {
     public static class ZombieHelper
     {
-        public static bool TakeDamageOrDelete(Entity zombie, float damage)
+        public static bool TakeDamage(Entity zombie, float damage)
         {
-           return ZombieHelper.TakeDamageOrDelete(zombie, damage, Vector2.Zero);
+            return ZombieHelper.TakeDamage(zombie, damage, null);
         }
 
-        public static bool TakeDamageOrDelete(Entity zombie, float damage, Vector2? explosionVelocity)
+        public static bool TakeDamage(Entity zombie, float damage, Vector2? explosionVelocity)
         {
-            CHealth health = zombie.TryGet<CHealth>();
-            if (health)
+            CHealth health = zombie.Get<CHealth>();
+
+            if (!health.IsAlive)
             {
-                if (!health.IsAlive)
-                {
-                    return true;
-                }
-
-                bool killed = health.TakeDamage(damage * BoosterHelper.GetZombieDamageRedcutionMultiplier(zombie.EntityWorld.Services.Get<IBoosterState>()));
-                if (explosionVelocity.HasValue)
-                {
-                    if (killed)
-                    {
-                        ZombieHelper.TriggerBloodExplosion(zombie.Transform, explosionVelocity.Value);
-                    }
-                    else
-                    {
-                        ZombieHelper.TriggerBloodSplatter(zombie.Transform, explosionVelocity.Value);
-                    }
-                }
-
-                return killed;
+                return true;
             }
 
-            zombie.Delete();
-            return true;
+            bool killed = health.TakeDamage(damage * BoosterHelper.GetZombieDamageRedcutionMultiplier(zombie.EntityWorld.Services.Get<IBoosterState>()));
+            if (explosionVelocity.HasValue)
+            {
+                if (killed)
+                {
+                    ZombieHelper.TriggerBloodExplosion(zombie.Transform, explosionVelocity.Value);
+                }
+                else
+                {
+                    ZombieHelper.TriggerBloodSplatter(zombie.Transform, Vector2.Zero);
+                }
+            }
+
+            return killed;
         }
 
-        public static bool Kill(Entity zombie)
+        public static bool Kill(Entity zombie, Vector2? explosionVelocity)
         {
-            CHealth health = zombie.TryGet<CHealth>();
-            if (health)
+            const float LotsOfDamage = 1000 * 1000;
+            zombie.Get<CHealth>().TakeDamage(LotsOfDamage);
+            if (explosionVelocity.HasValue)
             {
-                const float LotsOfDamage = 1000 * 1000;
-                health.TakeDamage(LotsOfDamage);
-            }
-            else
-            {
-                zombie.Delete();
+                ZombieHelper.TriggerBloodExplosion(zombie.Transform, explosionVelocity.Value);
             }
 
             return true;
@@ -74,9 +65,9 @@ namespace Skypiea.Misc
             }
             else
             {
-                const float ExplosionRotationalBias = 1.5f;
+                const float ExplosionRotationalBias = 1.15f;
                 emitter.RotationalRange = Range.CreateCentered(FlaiMath.GetAngle(velocity), ExplosionRotationalBias);
-                effect.Emitters[0].ReleaseParameters.Speed = new Range(0, velocity.Length());          
+                effect.Emitters[0].ReleaseParameters.Speed = new Range(0, velocity.Length());
             }
 
             effect.Trigger(transform.Position);

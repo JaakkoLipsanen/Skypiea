@@ -22,8 +22,7 @@ namespace Skypiea.View
             {
                 const float RealTextureSize = 48;
                 float scale = zombieInfo.Size / RealTextureSize;
-             //   graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ZombieShadow"), entity.Transform.Position, Color.White * 0.5f, 0, scale * 1.4f);
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Zombie"), entity.Transform.Position, ZombieRenderer.GetColor(zombieInfo), entity.Transform.Rotation, scale);
+                graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Zombie"), entity.Transform.Position, ZombieRenderer.GetColor(zombieInfo), entity.Transform.Rotation, scale);
             }
         }
 

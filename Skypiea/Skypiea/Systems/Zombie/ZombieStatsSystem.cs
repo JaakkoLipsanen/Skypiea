@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Flai;
 using Flai.CBES.Systems;
 using Skypiea.Components;
@@ -17,8 +16,8 @@ namespace Skypiea.Systems.Zombie
 
     public class ZombieStatsSystem : EntitySystem, IZombieStatsProvider
     {
-        private const float ZombieStartSpawnTime = 0.85f;
-        private const float UpdateOnlySpawnRateEnd = 150;
+        private const float ZombieStartSpawnTime = 0.75f;
+        private const float UpdateOnlySpawnRateEnd = 120;
         private const float UpdateOnlySpeedEnd = ZombieStatsSystem.UpdateOnlySpawnRateEnd + 100;
 
         private CPlayerInfo _playerInfo;
@@ -86,14 +85,7 @@ namespace Skypiea.Systems.Zombie
             _totalPlayTime += updateContext.DeltaSeconds;
 
             _spawnRate = ZombieStatsSystem.ZombieStartSpawnTime / FlaiMath.Max(0.001f, FlaiMath.Pow(this.TotalSpawnRateUpdateTime / 2f, 0.25f));
-            _speedMultiplier = FlaiMath.Max(1, FlaiMath.Pow(this.TotalSpeedUpdateTime / 4f, 1 / 12f)); // todo this 1 / 12 exponent is too low, the increase at the end is way too slow
-
-            if (i++ == 10)
-            {
-                i = 0;
-            }
+            _speedMultiplier = FlaiMath.Max(1, FlaiMath.Pow(this.TotalSpeedUpdateTime / 4f, 1 / 10f)); // todo this 1 / 12 exponent is too low, the increase at the end is way too slow
         }
-
-        private int i = 0;
     }
 }

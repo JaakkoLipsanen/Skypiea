@@ -17,6 +17,7 @@ namespace Skypiea.Systems.Player
         private CVirtualThumbstick _movementThumbstick;
         private CVirtualThumbstick _rotationThumbstick;
         private IBoosterState _boosterState;
+        private IPlayerPassiveStats _playerPassiveStats;
 
         protected override int ProcessOrder
         {
@@ -36,6 +37,7 @@ namespace Skypiea.Systems.Player
             _rotationThumbstick = this.EntityWorld.FindEntityByName(EntityNames.RotationThumbStick).Get<CVirtualThumbstick>();
 
             _boosterState = this.EntityWorld.Services.Get<IBoosterState>();
+            _playerPassiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
         }
 
         protected override void Process(UpdateContext updateContext, Entity player)
@@ -45,11 +47,13 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
+        //  player.Transform.Position = SkypieaConstants.MapSizeInPixels / 2f + (Vector2.UnitX * 400).Rotate(updateContext.TotalSeconds / 4f);
+          
             const float PositionClampOffset = -SkypieaConstants.PixelsPerMeter;
             const float DefaultSpeed = SkypieaConstants.PixelsPerMeter * 4.5f;
 
-            float boosterMovementSpeedMultiplier = BoosterHelper.GetPlayerSpeedMultiplier(this.EntityWorld.Services.Get<IBoosterState>());
-            float passiveMovementSpeedMultiplier = this.EntityWorld.Services.Get<IPlayerPassiveStats>().MovementSpeedMultiplier;
+            float boosterMovementSpeedMultiplier = BoosterHelper.GetPlayerSpeedMultiplier(_boosterState);
+            float passiveMovementSpeedMultiplier = _playerPassiveStats.MovementSpeedMultiplier;
             float speed = DefaultSpeed * boosterMovementSpeedMultiplier * passiveMovementSpeedMultiplier;
 
             // movement
@@ -61,7 +65,7 @@ namespace Skypiea.Systems.Player
             // rotation
             if (_rotationThumbstick.ThumbStick.Direction != Vector2.Zero)
             {
-                player.Transform.RotationVector = _rotationThumbstick.ThumbStick.Direction;
+                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_rotationThumbstick.ThumbStick.Direction);
                 if (_weapon.Weapon.CanShoot)
                 {
                     _weapon.Weapon.Shoot(updateContext, player); // normalized thumbstick direction
@@ -70,7 +74,7 @@ namespace Skypiea.Systems.Player
             // If rotation thumbstick is not pressed, then the movement determines the direction
             else if (_movementThumbstick.ThumbStick.Direction != Vector2.Zero)
             {
-                player.Transform.RotationVector = _movementThumbstick.ThumbStick.Direction;
+                player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_movementThumbstick.ThumbStick.Direction);
             }
         }
     }

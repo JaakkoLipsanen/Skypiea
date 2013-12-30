@@ -51,6 +51,7 @@ namespace Skypiea
         protected override void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
+            e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
         }
     }
 }

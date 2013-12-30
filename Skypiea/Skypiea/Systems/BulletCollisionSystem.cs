@@ -2,7 +2,7 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Systems;
 using Skypiea.Components;
-using Skypiea.Services;
+using Skypiea.Systems.Zombie;
 
 namespace Skypiea.Systems
 {
@@ -21,7 +21,7 @@ namespace Skypiea.Systems
 
         public override void Process(UpdateContext updateContext, Entity entity, CBullet velocity)
         {
-            foreach (Entity zombie in _zombieSpatialMap.GetZombiesWithinRange(entity.Transform.Position, 8))
+            foreach (Entity zombie in _zombieSpatialMap.GetAllIntersecting(entity.Transform.Position, 8))
             {
                 if (velocity.InvokeCallback(updateContext, zombie))
                 {

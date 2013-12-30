@@ -38,10 +38,11 @@ namespace Skypiea.View
             if (playerInfo.IsAlive && playerInfo.IsVisuallyInvulnerable)
             {
                 const float Scale = 50 * GlobalScale;
-                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, _player.Transform.Position, new Color(32, 32, 255) * 0.5f, graphicsContext.TotalSeconds * 5f, (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 6) / 6f) * Scale);
+                Vector2 position = Vector2i.Round(_player.Transform.Position);
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, position, new Color(32, 32, 255) * 0.5f, graphicsContext.TotalSeconds * 5f, (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 6) / 6f) * Scale);
             }
 
-            graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("Zombie"), _player.Transform.Position, color, _player.Transform.Rotation, GlobalScale);
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Zombie"), _player.Transform.Position, color, _player.Transform.Rotation, GlobalScale);
         }
 
         public void DrawUI(GraphicsContext graphicsContext)
@@ -65,7 +66,7 @@ namespace Skypiea.View
             const int Size = 24;
             const int OffsetFromBorder = 8;
 
-            Texture2D heartTexture = graphicsContext.ContentProvider.DefaultManager.LoadTexture("Heart");
+            TextureDefinition heartTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Heart");
             for (int i = 0; i < playerInfo.TotalLives; i++)
             {
                 Color color = Color.White;

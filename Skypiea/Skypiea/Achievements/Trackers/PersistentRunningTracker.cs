@@ -16,6 +16,7 @@ namespace Skypiea.Achievements.Trackers
         public PersistentRunningTracker(AchievementManager achievementManager, EntityWorld entityWorld, string achievementName)
             : base(achievementManager, entityWorld, achievementName)
         {
+            Ensure.Is<FloatProgression>(_achievement.Progression);
             _progression = (FloatProgression)_achievement.Progression;
             _playerTransform = _entityWorld.FindEntityByName(EntityNames.Player).Transform;
             _previousPosition = _playerTransform.Position;

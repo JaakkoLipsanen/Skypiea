@@ -24,7 +24,7 @@ namespace Skypiea.View
             // draws the actual map texture
             Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
-                 graphicsContext.ContentProvider.DefaultManager.LoadTexture(_world.WorldType.GetMapTextureName()),
+                 _contentProvider.DefaultManager.LoadTexture(_world.WorldType.GetMapTextureName()),
                  -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, SkypieaViewConstants.PixelSize);
         }
 
@@ -56,7 +56,7 @@ namespace Skypiea.View
 
         private void DrawSides(GraphicsContext graphicsContext)
         {
-            Texture2D texture = _contentProvider.DefaultManager.LoadTexture("Map/SideFadeTexture");
+            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "Map/SideFadeTexture");
             Rectangle horizontalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapWidthInPixels / SkypieaViewConstants.PixelSize));
             Rectangle verticalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapHeightInPixels / SkypieaViewConstants.PixelSize));
 
@@ -73,7 +73,7 @@ namespace Skypiea.View
 
         private void DrawCorners(GraphicsContext graphicsContext)
         {
-            Texture2D texture = _contentProvider.DefaultManager.LoadTexture("Map/CornerFadeTexture");
+            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "Map/CornerFadeTexture");
 
             // top
             graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, Corner.BottomRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize); // top-left
