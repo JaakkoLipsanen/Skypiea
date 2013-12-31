@@ -28,20 +28,26 @@ namespace Skypiea.View
             VirtualThumbstick thumbstick = virtualThumbstickComponent.Thumbstick;
             if (thumbstick.CenterPosition.HasValue)
             {
+                float alpha = 1f;
+                if ((thumbstick.Style == ThumbstickStyle.Fixed &&  thumbstick.Direction != Vector2.Zero) || (thumbstick.Style == ThumbstickStyle.Relative && thumbstick.Direction.HasValue))
+                {
+                    alpha = 0.5f;
+                }
+
                 // base
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value, Color.Gray * 0.75f);
+                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value, Color.Gray * 0.75f * alpha);
 
                 if (thumbstick.Direction.HasValue)
                 {
                     // if the thumbstick style is relative, then never draw the "name of the thumbstick", if the style is fixed then draw the name only if the direction IS zero
                     if (thumbstick.Style == ThumbstickStyle.Relative || thumbstick.Direction != Vector2.Zero)
                     {
-                        graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f, 0, 0.5f);
+                        graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f * alpha, 0, 0.5f);
                     }
                     else
                     {
                         string name = virtualThumbstickComponent.Entity.Name == EntityNames.MovementThumbStick ? "MOVEMENT" : "SHOOTING";
-                        graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], name, thumbstick.CenterPosition.Value, Color.White * 0.5f);
+                        graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], name, thumbstick.CenterPosition.Value, Color.White * 0.5f * alpha);
                     }
                 }
             }

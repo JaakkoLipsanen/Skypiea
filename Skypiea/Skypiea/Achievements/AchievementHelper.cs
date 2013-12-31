@@ -32,6 +32,7 @@ namespace Skypiea.Achievements
             AchievementHelper.CreateSurviveWithoutMovingAchievements(achievements);
             AchievementHelper.CreateKillWithInvulnerabilityAchievements(achievements);
             AchievementHelper.CreateScoreAchievements(achievements);
+            AchievementHelper.CreateKillWithSingleRocketAchievments(achievements);
             AchievementHelper.CreateSpendLaserWithoutKillingAchievements(achievements);
             AchievementHelper.CreateIAPAchievements(achievements);
 
@@ -56,7 +57,24 @@ namespace Skypiea.Achievements
         private static void CreateSpendLaserWithoutKillingAchievements(ICollection<Achievement> achievements)
         {
             PassiveSkill reward = PassiveHelper.CreateSpawnWithRandomWeaponPassive();
-            achievements.Add(new Achievement("Waste of the Year", "Spend all ammo in laser without killing anyone", "Use laser without killing anyone", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new SpendLaserAmmoWithoutHittingTracker(am, ew, a.Name), reward) });
+            achievements.Add(new Achievement("Waste of the Year", "Spend all ammo in laser without killing anyone", "Use laser without killing anyone", new BooleanProgression(false))
+            {
+                Tag = new AchievementInfo((am, ew, a) => new SpendLaserAmmoWithoutHittingTracker(am, ew, a.Name), reward)
+            });
+        }
+
+        #endregion
+
+        #region Kill X With Single Rocket Bullet
+
+        private static void CreateKillWithSingleRocketAchievments(ICollection<Achievement> achievements)
+        {
+            const int KillsNeeded = 8;
+            PassiveSkill reward = PassiveHelper.CreateChanceForZombieExplodePassive(0.01f);
+            achievements.Add(new Achievement("Pyromaniac", "Kill at least 8 enemies with a single rocket explosion", "Kill 8 zombies with a rocket", new BooleanProgression(false))
+            {
+                Tag = new AchievementInfo((am, ew, a) => new KillEnemiesWithSingleRocket(am, ew, a.Name, KillsNeeded), reward)
+            });
         }
 
         #endregion
@@ -75,10 +93,10 @@ namespace Skypiea.Achievements
 
         private static void CreateScoreAchievements(ICollection<Achievement> achievements)
         {
-            PassiveSkill reward = PassiveHelper.CreateFireRatePassive(0.075f);
-            achievements.Add(new Achievement("Novice", "Score 25000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 25000), reward) });
-            achievements.Add(new Achievement("Master", "Score 50000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 50000), reward) });
-            achievements.Add(new Achievement("Elite", "Score 100000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 100000), reward) });
+            PassiveSkill reward = PassiveHelper.CreateScoreMultiplierPassive(0.075f);
+            achievements.Add(new Achievement("Novice", "Score 25000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 25000), PassiveHelper.CreateScoreMultiplierPassive(0.02f)) });
+            achievements.Add(new Achievement("Master", "Score 50000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 50000), PassiveHelper.CreateScoreMultiplierPassive(0.03f)) });
+            achievements.Add(new Achievement("Elite", "Score 100000 in a single game", new BooleanProgression(false)) { Tag = new AchievementInfo((am, ew, a) => new ScoreTracker(am, ew, a.Name, 100000), PassiveHelper.CreateScoreMultiplierPassive(0.05f)) });
         }
 
         #endregion
@@ -247,6 +265,16 @@ namespace Skypiea.Achievements
         public static PassiveSkill CreateChanceToKillEveryoneOnDeathPassive(float chance)
         {
             return new PassiveSkill("Chance to kill all zombies on death", passiveStats => passiveStats.ChanceToKillEveryoneOnDeath += chance);
+        }
+
+        public static PassiveSkill CreateChanceForZombieExplodePassive(float chance)
+        {
+            return new PassiveSkill("Chance for zombies to explode on death", passiveStats => passiveStats.ChanceForZombieExplodeOnDeath += chance);
+        }
+
+        public static PassiveSkill CreateScoreMultiplierPassive(float increase)
+        {
+            return new PassiveSkill("Increased score per kill", passiveStats => passiveStats.ScoreMultiplier += increase);
         }
 
         public static PassiveSkill CreateSpawnWithThreeLivesPassive()

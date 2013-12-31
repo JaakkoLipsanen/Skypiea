@@ -22,6 +22,7 @@ namespace Skypiea.Screens
             _gameContainer = gameContainer;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
+            this.FadeType = FadeType.FadeAlpha;
 
             this.CreateUiElements();
         }
@@ -43,8 +44,8 @@ namespace Skypiea.Screens
         {
             graphicsContext.SpriteBatch.Begin();
 
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * (1f - this.TransitionPosition) * 0.5f);
-            if (!this.IsExiting)
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.5f);
+            //if (!this.IsExiting)
             {
                 _uiContainer.Draw(graphicsContext, true);
             }
@@ -77,9 +78,13 @@ namespace Skypiea.Screens
                 return;
             }
 
-            this.ScreenManager.RemoveAllScreens();
-            this.ScreenManager.AddScreen(new MenuBackgroundScreen());
-            this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
+            this.Exited += () =>
+            {
+                this.ScreenManager.AddScreen(new MenuBackgroundScreen());
+                this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
+            };
+
+            this.ScreenManager.ExitAllScreens();
         }
     }
 }

@@ -11,6 +11,7 @@ namespace Skypiea.Systems.Player
     {
         private Entity _player;
         private CPlayerInfo _playerInfo;
+        private IPlayerPassiveStats _passiveStats;
 
         protected override void Initialize()
         {
@@ -20,7 +21,8 @@ namespace Skypiea.Systems.Player
             this.EntityWorld.SubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);
             this.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
 
-            if (this.EntityWorld.Services.Get<IPlayerPassiveStats>().SpawnWithThreeLives)
+            _passiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
+            if (_passiveStats.SpawnWithThreeLives)
             {
                 _playerInfo.AddLife();
             }
@@ -28,12 +30,29 @@ namespace Skypiea.Systems.Player
 
         private void OnZombieKilled(ZombieKilledMessage message)
         {
-            _playerInfo.Score += 100; // message.Score; or message.Zombie.Score/whatevr
+            _playerInfo.Score += (int)(this.GetScore(message.Zombie.Get<CZombieInfo>().Type) * _passiveStats.ScoreMultiplier); // message.Score; or message.Zombie.Score/whatevr
         }
 
         private void OnPlayerKilled(PlayerKilledMessage message)
         {
             // blaah
+        }
+
+        private int GetScore(ZombieType type)
+        {
+            switch (type)
+            {
+                case ZombieType.Normal:
+                    return 100;
+                case ZombieType.Fat:
+                    return 200;
+
+                case ZombieType.Rusher:
+                    return 150;
+
+                default:
+                    return 100;
+            }
         }
     }
 }

@@ -8,12 +8,13 @@ namespace Skypiea.Ui
 {
     public class ScrollerButton : TextButton
     {
-        private readonly float _initialVerticalPosition;
         private readonly Scroller _scroller;
+        private float _realVerticalPosition;
+
         public ScrollerButton(string text, Vector2 position, Scroller scroller, GenericEvent clickFunction)
             : base(text, position, clickFunction)
         {
-            _initialVerticalPosition = position.Y;
+            _realVerticalPosition = position.Y;
             _scroller = scroller;
         }
 
@@ -23,9 +24,14 @@ namespace Skypiea.Ui
             this.SetVerticalOffset(_scroller.ScrollValue);
         }
 
+        public void SetVerticalPosition(float value)
+        {
+            _realVerticalPosition = value;
+        }
+
         private void SetVerticalOffset(float verticalOffset)
         {
-            _centerPosition.Y = _initialVerticalPosition - verticalOffset;
+            _centerPosition.Y = _realVerticalPosition - verticalOffset;
             this.UpdateArea();
         }
     }

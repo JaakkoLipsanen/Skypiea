@@ -70,7 +70,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize));
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize));
 
             this.DrawTitle(graphicsContext);
             for (int i = 0; i < _achievements.Length; i++)
@@ -89,7 +89,7 @@ namespace Skypiea.Screens
 
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }

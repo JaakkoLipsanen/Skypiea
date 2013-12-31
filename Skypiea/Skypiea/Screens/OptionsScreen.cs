@@ -2,10 +2,12 @@ using Flai;
 using Flai.General;
 using Flai.Graphics;
 using Flai.Misc;
+using Flai.Scoreloop;
 using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Scoreloop.CoreSocial.API;
 using Skypiea.Settings;
 using System;
 
@@ -15,6 +17,8 @@ namespace Skypiea.Screens
     {
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
         private readonly SkypieaSettingsManager _settingsManager;
+        private readonly ScoreloopManager _scoreloopManager;
+        private TextBlock _renameResultTextBlock;
 
         public override bool IsPopup
         {
@@ -31,6 +35,7 @@ namespace Skypiea.Screens
             this.FadeOut = FadeDirection.Up;
 
             _settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
+            _scoreloopManager = FlaiGame.Current.Services.Get<ScoreloopManager>();
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -56,24 +61,82 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }
 
         private void CreateUI()
         {
-            _uiContainer.Add(new TextBlock("Thumbstick style", new Vector2(this.Game.ScreenSize.Width / 2f, 180)) { Font = "Minecraftia.32" });
+            // thumbstick style
+            _uiContainer.Add(new TextBlock("Thumbstick style", new Vector2(this.Game.ScreenSize.Width / 2f, 180)) { Font = "Minecraftia.32", Color = Color.Gray });
             _uiContainer.Add(new TextMultiToggleButton<ThumbstickStyle>(
-                RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 230), new SizeF(100, 50)), 
-                EnumHelper.GetValues<ThumbstickStyle>(), 
+                RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 230), new SizeF(100, 50)),
+                EnumHelper.GetValues<ThumbstickStyle>(),
                 EnumHelper.GetName,
                 this.OnThumbstickStyleChanged) { Font = "Minecraftia.24" }).SetSelectedValue(_settingsManager.Settings.ThumbstickStyle);
+
+            // rename scoreloop name
+            _uiContainer.Add(new TextButton("Rename leaderboard username", new Vector2(this.Game.ScreenSize.Width / 2f, 300), this.OnRenameUserNameClicked) { Font = "Minecraftia.24" });
+            _uiContainer.Add(_renameResultTextBlock = new TextBlock("", new Vector2(this.Game.ScreenSize.Width / 2f, 330)) { Visible = false, Font = "Minecraftia.16" });
         }
 
         private void OnThumbstickStyleChanged(ThumbstickStyle thumbstickStyle)
         {
             _settingsManager.Settings.ThumbstickStyle = thumbstickStyle;
+        }
+
+        private void OnRenameUserNameClicked()
+        {
+            GuideHelper.ShowKeyboardInput("Change username", "Change the username that will be used on the global leaderboards. The username must be at least 4 characters long ", input =>
+            {
+                if (!string.IsNullOrWhiteSpace(input))
+                {
+                    if (input.Length < 4)
+                    {
+                        this.SetRenameErrorText("Username is too short");
+                    }
+                    else if (!_scoreloopManager.IsNetworkAvailable)
+                    {
+                        this.SetRenameErrorText("No network available. Try again later");
+                    }
+                    else
+                    {
+                        _renameResultTextBlock.Visible = false;
+                        _scoreloopManager.RenameUser(input, this.OnUserRenamed);
+                    }
+                }
+            });
+        }
+
+        private void OnUserRenamed(ScoreloopResponse response)
+        {
+            if (response.Success)
+            {
+                this.SetRenameSuccessText("Username updated!");
+            }
+            else
+            {
+                this.SetRenameErrorText(response.Error.ErrorCode == ErrorCode.UserInvalidArguments ? "Username is already taken" : "Something went wrong. Try again later");
+            }
+        }
+
+        private void SetRenameSuccessText(string text)
+        {
+            const float ResultTextBlockAlpha = 0.5f;
+
+            _renameResultTextBlock.Visible = true;
+            _renameResultTextBlock.Color = Color.Green * ResultTextBlockAlpha;
+            _renameResultTextBlock.Text = "Username updated!";
+        }
+
+        private void SetRenameErrorText(string text)
+        {
+            const float ResultTextBlockAlpha = 0.5f;
+
+            _renameResultTextBlock.Visible = true;
+            _renameResultTextBlock.Color = Color.Red * ResultTextBlockAlpha;
+            _renameResultTextBlock.Text = text;
         }
     }
 }

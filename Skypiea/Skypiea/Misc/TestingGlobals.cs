@@ -9,5 +9,7 @@ namespace Skypiea.Misc
         public static bool SpawnOnlyRushers = false;
         public static WeaponType DefaultWeaponType = WeaponType.AssaultRifle;
         public static GraphicalQuality GraphicalQuality = GraphicalQuality.High;
+
+        public static bool Debug;
     }
 }

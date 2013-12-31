@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Flai;
 using Flai.CBES;
 using Flai.Content;
@@ -6,7 +5,6 @@ using Flai.Graphics;
 using Flai.ScreenManagement;
 using Flai.ScreenManagement.Screens;
 using Microsoft.Xna.Framework;
-using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
@@ -15,6 +13,7 @@ using Skypiea.Prefabs.Bullets;
 using Skypiea.Prefabs.Zombies;
 using Skypiea.Systems;
 using Skypiea.View;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Skypiea.Screens
@@ -30,9 +29,6 @@ namespace Skypiea.Screens
 
         protected override void LoadContent(bool instancePreserved)
         {
-            LeaderboardHelper.CreateLeaderboardManager().Close(); // preload assembiel etc
-            // todo todo todo todo
-
             Stopwatch sw = Stopwatch.StartNew();
             this.SimulateEntityWorld();
             Debug.WriteLine("simulation: " + sw.Elapsed.TotalMilliseconds);
@@ -46,7 +42,12 @@ namespace Skypiea.Screens
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
-        {return;
+        {
+            if (_world == null)
+            {
+                return;
+            }
+
             DropRenderer dropRenderer = new DropRenderer(_world.EntityWorld);
             dropRenderer.LoadContent();
 
@@ -70,12 +71,12 @@ namespace Skypiea.Screens
         }
 
         private void SimulateEntityWorld()
-        {return;
+        {
             _world = new World(WorldType.Grass);
 
             _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
-            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
-            _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
+        //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.RotationThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
+        //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.MovementThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
 
             _world.Initialize();
 
@@ -89,19 +90,22 @@ namespace Skypiea.Screens
             _world.EntityWorld.GetSystem<WeaponDropGeneratorSystem>().CreateWeaponDrop();
 
             LeaderboardScreen leaderboardScreen = new LeaderboardScreen();
-            AchievementScreen achievementScreen = new AchievementScreen();
             this.ScreenManager.AddScreen(leaderboardScreen);
-            this.ScreenManager.AddScreen(achievementScreen);
-
             GameScreenSimulator.Update(UpdateContext.Null, leaderboardScreen);
             GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, leaderboardScreen);
+            this.ScreenManager.RemoveScreen(leaderboardScreen);
 
+            AchievementScreen achievementScreen = new AchievementScreen();
+            this.ScreenManager.AddScreen(achievementScreen);
             GameScreenSimulator.Update(UpdateContext.Null, achievementScreen);
             GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, achievementScreen);
-
-            this.ScreenManager.RemoveScreen(leaderboardScreen);
             this.ScreenManager.RemoveScreen(achievementScreen);
 
+            OptionsScreen optionsScreen = new OptionsScreen();
+            this.ScreenManager.AddScreen(optionsScreen);
+            GameScreenSimulator.Update(UpdateContext.Null, optionsScreen);
+            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, optionsScreen);
+            this.ScreenManager.RemoveScreen(optionsScreen);
         }
 
         private void CreateAllPrefabs(EntityWorld entityWorld)

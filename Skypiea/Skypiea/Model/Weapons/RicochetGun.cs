@@ -9,7 +9,7 @@ namespace Skypiea.Model.Weapons
 {
     public class RicochetGun : BulletWeapon
     {
-        private const int BulletCount = 40;
+        private const int BulletCount = 30;
         public override WeaponType Type
         {
             get { return WeaponType.Ricochet; }

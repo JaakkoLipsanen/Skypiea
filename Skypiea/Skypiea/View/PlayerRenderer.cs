@@ -53,12 +53,15 @@ namespace Skypiea.View
             this.DrawWeaponInfo(graphicsContext);
 
             // * TEMPORARY * //
-            IZombieStatsProvider zombieStatsProvider = _player.EntityWorld.Services.Get<IZombieStatsProvider>();
+            if (TestingGlobals.Debug)
+            {
+                IZombieStatsProvider zombieStatsProvider = _player.EntityWorld.Services.Get<IZombieStatsProvider>();
 
-            GraphicalGuidelines.DecimalPrecisionInText = 3;
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Time: ", zombieStatsProvider.TotalTime, new Vector2(graphicsContext.ScreenSize.Width/2f, 416), Color.White);
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Speed: ", zombieStatsProvider.SpeedMultiplier, new Vector2(graphicsContext.ScreenSize.Width / 2f, 440), Color.White);
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Spawn Rate: ", zombieStatsProvider.SpawnRate, new Vector2(graphicsContext.ScreenSize.Width / 2f, 464), Color.White);
+                GraphicalGuidelines.DecimalPrecisionInText = 3;
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Time: ", zombieStatsProvider.TotalTime, new Vector2(graphicsContext.ScreenSize.Width/2f, 416), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Speed: ", zombieStatsProvider.SpeedMultiplier, new Vector2(graphicsContext.ScreenSize.Width/2f, 440), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Spawn Rate: ", zombieStatsProvider.SpawnRate, new Vector2(graphicsContext.ScreenSize.Width/2f, 464), Color.White);
+            }
         }
 
         private void DrawLives(GraphicsContext graphicsContext, CPlayerInfo playerInfo)

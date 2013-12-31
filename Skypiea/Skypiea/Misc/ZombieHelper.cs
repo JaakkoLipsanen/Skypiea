@@ -20,7 +20,6 @@ namespace Skypiea.Misc
         public static bool TakeDamage(Entity zombie, float damage, Vector2? explosionVelocity)
         {
             CHealth health = zombie.Get<CHealth>();
-
             if (!health.IsAlive)
             {
                 return true;
@@ -39,9 +38,13 @@ namespace Skypiea.Misc
                 }
             }
 
+            if (killed)
+            {
+                zombie.Get<CZombieInfo>().SetKillReason(KillReason.Normal);
+            }
+
             return killed;
         }
-
         public static bool Kill(Entity zombie, Vector2? explosionVelocity)
         {
             const float LotsOfDamage = 1000 * 1000;
@@ -51,6 +54,7 @@ namespace Skypiea.Misc
                 ZombieHelper.TriggerBloodExplosion(zombie.Transform, explosionVelocity.Value);
             }
 
+            zombie.Get<CZombieInfo>().SetKillReason(KillReason.Instakill);
             return true;
         }
 

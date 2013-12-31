@@ -1,8 +1,10 @@
 using Flai;
 using Flai.Graphics;
 using Flai.Misc;
+using Flai.Scoreloop;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Skypiea.Leaderboards;
 using Skypiea.Screens;
 using Skypiea.Settings;
 
@@ -16,10 +18,11 @@ namespace Skypiea
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
-            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory });
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory, Visible = false });
             base.IsFixedTimeStep = false;
 
             _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
+            _serviceContainer.Add(LeaderboardHelper.CreateLeaderboardManager());
         }
 
         protected override void InitializeInner()

@@ -57,6 +57,7 @@
     <Reference Include="Microsoft.Phone, Version=7.0.0.0, Culture=neutral, PublicKeyToken=24eec0d8c86cda1e, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework" />
     <Reference Include="Microsoft.Xna.Framework.Game" />
+    <Reference Include="Microsoft.Xna.Framework.GamerServices, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Xna.Framework.Graphics" />
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
@@ -72,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Achievements\AchievementHelper.cs" />
     <Compile Include="Achievements\AchievementInfo.cs" />
+    <Compile Include="Achievements\Trackers\KillEnemiesWithSingleRocket.cs" />
     <Compile Include="Achievements\Trackers\KillWithInvulnerabilityBoosterTracker.cs" />
     <Compile Include="Achievements\Trackers\KillRushersWhileRushingTracker.cs" />
     <Compile Include="Achievements\Trackers\KillZombiesInTimeTracker.cs" />
@@ -101,6 +103,7 @@
     <Compile Include="Messages\PlayerKilledMessage.cs" />
     <Compile Include="Messages\WeaponChangedMessage.cs" />
     <Compile Include="Messages\ZombieKilledMessage.cs" />
+    <Compile Include="Messages\RocketExplodedMessage.cs" />
     <Compile Include="Misc\DropHelper.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
@@ -176,6 +179,7 @@
     <Compile Include="Systems\Zombie\BasicZombieAISystem.cs" />
     <Compile Include="Systems\WeaponDropGeneratorSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieAttackSystem.cs" />
+    <Compile Include="Systems\Zombie\ZombieExplosionSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieHealthSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpatialMapSystem.cs" />
     <Compile Include="Systems\Zombie\ZombieSpawnManagerSystem.cs" />
@@ -195,7 +199,6 @@
     <Compile Include="View\DropRenderer.cs" />
     <Compile Include="View\WeaponRenderer.cs" />
     <Compile Include="View\WorldRenderer.cs" />
-    <Compile Include="Systems\Zombie\ZombieExplosionManagerSystem.cs" />
     <Compile Include="View\ZombieRenderer.cs" />
     <Compile Include="SkypieaGame.cs" />
     <None Include="Properties\AppManifest.xml">

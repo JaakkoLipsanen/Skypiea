@@ -62,8 +62,8 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<ZombieAttackSystem>();
             _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
             _entityWorld.AddSystem<ZombieHealthSystem>();
-            _entityWorld.AddSystem<ZombieExplosionManagerSystem>();
             _entityWorld.AddSystem<ZombieSpatialMapSystem>();
+            _entityWorld.AddSystem<ZombieExplosionSystem>();
 
             _entityWorld.AddSystem<BasicZombieAISystem>();
             _entityWorld.AddSystem<RusherZombieAISystem>();

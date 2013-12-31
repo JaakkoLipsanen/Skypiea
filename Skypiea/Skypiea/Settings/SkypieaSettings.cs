@@ -1,6 +1,5 @@
 using Flai.Misc;
 using System.IO;
-using Skypiea.Misc;
 
 namespace Skypiea.Settings
 {

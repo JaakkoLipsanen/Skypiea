@@ -3,6 +3,7 @@ using Flai.CBES;
 using Flai.Graphics.Particles;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
+using Skypiea.Messages;
 using Skypiea.Misc;
 using Skypiea.Prefabs.Bullets;
 using Skypiea.Systems.Zombie;
@@ -11,8 +12,8 @@ namespace Skypiea.Model.Weapons
 {
     public class RocketLauncher : BulletWeapon // do this!
     {
-        private const int BulletCount = 55;
-        private const int ExplosionRange = 60;
+        private const int BulletCount = 40;
+        private const int ExplosionRange = SkypieaConstants.PixelsPerMeter * 3;
 
         public override WeaponType Type
         {
@@ -20,7 +21,7 @@ namespace Skypiea.Model.Weapons
         }
 
         public RocketLauncher(float ammoMultiplier)
-            : base((int)(RocketLauncher.BulletCount * ammoMultiplier), 0.3f)
+            : base((int)(RocketLauncher.BulletCount * ammoMultiplier), 0.475f)
         {
         }
 
@@ -32,13 +33,30 @@ namespace Skypiea.Model.Weapons
 
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
-            IZombieSpatialMap zombieSpatialMap = entityHit.EntityWorld.Services.Get<IZombieSpatialMap>();
+            EntityWorld entityWorld = bullet.Entity.EntityWorld;
+            IZombieSpatialMap zombieSpatialMap = entityWorld.Services.Get<IZombieSpatialMap>();
+
+            // if the message has not listeners, then there's no point in doing in broadcasting it.
+            RocketExplodedMessage explodedMessage = entityWorld.HasListeners<RocketExplodedMessage>() ? entityWorld.FetchMessage<RocketExplodedMessage>() : null; // AAWFFUUULL!!
             foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
             {
-                ZombieHelper.TakeDamage(zombie, 25, Vector2.Zero); // Vector2.Normalize(zombie.Transform.Position - bullet.Transform.Position) * SkypieaConstants.PixelsPerMeter * 6f);
+                if (entityHit.Get<CHealth>().IsAlive && ZombieHelper.TakeDamage(zombie, 25, Vector2.Zero))
+                {
+                    // if the message has not listeners, then there's no point in doing in broadcasting it.
+                    if (explodedMessage != null)
+                    {
+                        explodedMessage.Add(zombie);
+                    }
+                }
             }
 
-            IParticleEngine particleEngine = bullet.Entity.EntityWorld.Services.Get<IParticleEngine>();
+            // if the message has not listeners, then there's no point in doing in broadcasting it.
+            if (explodedMessage != null)
+            {
+                entityWorld.BroadcastMessage(explodedMessage);
+            }
+
+            IParticleEngine particleEngine = entityWorld.Services.Get<IParticleEngine>();
             particleEngine[ParticleEffectID.RocketExplosion].Trigger(bullet.Entity.Transform);
 
             bullet.Entity.Delete();

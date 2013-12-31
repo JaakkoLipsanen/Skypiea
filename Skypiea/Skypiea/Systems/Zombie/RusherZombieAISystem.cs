@@ -154,6 +154,8 @@ namespace Skypiea.Systems.Zombie
             Vector2 target = _player.Transform.Position + _playerInfo.MovementVector * 0.25f; // target where the player would be in 0.25s 
             rusherAI.Target = target - (zombie.Transform.Position - target) * 0.75f; // rush 75% "over" the player
             zombie.Transform.LookAt(rusherAI.Target);
+
+            rusherAI.RushingSpeed = 0;
             rusherAI.State = RusherZombieState.Rushing;
         }
 

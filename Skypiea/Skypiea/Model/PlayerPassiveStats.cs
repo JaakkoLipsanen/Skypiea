@@ -9,6 +9,7 @@ namespace Skypiea.Model
         float AmmoMultiplier { get; }
         float DropIncreaseMultiplier { get; }
         float ChanceToKillEveryoneOnDeath { get; }
+        float ChanceForZombieExplodeOnDeath { get; }
 
         bool SpawnWithThreeLives { get; }
         bool SpawnWithRandomWeapon { get; }
@@ -24,6 +25,7 @@ namespace Skypiea.Model
         public float AmmoMultiplier { get; set; }
         public float DropIncreaseMultiplier { get; set; }
         public float ChanceToKillEveryoneOnDeath { get; set; }
+        public float ChanceForZombieExplodeOnDeath { get; set; }
 
         public bool SpawnWithThreeLives { get; set; }
         public bool SpawnWithRandomWeapon { get; set; }
@@ -38,6 +40,7 @@ namespace Skypiea.Model
             this.ScoreMultiplier = 1;
             this.AmmoMultiplier = 1;
             this.DropIncreaseMultiplier = 1;
+            this.ChanceForZombieExplodeOnDeath = 0;
 
             this.SpawnWithThreeLives = false;
             this.SpawnWithRandomWeapon = false;

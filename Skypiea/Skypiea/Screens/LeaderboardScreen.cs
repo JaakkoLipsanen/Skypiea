@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Flai;
 using Flai.General;
 using Flai.Graphics;
@@ -10,8 +8,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Scoreloop.CoreSocial.API;
-using Skypiea.Leaderboards;
 using Skypiea.Ui;
+using System;
+using System.Collections.Generic;
 using Range = Flai.Range;
 using ScoreloopScore = Scoreloop.CoreSocial.API.Model.Score;
 
@@ -23,16 +22,19 @@ namespace Skypiea.Screens
     public class LeaderboardScreen : GameScreen
     {
         private const float ScoreSlotHeight = 32;
+        private const float OffsetFromTop = 164;
 
         private readonly ScrollingLeaderboard _leaderboard;
         private readonly Scroller _scoller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
+        private readonly Dictionary<LeaderboardScope, int> _ranks = new Dictionary<LeaderboardScope, int>();
 
         private ScrollerButton _dailyLeaderboardButton;
         private ScrollerButton _overallLeaderboardButton;
+        private ScrollerButton _loadMoreScoresButton;
 
-        private readonly Dictionary<LeaderboardScope, int> _ranks = new Dictionary<LeaderboardScope, int>();
         private bool _hasFailed = false;
+        private string _failMessage = "";
 
         public override bool IsPopup
         {
@@ -41,10 +43,18 @@ namespace Skypiea.Screens
 
         public LeaderboardScreen()
         {
-            _leaderboard = new ScrollingLeaderboard(LeaderboardHelper.CreateLeaderboardManager(), 0, 25);
-            _leaderboard.GetRank(LeaderboardScope.Daily, this.OnRankLoaded);
-            _leaderboard.GetRank(LeaderboardScope.AllTime, this.OnRankLoaded);
-            _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+            _leaderboard = new ScrollingLeaderboard(FlaiGame.Current.Services.Get<ScoreloopManager>(), 0, 25);
+            if (_leaderboard.ScoreloopManager.IsNetworkAvailable)
+            {
+                _leaderboard.GetRank(LeaderboardScope.Daily, this.OnRankLoaded);
+                _leaderboard.GetRank(LeaderboardScope.AllTime, this.OnRankLoaded);
+                _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+            }
+            else
+            {
+                _hasFailed = true;
+                _failMessage = "No network connection";
+            }
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
@@ -75,9 +85,8 @@ namespace Skypiea.Screens
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                //  this.Exited += () => this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left));
+                _leaderboard.CancelLastScoreRequest();
                 this.ExitScreen();
-                _leaderboard.ScoreloopManager.Close();
                 this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left), new Delay(0.25f));
             }
         }
@@ -88,7 +97,7 @@ namespace Skypiea.Screens
             this.DrawScores(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }
@@ -98,7 +107,7 @@ namespace Skypiea.Screens
             SpriteFont scoreFont = graphicsContext.FontContainer["Minecraftia.20"];
             if (_hasFailed)
             {
-                graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "Something went wrong. Please try again later", new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, _failMessage, new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
             }
 
             if (_ranks.ContainsKey(_leaderboard.CurrentScope))
@@ -120,13 +129,11 @@ namespace Skypiea.Screens
             }
 
             const float HorizontalOffset = 32;
-            const float OffsetFromTop = 164;
             const float ScoreHeight = 32;
-            const int TEMP_SCORES_DISPLAYED = 101;
 
             RectangleF scrollerArea = _scoller.GetArea(graphicsContext.ScreenSize);
-            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight - 1, 0, TEMP_SCORES_DISPLAYED);
-            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreHeight), 0, TEMP_SCORES_DISPLAYED);
+            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight - 1, 0, _leaderboard.ScoresLoaded);
+            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreHeight), 0, _leaderboard.ScoresLoaded);
 
             for (int i = topVisible; i < bottomVisible; i++)
             {
@@ -151,6 +158,14 @@ namespace Skypiea.Screens
         {
             _uiContainer.Add(_dailyLeaderboardButton = new ScrollerButton("Daily", new Vector2(this.Game.ScreenSize.Width / 4f, 64), _scoller, this.OnDailyButtonClicked) { Font = "Minecraftia.24", Color = Color.White });
             _uiContainer.Add(_overallLeaderboardButton = new ScrollerButton("Overall", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 64), _scoller, this.OnOverallButtonClicked) { Font = "Minecraftia.24", Color = Color.DimGray });
+            _uiContainer.Add(_loadMoreScoresButton = new ScrollerButton("Load more scores", new Vector2(this.Game.ScreenSize.Width / 2f, 100), _scoller, this.OnLoadMoreScoresClicked) { Font = "Minecraftia.24", Enabled = false, Visible = false });
+        }
+
+        private void OnLoadMoreScoresClicked()
+        {
+            _loadMoreScoresButton.Enabled = false;
+            _loadMoreScoresButton.Visible = false;
+            _leaderboard.LoadMoreScores(this.OnScoresLoaded);
         }
 
         private void OnOverallButtonClicked()
@@ -178,22 +193,34 @@ namespace Skypiea.Screens
 
         private void OnScoresLoaded(ScoreloopResponse<LeaderboardScoresResponse> response)
         {
-            if (!response.Success && response.RequestSource.Error.Status != StatusCode.RequestCancelled)
+            if (!response.Success)
             {
-                _hasFailed = true;
+                if (response.Error == null || response.Error.Status != StatusCode.RequestCancelled)
+                {
+                    _hasFailed = true;
+                    _failMessage = "Something went wrong. Please try again later";
+                }
+
                 return;
             }
 
-            _scoller.ScrollingRange = new Range(0, _leaderboard.Scores.Count * ScoreSlotHeight + ScoreSlotHeight * 101);
+            _scoller.ScrollingRange = new Range(0, FlaiMath.Max(0, _leaderboard.Scores.Count * ScoreSlotHeight - this.Game.ScreenSize.Height * 0.5f));
+            if (_leaderboard.CanLoadMoreScores && response.Data != null && response.Data.Scores.Count != 0)
+            {
+                _loadMoreScoresButton.Enabled = true;
+                _loadMoreScoresButton.Visible = true;
+                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 48); // _scoller.ScrollingRange.Max + 192 + this.Game.ScreenSize.Height*0.5f);
+            }
         }
 
         private void OnRankLoaded(ScoreloopResponse<RankResponse> response)
         {
             if (!response.Success)
             {
-                if (response.RequestSource.Error.Status != StatusCode.RequestCancelled)
+                if (response.Error == null || response.Error.Status != StatusCode.RequestCancelled)
                 {
                     _hasFailed = true;
+                    _failMessage = "Something went wrong. Please try again later";
                 }
 
                 return;

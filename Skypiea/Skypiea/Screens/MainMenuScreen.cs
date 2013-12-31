@@ -44,23 +44,55 @@ namespace Skypiea.Screens
                 return;
             }
 
-            _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 160), this.OnPlayClicked) { InflateAmount = -0 });
-            _uiContainer.Add(new TextButton("Achievements", new Vector2(this.Game.ScreenSize.Width / 2f, 220), this.OnAchievementsClicked) { InflateAmount = -0 });
-            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2f, 280), this.OnLeaderboardsClicked) { InflateAmount = -0 });
-            _uiContainer.Add(new TextButton("Options", new Vector2(this.Game.ScreenSize.Width / 2f, 340), this.OnOptionsClicked) { InflateAmount = -0 });
-            _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0 });
+            this.CreateUI();
+          
+        }
 
-            // DEBUG STUFF
-            _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
-            _uiContainer.Add(_zombiesToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f, 440), 150), "All zombies", "Only Rushers") { Font = "SegoeWP.24" });
+        protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
+        {
+            if (this.IsActive)
+            {
+                if (updateContext.InputState.IsBackButtonPressed)
+                {
+                    this.OnExitClicked();
+                }
 
-            _uiContainer.Add(_weaponTypeToggleButton = new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
-            _uiContainer.Add(_graphicsToggleButton = new TextMultiToggleButton<GraphicalQuality>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 40), 150), EnumHelper.GetValues<GraphicalQuality>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24" });
+                _uiContainer.Update(updateContext);
+            }
+        }
 
-            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(100, 30), 50), "Debug", "No debug", isToggled => this.ScreenManager.Game.Components.Get<DebugInformationComponent>().ToggleVisibility()));
-            _uiContainer.Add(new TextButton("Reset Achievements", new Vector2(this.Game.ScreenSize.Width / 4f * 3 + 30, 440), AchievementHelper.ResetAchievements) { Font = "SegoeWP.24" });
+        protected override void Draw(GraphicsContext graphicsContext)
+        {
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
+            _uiContainer.Draw(graphicsContext, true);
+            graphicsContext.SpriteBatch.End();
+        }
+
+        private void CreateUI()
+        {
+            _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 140), this.OnPlayClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Achievements", new Vector2(this.Game.ScreenSize.Width / 2f, 205), this.OnAchievementsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2f, 270), this.OnLeaderboardsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Options", new Vector2(this.Game.ScreenSize.Width / 2f, 335), this.OnOptionsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
             _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, this.Game.ScreenSize.Height - 18)) { Color = Color.White * 0.075f, Font = "SegoeWP.16" });
 
+            // DEBUG STUFF
+            _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
+            _uiContainer.Add(_zombiesToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f, 440), 150), "All zombies", "Only Rushers") { Font = "SegoeWP.24", Tag = "D" });
+
+            _uiContainer.Add(_weaponTypeToggleButton = new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
+            _uiContainer.Add(_graphicsToggleButton = new TextMultiToggleButton<GraphicalQuality>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 40), 150), EnumHelper.GetValues<GraphicalQuality>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
+
+            _uiContainer.Add(new TextButton("Reset Achievements", new Vector2(this.Game.ScreenSize.Width / 4f * 3 + 30, 440), AchievementHelper.ResetAchievements) { Font = "SegoeWP.24", Tag = "D" });
+            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(100, 30), 50), "Debug", "No debug", isToggled =>
+            {
+                TestingGlobals.Debug = isToggled;
+                this.ScreenManager.Game.Components.Get<DebugInformationComponent>().Visible = isToggled;
+                _uiContainer.FindAllWithTag("D").ForEach(uiObject => uiObject.Visible = isToggled);
+            }) { IsToggled = true }).ManualClick();
+
+            
             _graphicsToggleButton.SetSelectedValue(TestingGlobals.GraphicalQuality);
             _graphicsToggleButton.Click += () => TestingGlobals.GraphicalQuality = _graphicsToggleButton.SelectedValue;
         }
@@ -98,6 +130,7 @@ namespace Skypiea.Screens
                 // this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
                 this.FadeOut = FadeDirection.Left;
                 this.ExitScreen();
+
                 this.ScreenManager.AddScreen(new LeaderboardScreen(), new Delay(0.25f));
             }
         }
@@ -116,26 +149,6 @@ namespace Skypiea.Screens
         private void OnExitClicked()
         {
             this.Game.Exit();
-        }
-
-        protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
-        {
-            if (this.IsActive)
-            {
-                if (updateContext.InputState.IsBackButtonPressed)
-                {
-                    this.OnExitClicked();
-                }
-
-                _uiContainer.Update(updateContext);
-            }
-        }
-
-        protected override void Draw(GraphicsContext graphicsContext)
-        {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-            _uiContainer.Draw(graphicsContext, true);
-            graphicsContext.SpriteBatch.End();
         }
     }
 }
