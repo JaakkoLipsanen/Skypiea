@@ -7,6 +7,7 @@ using Flai.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Achievements;
+using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
@@ -35,6 +36,7 @@ namespace Skypiea.Screens
             this.FadeType = FadeType.FadeAlpha;
             this.FadeIn = fadeIn;
             this.FadeOut = FadeDirection.Right;
+            HighscoreHelper.ResubmitHighscoreIfNeeded();
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -45,7 +47,6 @@ namespace Skypiea.Screens
             }
 
             this.CreateUI();
-          
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -70,12 +71,15 @@ namespace Skypiea.Screens
 
         private void CreateUI()
         {
-            _uiContainer.Add(new TextButton("Play", new Vector2(this.Game.ScreenSize.Width / 2f, 140), this.OnPlayClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Achievements", new Vector2(this.Game.ScreenSize.Width / 2f, 205), this.OnAchievementsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(this.Game.ScreenSize.Width / 2f, 270), this.OnLeaderboardsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Options", new Vector2(this.Game.ScreenSize.Width / 2f, 335), this.OnOptionsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Exit", new Vector2(this.Game.ScreenSize.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, this.Game.ScreenSize.Height - 18)) { Color = Color.White * 0.075f, Font = "SegoeWP.16" });
+            _uiContainer.Add(new TextButton("Play", new Vector2(Screen.Width / 2f, 140), this.OnPlayClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Achievements", new Vector2(Screen.Width / 2f, 205), this.OnAchievementsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(Screen.Width / 2f, 270), this.OnLeaderboardsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Options", new Vector2(Screen.Width / 2f, 335), this.OnOptionsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+
+            _uiContainer.Add(new TextButton("Rate", new Vector2(Screen.Width - 44, Screen.Height - 24), this.OnRateClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("More Games", new Vector2(110, Screen.Height - 24), this.OnMoreGamesClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, 18)) { Color = Color.White * 0.1f, Font = "SegoeWP.16" });
 
             // DEBUG STUFF
             _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
@@ -85,7 +89,7 @@ namespace Skypiea.Screens
             _uiContainer.Add(_graphicsToggleButton = new TextMultiToggleButton<GraphicalQuality>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 40), 150), EnumHelper.GetValues<GraphicalQuality>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
 
             _uiContainer.Add(new TextButton("Reset Achievements", new Vector2(this.Game.ScreenSize.Width / 4f * 3 + 30, 440), AchievementHelper.ResetAchievements) { Font = "SegoeWP.24", Tag = "D" });
-            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(100, 30), 50), "Debug", "No debug", isToggled =>
+            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(Screen.Width - 100, 30), 50), "Debug", "No debug", isToggled =>
             {
                 TestingGlobals.Debug = isToggled;
                 this.ScreenManager.Game.Components.Get<DebugInformationComponent>().Visible = isToggled;
@@ -148,7 +152,26 @@ namespace Skypiea.Screens
 
         private void OnExitClicked()
         {
-            this.Game.Exit();
+            if (!this.IsExiting)
+            {
+                this.Game.Exit();
+            }
+        }
+
+        private void OnRateClicked()
+        {
+            if (!this.IsExiting)
+            {
+                ApplicationInfo.OpenApplicationReviewPage();
+            }
+        }
+
+        private void OnMoreGamesClicked()
+        {
+            if (!this.IsExiting)
+            {
+                ApplicationInfo.OpenDeveloperApplicationList();
+            }
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using Flai;
 using Flai.Graphics;
 using Flai.Misc;
@@ -15,19 +16,26 @@ namespace Skypiea
     /// </summary>
     public class SkypieaGame : FlaiGame
     {
+        private readonly ScoreloopManager _scoreloopManager;
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
             this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory, Visible = false });
-            base.IsFixedTimeStep = false;
 
             _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
-            _serviceContainer.Add(LeaderboardHelper.CreateLeaderboardManager());
+            _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
+            _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
         }
 
         protected override void InitializeInner()
         {
             this.FontContainer.DefaultFont = this.FontContainer["Minecraftia.20"];
+        }
+
+        protected override void OnExiting(object sender, EventArgs args)
+        {
+            _scoreloopManager.Close();
+            base.OnExiting(sender, args);
         }
 
         protected override void UpdateInner(UpdateContext updateContext)
@@ -52,12 +60,13 @@ namespace Skypiea
             _graphicsDeviceManager.PreferredBackBufferHeight = 480;
             _graphicsDeviceManager.PreferMultiSampling = false;
             _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            _graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
         }
 
         protected override void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
-            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
-            e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
+            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.Two;
+          //  e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
         }
     }
 }

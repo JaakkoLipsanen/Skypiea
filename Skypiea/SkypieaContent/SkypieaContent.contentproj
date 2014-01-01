@@ -72,12 +72,12 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Fonts\Minecraftia.20.spritefont">
+    <Content Include="Fonts\Minecraftia.20.spritefont">
       <Name>Minecraftia.20</Name>
       <Importer>FontDescriptionImporter</Importer>
       <Processor>NuclexSpriteFontDescriptionProcessor</Processor>
       <SubType>Designer</SubType>
-    </Compile>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Textures\TextureSpriteSheet.png">

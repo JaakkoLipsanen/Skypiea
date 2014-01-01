@@ -2,7 +2,9 @@
 using Flai.Graphics;
 using Flai.ScreenManagement;
 using Microsoft.Xna.Framework.Input.Touch;
+using Skypiea.Components;
 using Skypiea.Messages;
+using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.View;
 using System;
@@ -11,6 +13,7 @@ namespace Skypiea.Screens
 {
     public interface IGameContainer
     {
+        bool IsActive { get; }
         void Restart();
     }
 
@@ -96,6 +99,7 @@ namespace Skypiea.Screens
         {
             _level = Level.Generate(_worldType);
             _levelRenderer = new LevelRenderer(_level);
+            _level.EntityWorld.Services.Add<IGameContainer>(this);
 
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;
@@ -103,7 +107,8 @@ namespace Skypiea.Screens
 
         private void OnGameOver()
         {
-            this.ScreenManager.AddScreen(new GameOverScreen(this));
+            int score = _level.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>().Score;
+            this.ScreenManager.AddScreen(new GameOverScreen(this, score));
         }
     }
 }

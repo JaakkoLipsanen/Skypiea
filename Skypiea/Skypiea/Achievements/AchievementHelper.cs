@@ -107,9 +107,11 @@ namespace Skypiea.Achievements
         {
             const int Kills = 150;
             CreateAchievementTrackerDelegate trackerCreator = (am, ew, a) => new KillWithInvulnerabilityBoosterTracker(am, ew, a.Name, Kills);
-            PassiveSkill reward = PassiveHelper.CreateChanceToKillEveryoneOnDeathPassive(1);
+            PassiveSkill reward = PassiveHelper.CreateChanceToKillEveryoneOnDeathPassive(0.25f);
 
-            achievements.Add(new Achievement("Invincible", "Kill 150 zombies with a single invulnerability booster", "Kill 150 zombies while invulnerable", new BooleanProgression(false)) { Tag = new AchievementInfo(trackerCreator, reward) });
+            // actually it is "kill 100 zombies with a single invulnerability booster", but since it's very unlikely that anyone kills 100 zombies while being on "death-invulnerability",
+            // lets just use this wording. it's more clear
+            achievements.Add(new Achievement("Invincible", "Kill 125 zombies while invulnerable", new BooleanProgression(false)) { Tag = new AchievementInfo(trackerCreator, reward) });
         }
 
         #endregion

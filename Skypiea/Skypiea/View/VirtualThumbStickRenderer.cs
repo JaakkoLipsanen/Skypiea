@@ -1,10 +1,12 @@
-﻿using Flai.CBES;
+﻿using Flai;
+using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
 using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
+using Skypiea.Screens;
 
 namespace Skypiea.View
 {
@@ -24,11 +26,10 @@ namespace Skypiea.View
         private void DrawThumbStick(GraphicsContext graphicsContext, CVirtualThumbstick virtualThumbstickComponent)
         {
             const float MaxDistance = 60f;
-
             VirtualThumbstick thumbstick = virtualThumbstickComponent.Thumbstick;
             if (thumbstick.CenterPosition.HasValue)
             {
-                float alpha = 1f;
+                float alpha = 1;
                 if ((thumbstick.Style == ThumbstickStyle.Fixed &&  thumbstick.Direction != Vector2.Zero) || (thumbstick.Style == ThumbstickStyle.Relative && thumbstick.Direction.HasValue))
                 {
                     alpha = 0.5f;

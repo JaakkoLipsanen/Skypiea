@@ -4,6 +4,7 @@ using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
 using System;
+using Skypiea.Leaderboards;
 
 namespace Skypiea.Screens
 {
@@ -17,14 +18,14 @@ namespace Skypiea.Screens
             get { return true; }
         }
 
-        public GameOverScreen(IGameContainer gameContainer)
+        public GameOverScreen(IGameContainer gameContainer, int score)
         {
             _gameContainer = gameContainer;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeType = FadeType.FadeAlpha;
 
-            this.CreateUiElements();
+            this.CreateUiElements(score);
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -53,11 +54,16 @@ namespace Skypiea.Screens
             graphicsContext.SpriteBatch.End();
         }
 
-        private void CreateUiElements()
+        private void CreateUiElements(int playerScore)
         {
-            Size screenSize = FlaiGame.Current.ScreenSize;
-            _uiContainer.Add(new TextButton("Play again!", new Vector2(screenSize.Width / 4f, screenSize.Height / 2f), this.OnReplayClicked));
-            _uiContainer.Add(new TextButton("Exit", new Vector2(screenSize.Width / 4f * 3f, screenSize.Height / 2f), this.OnExitClicked));
+            _uiContainer.Add(new TextButton("Play again!", new Vector2(Screen.Width / 4f, Screen.Height / 2f), this.OnReplayClicked));
+            _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 4f * 3f, Screen.Height / 2f), this.OnExitClicked));
+
+            _uiContainer.Add(new TextBlock("Your score was " + playerScore + "!", new Vector2(Screen.Width / 2f, Screen.Height / 4f)));
+            if (HighscoreHelper.IsHighscore(playerScore))
+            {
+                _uiContainer.Add(new TextBlock("New highscore!", new Vector2(Screen.Width / 2f, Screen.Height / 4f - 32)) { Color = new Color(64, 255, 64) });
+            }
         }
 
         private void OnReplayClicked()

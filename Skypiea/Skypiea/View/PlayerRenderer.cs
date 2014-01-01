@@ -20,7 +20,7 @@ namespace Skypiea.View
         public PlayerRenderer(EntityWorld entityWorld)
         {
             _player = entityWorld.FindEntityByName(EntityNames.Player);
-            _highscoreManager = entityWorld.Services.Get<IHighscoreManager>();
+            _highscoreManager = FlaiGame.Current.Services.Get<HighscoreManager>();
 
             CCamera2D.Active = _player.Get<CCamera2D>();
         }
@@ -85,7 +85,7 @@ namespace Skypiea.View
         private void DrawScore(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
             graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, playerInfo.Score, new Vector2(8, 32), Color.White);
-            graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, "Best: " + _highscoreManager.Highscore, new Vector2(8, 64), Color.White);
+            graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, "Best: ", _highscoreManager.Highscore, new Vector2(8, 64), Color.White);
         }
 
         private void DrawWeaponInfo(GraphicsContext graphicsContext)

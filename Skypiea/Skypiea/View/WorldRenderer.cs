@@ -1,6 +1,7 @@
 ﻿using Flai;
 using Flai.Graphics;
 using Skypiea.Model;
+using Skypiea.Screens;
 
 namespace Skypiea.View
 {
@@ -20,6 +21,8 @@ namespace Skypiea.View
         private readonly AchievementRenderer _achievementRenderer;
         private readonly VirtualThumbStickRenderer _virtualThumbStickRenderer;
         private readonly DropArrowRenderer _dropArrowRenderer;
+
+        private float _uiAlpha = 0f;
 
         public WorldRenderer(World world)
         {
@@ -65,12 +68,15 @@ namespace Skypiea.View
 
         public void DrawUI(GraphicsContext graphicsContext)
         {
+            _uiAlpha = FlaiMath.Clamp(_uiAlpha + (_world.EntityWorld.Services.Get<IGameContainer>().IsActive ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1);
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(_uiAlpha);
             _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
 
             _dropArrowRenderer.Draw(graphicsContext);
             _boosterStateRenderer.Draw(graphicsContext);
             _achievementRenderer.Draw(graphicsContext);
+            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
         }
     }
 }

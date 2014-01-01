@@ -58,7 +58,7 @@ namespace Skypiea.Systems
 
         private void SetNextBoosterTimer()
         {
-            _nextBoosterTimer.SetTickTime(Global.Random.NextFloat(20, 60));
+            _nextBoosterTimer.SetTickTime(Global.Random.NextFloat(20, 50));
             _nextBoosterTimer.Restart();
         }
 

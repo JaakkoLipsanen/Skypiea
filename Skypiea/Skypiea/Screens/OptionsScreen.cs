@@ -88,13 +88,17 @@ namespace Skypiea.Screens
 
         private void OnRenameUserNameClicked()
         {
-            GuideHelper.ShowKeyboardInput("Change username", "Change the username that will be used on the global leaderboards. The username must be at least 4 characters long ", input =>
+            GuideHelper.ShowKeyboardInput("Change username", "Change the username that will be used on the global leaderboards", input =>
             {
                 if (!string.IsNullOrWhiteSpace(input))
                 {
                     if (input.Length < 4)
                     {
                         this.SetRenameErrorText("Username is too short");
+                    }
+                    else if (input.Length > 26) // scoreloop limit is 40 characters, but 26 is the last one that fits properly to the leaderboards
+                    {
+                        this.SetRenameErrorText("Username is too long");
                     }
                     else if (!_scoreloopManager.IsNetworkAvailable)
                     {

@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics;
+using System.Linq;
 using Flai;
 using Flai.Achievements;
 using Flai.DataStructures;
@@ -34,7 +36,7 @@ namespace Skypiea.Screens
         {
             // get achievements with only one achievements per group
             _achievements = new ReadOnlyArray<Achievement>(_achievementManager.GetAchievementsWithoutGroups());
-            _scroller.ScrollingRange = new Range(0, _achievements.Count * SlotHeight);
+            _scroller.ScrollingRange = new Range(0, _achievements.Count * SlotHeight - Screen.Height * 0.5f);
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
@@ -71,9 +73,21 @@ namespace Skypiea.Screens
         protected override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize));
-
             this.DrawTitle(graphicsContext);
-            for (int i = 0; i < _achievements.Length; i++)
+            this.DrawAchievements(graphicsContext);
+            graphicsContext.SpriteBatch.End();
+
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
+            _uiContainer.Draw(graphicsContext, true);
+            graphicsContext.SpriteBatch.End();
+        }
+
+        private void DrawAchievements(GraphicsContext graphicsContext)
+        {
+            RectangleF scrollerArea = _scroller.GetArea(graphicsContext.ScreenSize);
+            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / SlotHeight, 0, _achievements.Count);
+            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / SlotHeight), 0, _achievements.Count);
+            for (int i = topVisible; i < bottomVisible; i++)
             {
                 float verticalPosition = OffsetFromTop + i * AchievementScreen.SlotHeight;
 
@@ -86,12 +100,6 @@ namespace Skypiea.Screens
                 this.DrawProgression(graphicsContext, achievement, slotArea);
                 this.DrawGroupIndex(graphicsContext, achievement, slotArea);
             }
-
-            graphicsContext.SpriteBatch.End();
-
-            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
-            _uiContainer.Draw(graphicsContext, true);
-            graphicsContext.SpriteBatch.End();
         }
 
         private void DrawTitle(GraphicsContext graphicsContext)

@@ -1,4 +1,5 @@
 ﻿using Flai;
+using Flai.CBES;
 using Skypiea.Messages;
 
 namespace Skypiea.Model
@@ -11,6 +12,11 @@ namespace Skypiea.Model
         public World World
         {
             get { return _world; }
+        }
+
+        public EntityWorld EntityWorld
+        {
+            get { return _world.EntityWorld; }
         }
 
         private Level(World world)

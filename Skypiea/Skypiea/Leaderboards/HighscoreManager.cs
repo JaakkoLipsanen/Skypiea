@@ -13,10 +13,17 @@ namespace Skypiea.Leaderboards
     {
         private readonly string _highscoreFilePath;
         private int _highscore;
+        private bool _isHighscorePostedToScoreloop = true;
 
         public int Highscore
         {
             get { return _highscore; }
+        }
+
+        public bool IsHighscorePostedToLeaderboards
+        {
+            get { return _isHighscorePostedToScoreloop; }
+            set { _isHighscorePostedToScoreloop = value; }
         }
 
         public HighscoreManager(string highscoreFilePath)
@@ -46,6 +53,7 @@ namespace Skypiea.Leaderboards
                 using (BinaryWriter writer = new BinaryWriter(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Create)))
                 {
                     writer.Write(_highscore);
+                    writer.Write(_isHighscorePostedToScoreloop);
                     this.SaveInner(writer);
                 }
             }
@@ -60,6 +68,7 @@ namespace Skypiea.Leaderboards
                     using (BinaryReader reader = new BinaryReader(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Open)))
                     {
                         _highscore = reader.ReadInt32();
+                        _isHighscorePostedToScoreloop = reader.ReadBoolean();
                         this.LoadInner(reader);
                     }
                 }

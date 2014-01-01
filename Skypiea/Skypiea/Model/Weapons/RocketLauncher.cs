@@ -13,7 +13,7 @@ namespace Skypiea.Model.Weapons
     public class RocketLauncher : BulletWeapon // do this!
     {
         private const int BulletCount = 40;
-        private const int ExplosionRange = SkypieaConstants.PixelsPerMeter * 3;
+        private const int ExplosionRange = 60;
 
         public override WeaponType Type
         {
@@ -40,7 +40,7 @@ namespace Skypiea.Model.Weapons
             RocketExplodedMessage explodedMessage = entityWorld.HasListeners<RocketExplodedMessage>() ? entityWorld.FetchMessage<RocketExplodedMessage>() : null; // AAWFFUUULL!!
             foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(bullet.Entity.Transform, RocketLauncher.ExplosionRange))
             {
-                if (entityHit.Get<CHealth>().IsAlive && ZombieHelper.TakeDamage(zombie, 25, Vector2.Zero))
+                if (zombie.Get<CHealth>().IsAlive && ZombieHelper.TakeDamage(zombie, 25, Vector2.Zero))
                 {
                     // if the message has not listeners, then there's no point in doing in broadcasting it.
                     if (explodedMessage != null)
