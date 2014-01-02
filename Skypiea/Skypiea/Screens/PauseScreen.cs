@@ -38,10 +38,23 @@ namespace Skypiea.Screens
                     this.OnContinueClicked();
                 }
             }
+
+
+            // */*/ */
+            if (updateContext.InputState.IsNewTouchAt(new Rectangle(0, 360, 800, 120)))
+            {
+                _draw = !_draw;
+            }
         }
 
+        private bool _draw = true;
         protected override void Draw(GraphicsContext graphicsContext)
         {
+            if (!_draw)
+            {
+                return;
+            }
+
             graphicsContext.SpriteBatch.Begin();
 
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * (1f - this.TransitionPosition) * 0.35f);

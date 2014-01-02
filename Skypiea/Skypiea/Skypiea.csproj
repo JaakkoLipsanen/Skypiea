@@ -46,7 +46,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Windows Phone\Release</OutputPath>
-    <DefineConstants>TRACE;WINDOWS_PHONE CBES_3D</DefineConstants>
+    <DefineConstants>TRACE;WINDOWS_PHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <NoStdLib>true</NoStdLib>
@@ -62,7 +62,10 @@
     <Reference Include="Microsoft.Xna.Framework.Input.Touch" />
     <Reference Include="mscorlib" />
     <Reference Include="Scoreloop.CoreSocial">
-      <HintPath>..\..\..\Flai\3rd Party Libraries\Scoreloop\Scoreloop.CoreSocial.dll</HintPath>
+      <HintPath>..\..\..\Flai\3rd Party Libraries\Scoreloop\WP7\Scoreloop.CoreSocial.dll</HintPath>
+    </Reference>
+    <Reference Include="Scoreloop.CoreSocial.Extensions">
+      <HintPath>..\..\..\Flai\3rd Party Libraries\Scoreloop\WP7\Scoreloop.CoreSocial.Extensions.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -206,6 +209,7 @@
     </None>
     <None Include="Properties\WMAppManifest.xml">
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
+      <SubType>Designer</SubType>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -223,7 +227,6 @@
       <Project>{BDB81562-3CC3-44B0-B723-5B575DEC8273}</Project>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />
   <!--

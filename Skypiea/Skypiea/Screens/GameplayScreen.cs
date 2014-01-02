@@ -1,6 +1,8 @@
 ﻿using Flai;
 using Flai.Graphics;
 using Flai.ScreenManagement;
+using Flai.Ui;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Components;
 using Skypiea.Messages;
@@ -60,8 +62,7 @@ namespace Skypiea.Screens
         {
             if (this.IsActive && updateContext.InputState.IsBackButtonPressed)
             {
-                _isPaused = true;
-                this.ScreenManager.AddScreen(new PauseScreen());
+                this.Pause();
             }
             else if (_isPaused && this.IsActive)
             {
@@ -88,6 +89,12 @@ namespace Skypiea.Screens
             }
         }
 
+        public void Pause()
+        {
+            _isPaused = true;
+            this.ScreenManager.AddScreen(new PauseScreen());
+        }
+
         public void Restart()
         {
             _level.GameOver -= this.OnGameOver;
@@ -100,6 +107,7 @@ namespace Skypiea.Screens
             _level = Level.Generate(_worldType);
             _levelRenderer = new LevelRenderer(_level);
             _level.EntityWorld.Services.Add<IGameContainer>(this);
+            _level.UiContainer.Add(new TextButton("II", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 16), this.Pause));
 
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;

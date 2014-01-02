@@ -59,6 +59,7 @@ namespace Skypiea.Screens
                 }
 
                 _uiContainer.Update(updateContext);
+
             }
         }
 

@@ -47,7 +47,7 @@ namespace Skypiea.View
 
         private void DrawWithoutCamera(GraphicsContext graphicsContext)
         {
-            _worldRenderer.DrawUI(graphicsContext);
+            _worldRenderer.DrawUI(graphicsContext, _level.UiContainer);
             if (TestingGlobals.GraphicalQuality == GraphicalQuality.High)
             {
                 this.DrawNoise(graphicsContext);

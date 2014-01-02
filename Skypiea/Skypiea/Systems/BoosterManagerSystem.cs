@@ -15,6 +15,7 @@ namespace Skypiea.Systems
         private readonly Timer _nextBoosterTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;
         private int _previousBoosterIndex = -1;
+        private int _generatedBoosters = 0;
 
         protected override void PreInitialize()
         {
@@ -68,13 +69,14 @@ namespace Skypiea.Systems
 
             // don't allow two same boosters consecutively
             int newIndex = _previousBoosterIndex;
-            while(newIndex == _previousBoosterIndex)
+            while(newIndex == _previousBoosterIndex || (_generatedBoosters == 0 && newIndex >= 3)) // if is previous booster or if this is the first time booster is generated and the booster is negative
             {
                 newIndex = FlaiMath.Clamp((int)(Global.Random.NextFloat() * BoosterCount), 0, BoosterCount - 1);
             }
 
             _boosterState.ActiveBooster = this.CreateBooster(newIndex);
             _previousBoosterIndex = newIndex;
+            _generatedBoosters++;
         }
 
         private Booster CreateBooster(int index)

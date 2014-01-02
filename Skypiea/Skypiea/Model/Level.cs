@@ -1,5 +1,6 @@
 ﻿using Flai;
 using Flai.CBES;
+using Flai.Ui;
 using Skypiea.Messages;
 
 namespace Skypiea.Model
@@ -9,6 +10,8 @@ namespace Skypiea.Model
         public event GenericEvent GameOver; 
 
         private readonly World _world;
+        private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
+
         public World World
         {
             get { return _world; }
@@ -17,6 +20,11 @@ namespace Skypiea.Model
         public EntityWorld EntityWorld
         {
             get { return _world.EntityWorld; }
+        }
+
+        public BasicUiContainer UiContainer
+        {
+            get { return _uiContainer; }
         }
 
         private Level(World world)
@@ -28,6 +36,7 @@ namespace Skypiea.Model
         public void Update(UpdateContext updateContext)
         {
             _world.Update(updateContext);
+            _uiContainer.Update(updateContext);
         }
 
         private void OnGameOver(GameOverMessage message)

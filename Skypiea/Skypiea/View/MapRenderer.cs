@@ -13,6 +13,7 @@ namespace Skypiea.View
         private readonly Color _color;
 
         private readonly World _world;
+        private readonly string _mapTextureName = MapRenderer.GetRandomMap();
         public MapRenderer(World world)
         {
             _world = world;
@@ -24,7 +25,7 @@ namespace Skypiea.View
             // draws the actual map texture
             Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
-                 _contentProvider.DefaultManager.LoadTexture(_world.WorldType.GetMapTextureName()),
+                 _contentProvider.DefaultManager.LoadTexture(_mapTextureName), //_world.WorldType.GetMapTextureName()),
                  -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, SkypieaViewConstants.PixelSize);
         }
 
@@ -82,6 +83,13 @@ namespace Skypiea.View
             // bottom
             graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitY * SkypieaConstants.MapHeightInPixels, Corner.TopRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipVertically); // bottom-left
             graphicsContext.SpriteBatch.Draw(texture, SkypieaConstants.MapSizeInPixels, Corner.TopLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically); // bottom-right
+        }
+
+        private static string GetRandomMap()
+        {
+            return "Map/TestMap";
+            const int Count = 2;
+            return "Map/MapTextures/Map" + Global.Random.Next(1, Count + 1);
         }
     }
 }

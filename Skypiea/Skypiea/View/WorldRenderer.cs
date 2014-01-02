@@ -1,5 +1,6 @@
 ﻿using Flai;
 using Flai.Graphics;
+using Flai.Ui;
 using Skypiea.Model;
 using Skypiea.Screens;
 
@@ -66,10 +67,11 @@ namespace Skypiea.View
             _mapRenderer.DrawFades(graphicsContext);
         }
 
-        public void DrawUI(GraphicsContext graphicsContext)
+        public void DrawUI(GraphicsContext graphicsContext, BasicUiContainer levelUiContainer)
         {
             _uiAlpha = FlaiMath.Clamp(_uiAlpha + (_world.EntityWorld.Services.Get<IGameContainer>().IsActive ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1);
             graphicsContext.SpriteBatch.GlobalAlpha.Push(_uiAlpha);
+            levelUiContainer.Draw(graphicsContext, true);
             _playerRenderer.DrawUI(graphicsContext);
             _virtualThumbStickRenderer.Draw(graphicsContext);
 
