@@ -70,8 +70,8 @@ namespace Skypiea.View
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Vignette")); // ...
-            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Vignette")); // ...
+            // todo: use sprite sheet
+            graphicsContext.SpriteBatch.DrawFullscreen(_contentProvider.DefaultManager.LoadTexture("PostProcessing/Vignette"));
         }
     }
 }

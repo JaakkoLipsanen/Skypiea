@@ -4,7 +4,7 @@ using Flai.CBES;
 
 namespace Skypiea.Components
 {
-    public class CRicochetBullet : PoolableComponent
+    public class CBouncerBullet : PoolableComponent
     {
         private readonly HashSet<Entity> _zombiesHits = new HashSet<Entity>(); 
         public int HitsRemaining { get; private set; }

@@ -17,7 +17,7 @@ namespace Skypiea.View
         public MapRenderer(World world)
         {
             _world = world;
-            _color = (world.WorldType == WorldType.Grass) ? Color.DarkGray : Color.LightGray;
+            _color = (world.WorldType == WorldType.Grass && false) ? Color.DarkGray : Color.LightGray;
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -87,8 +87,7 @@ namespace Skypiea.View
 
         private static string GetRandomMap()
         {
-            return "Map/TestMap";
-            const int Count = 2;
+            const int Count = 7;
             return "Map/MapTextures/Map" + Global.Random.Next(1, Count + 1);
         }
     }

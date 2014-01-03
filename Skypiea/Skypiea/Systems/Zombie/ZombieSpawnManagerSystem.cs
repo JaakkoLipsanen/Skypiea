@@ -5,7 +5,6 @@ using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Prefabs.Zombies;
 
 namespace Skypiea.Systems.Zombie
@@ -48,7 +47,7 @@ namespace Skypiea.Systems.Zombie
         private void SpawnZombie()
         {
             const float MinDistanceFromBorder = -SkypieaConstants.PixelsPerMeter * 4;
-            const float MinDistanceFromPlayer = 400f; // SkypieaConstants.PixelsPerMeter * 10;
+            const float MinDistanceFromPlayer = 480; // sqrt(400^2 + 240^2) == 466
 
             CTransform2D playerTransform = this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
             Vector2 position = FlaiAlgorithms.GenerateRandomVector2(

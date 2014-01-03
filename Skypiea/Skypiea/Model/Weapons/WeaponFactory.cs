@@ -30,8 +30,8 @@ namespace Skypiea.Model.Weapons
                 case WeaponType.Minigun:
                     return new Minigun(ammoMultiplier);
 
-                case WeaponType.Ricochet:
-                    return new RicochetGun(ammoMultiplier);
+                case WeaponType.Bouncer:
+                    return new Bouncer(ammoMultiplier);
 
                 case WeaponType.Flamethrower:
                     return new Flamethrower(ammoMultiplier);

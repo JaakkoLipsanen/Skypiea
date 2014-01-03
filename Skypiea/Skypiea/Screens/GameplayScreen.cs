@@ -15,6 +15,7 @@ namespace Skypiea.Screens
 {
     public interface IGameContainer
     {
+        bool IsGameOver { get; }
         bool IsActive { get; }
         void Restart();
     }
@@ -26,7 +27,8 @@ namespace Skypiea.Screens
         private Level _level;
         private LevelRenderer _levelRenderer;
         private bool _isPaused = false;
-        private bool _isDrawing = true;
+       
+        public bool IsGameOver { get; private set; }
 
         public GameplayScreen(WorldType worldType)
         {
@@ -69,11 +71,6 @@ namespace Skypiea.Screens
                 _isPaused = false;
             }
 
-            if (updateContext.InputState.HasGesture(GestureType.DoubleTap))
-            {
-                _isDrawing = !_isDrawing;
-            }
-
             if (!_isPaused)
             {
                 _level.Update(updateContext);
@@ -83,10 +80,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            if (_isDrawing)
-            {
-                _levelRenderer.Draw(graphicsContext);
-            }
+            _levelRenderer.Draw(graphicsContext);
         }
 
         public void Pause()
@@ -97,6 +91,7 @@ namespace Skypiea.Screens
 
         public void Restart()
         {
+            this.IsGameOver = false;
             _level.GameOver -= this.OnGameOver;
             _levelRenderer.Unload();
             this.LoadLevel();
@@ -107,7 +102,7 @@ namespace Skypiea.Screens
             _level = Level.Generate(_worldType);
             _levelRenderer = new LevelRenderer(_level);
             _level.EntityWorld.Services.Add<IGameContainer>(this);
-            _level.UiContainer.Add(new TextButton("II", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 16), this.Pause));
+            _level.UiContainer.Add(new TexturedButton(new Sprite(this.ContentProvider.DefaultManager.LoadTexture("PauseButton")), new Vector2(this.Game.ScreenSize.Width - 32, 24), this.Pause));
 
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;
@@ -115,6 +110,7 @@ namespace Skypiea.Screens
 
         private void OnGameOver()
         {
+            this.IsGameOver = true;
             int score = _level.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>().Score;
             this.ScreenManager.AddScreen(new GameOverScreen(this, score));
         }

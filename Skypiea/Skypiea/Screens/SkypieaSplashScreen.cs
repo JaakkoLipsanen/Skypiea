@@ -119,7 +119,7 @@ namespace Skypiea.Screens
             // bullets
             entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(player.Transform, new Flamethrower(1));
             entityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(player.Transform, new Flamethrower(1), 0f);
-            entityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(player.Transform, new RicochetGun(1), 0f);
+            entityWorld.CreateEntityFromPrefab<BouncerBulletPrefab>(player.Transform, new Bouncer(1), 0f);
             entityWorld.CreateEntityFromPrefab<RocketLauncherBulletPrefab>(player.Transform, new RocketLauncher(1), 0f);
 
             // zombies

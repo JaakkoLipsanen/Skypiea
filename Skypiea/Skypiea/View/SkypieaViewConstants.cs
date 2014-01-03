@@ -15,6 +15,7 @@ namespace Skypiea.View
 
         public static TextureDefinition LoadTexture(IContentProvider contentProvider, string textureName)
         {
+            return new TextureDefinition(contentProvider.DefaultManager.LoadTexture(textureName));
             return contentProvider.DefaultManager.LoadTextureFromSpriteSheet(SkypieaViewConstants.SpriteSheetName, textureName);
         }
     }

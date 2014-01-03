@@ -23,7 +23,8 @@ namespace Skypiea.View
         private readonly VirtualThumbStickRenderer _virtualThumbStickRenderer;
         private readonly DropArrowRenderer _dropArrowRenderer;
 
-        private float _uiAlpha = 0f;
+        private float _playerUIAlpha = 0f;
+        private float _otherUIAlpha = 0f;
 
         public WorldRenderer(World world)
         {
@@ -69,10 +70,16 @@ namespace Skypiea.View
 
         public void DrawUI(GraphicsContext graphicsContext, BasicUiContainer levelUiContainer)
         {
-            _uiAlpha = FlaiMath.Clamp(_uiAlpha + (_world.EntityWorld.Services.Get<IGameContainer>().IsActive ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1);
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(_uiAlpha);
-            levelUiContainer.Draw(graphicsContext, true);
+            IGameContainer gameContainer = _world.EntityWorld.Services.Get<IGameContainer>();
+            _playerUIAlpha = FlaiMath.Clamp(_playerUIAlpha + ((gameContainer.IsActive || !gameContainer.IsGameOver) ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1); // player ui doesn't fade out when paused
+            _otherUIAlpha = FlaiMath.Clamp(_otherUIAlpha + (gameContainer.IsActive ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1);
+
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(_playerUIAlpha);
             _playerRenderer.DrawUI(graphicsContext);
+            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
+            
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(_otherUIAlpha);
+            levelUiContainer.Draw(graphicsContext, true);
             _virtualThumbStickRenderer.Draw(graphicsContext);
 
             _dropArrowRenderer.Draw(graphicsContext);

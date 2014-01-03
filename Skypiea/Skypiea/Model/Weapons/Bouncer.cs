@@ -7,36 +7,36 @@ using Skypiea.Prefabs.Bullets;
 
 namespace Skypiea.Model.Weapons
 {
-    public class RicochetGun : BulletWeapon
+    public class Bouncer : BulletWeapon
     {
         private const int BulletCount = 30;
         public override WeaponType Type
         {
-            get { return WeaponType.Ricochet; }
+            get { return WeaponType.Bouncer; }
         }
 
-        public RicochetGun(float ammoMultiplier)
-            : base((int)(RicochetGun.BulletCount * ammoMultiplier), 0.575f)
+        public Bouncer(float ammoMultiplier)
+            : base((int)(Bouncer.BulletCount * ammoMultiplier), 0.575f)
         {
         }
 
         protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(playerEntity.Transform, this, -0.125f);
-            playerEntity.EntityWorld.CreateEntityFromPrefab<RicochetBulletPrefab>(playerEntity.Transform, this, 0.125f);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<BouncerBulletPrefab>(playerEntity.Transform, this, -0.125f);
+            playerEntity.EntityWorld.CreateEntityFromPrefab<BouncerBulletPrefab>(playerEntity.Transform, this, 0.125f);
             this.DecreaseBulletCount();
         }
 
         public override bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {
-            CRicochetBullet ricochetBullet = bullet.Entity.Get<CRicochetBullet>();
-            if (ricochetBullet.HasHit(entityHit))
+            CBouncerBullet bouncerBullet = bullet.Entity.Get<CBouncerBullet>();
+            if (bouncerBullet.HasHit(entityHit))
             {
                 return false;
             }
 
             CVelocity2D velocity = bullet.Entity.Get<CVelocity2D>();
-            if (ricochetBullet.OnHit(entityHit))
+            if (bouncerBullet.OnHit(entityHit))
             {
                 ZombieHelper.TakeDamage(entityHit, 20, velocity.Velocity / 3f);
                 velocity.Direction = velocity.Direction.Rotate(Global.Random.NextFloat(-1f, 1f)); // change the direction to random

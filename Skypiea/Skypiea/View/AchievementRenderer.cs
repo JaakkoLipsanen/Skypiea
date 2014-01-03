@@ -40,7 +40,7 @@ namespace Skypiea.View
                 const float TextOffset = 8;
                 const float FadeTime = 0.25f;
                 const float Height = 96;
-                const float VerticalPosition = 128;
+                const float VerticalPosition = 90;
 
                 const float BackgroundAlpha = 0.4f;
                 const float TextAlpha = 0.85f;

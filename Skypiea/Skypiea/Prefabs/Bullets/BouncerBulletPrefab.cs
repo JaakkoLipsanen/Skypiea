@@ -7,7 +7,7 @@ using Skypiea.Model.Weapons;
 
 namespace Skypiea.Prefabs.Bullets
 {
-    public class RicochetBulletPrefab : Prefab
+    public class BouncerBulletPrefab : Prefab
     {
         private static readonly SizeF BulletSize = new SizeF(6, 6);
         private const float RotationAmount = FlaiMath.TwoPi * 3;
@@ -21,10 +21,10 @@ namespace Skypiea.Prefabs.Bullets
             entity.Transform.Position = transform.Position;
             entity.Transform.Rotation = transform.Rotation;
 
-            entity.AddFromPool<CBullet>().Initialize(RicochetBulletPrefab.BulletSize, parameters.Get<RicochetGun>(1));
+            entity.AddFromPool<CBullet>().Initialize(BouncerBulletPrefab.BulletSize, parameters.Get<Bouncer>(1));
             entity.AddFromPool<CVelocity2D>().Initialize(FlaiMath.GetAngleVector(transform.Rotation + rotationOffset), Speed);
-            entity.AddFromPool<CRotater2D>().Initialize(RicochetBulletPrefab.RotationAmount);
-            entity.AddFromPool<CRicochetBullet>().Initialize(3);
+            entity.AddFromPool<CRotater2D>().Initialize(BouncerBulletPrefab.RotationAmount);
+            entity.AddFromPool<CBouncerBullet>().Initialize(3);
         }
     }
 }

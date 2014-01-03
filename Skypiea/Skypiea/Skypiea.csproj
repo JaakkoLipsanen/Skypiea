@@ -93,7 +93,7 @@
     <Compile Include="Components\CDrop.cs" />
     <Compile Include="Components\CHealth.cs" />
     <Compile Include="Components\CPlayerInfo.cs" />
-    <Compile Include="Components\CRicochetBullet.cs" />
+    <Compile Include="Components\CBouncerBullet.cs" />
     <Compile Include="Components\CRusherZombieAI.cs" />
     <Compile Include="Components\CWeapon.cs" />
     <Compile Include="Components\CWeaponDrop.cs" />
@@ -130,7 +130,7 @@
     <Compile Include="Model\Weapons\Flamethrower.cs" />
     <Compile Include="Model\Weapons\Laser.cs" />
     <Compile Include="Model\Weapons\Minigun.cs" />
-    <Compile Include="Model\Weapons\RicochetGun.cs" />
+    <Compile Include="Model\Weapons\Bouncer.cs" />
     <Compile Include="Model\Weapons\RocketLauncher.cs" />
     <Compile Include="Model\Weapons\Shotgun.cs" />
     <Compile Include="Model\Weapons\Weapon.cs" />
@@ -142,7 +142,7 @@
     <Compile Include="Model\ZombieType.cs" />
     <Compile Include="Prefabs\Bullets\FlamethrowerBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
-    <Compile Include="Prefabs\Bullets\RicochetBulletPrefab.cs" />
+    <Compile Include="Prefabs\Bullets\BouncerBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\RocketLauncherBulletPrefab.cs" />
     <Compile Include="Prefabs\LifeDropPrefab.cs" />
     <Compile Include="Prefabs\PlayerPrefab.cs" />
@@ -167,6 +167,7 @@
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
+    <Compile Include="Systems\GameStatsTrackerSystem.cs" />
     <Compile Include="Systems\HighscoreSystem.cs" />
     <Compile Include="Systems\LifeDropGeneratorSystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />

@@ -63,12 +63,13 @@ namespace Skypiea.View
 
         private void DrawWeaponDropArrow(GraphicsContext graphicsContext, CDrop drop, Vector2 screenPosition, float scale)
         {
-            const float Size = 27;
-
+            const float Size = 30;
+            const string FontName = "Minecraftia.16";
             CWeaponDrop weaponDrop = drop.Entity.Get<CWeaponDrop>();
-            graphicsContext.PrimitiveRenderer.DrawRectangle(screenPosition, Size * scale, new Color(72, 72, 228) * SkypieaViewConstants.DropArrowAlpha);
-            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer["Minecraftia.16"], weaponDrop.Type.ToChar(), screenPosition, Color.Black * SkypieaViewConstants.DropArrowAlpha, Color.White * SkypieaViewConstants.DropArrowAlpha, 0, 0.85f * scale);
-            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(screenPosition, Size * scale), Color.White * SkypieaViewConstants.DropArrowAlpha, 2 * scale);
+
+            graphicsContext.PrimitiveRenderer.DrawRectangle(screenPosition, Size * scale, Color.White * SkypieaViewConstants.DropArrowAlpha);
+            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(screenPosition, Size * scale), Color.Black * SkypieaViewConstants.DropArrowAlpha, 4 * scale);
+            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, Color.Black * SkypieaViewConstants.DropArrowAlpha, 0, scale);
         }
 
         #region Get Arrow Screen Border Position

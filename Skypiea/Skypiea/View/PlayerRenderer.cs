@@ -14,6 +14,8 @@ namespace Skypiea.View
 {
     public class PlayerRenderer : FlaiRenderer
     {
+        private const float UIOffsetFromBorder = 12;
+
         private readonly Entity _player;
         private readonly IHighscoreManager _highscoreManager;
 
@@ -58,16 +60,15 @@ namespace Skypiea.View
                 IZombieStatsProvider zombieStatsProvider = _player.EntityWorld.Services.Get<IZombieStatsProvider>();
 
                 GraphicalGuidelines.DecimalPrecisionInText = 3;
-                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Time: ", zombieStatsProvider.TotalTime, new Vector2(graphicsContext.ScreenSize.Width/2f, 416), Color.White);
-                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Speed: ", zombieStatsProvider.SpeedMultiplier, new Vector2(graphicsContext.ScreenSize.Width/2f, 440), Color.White);
-                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Spawn Rate: ", zombieStatsProvider.SpawnRate, new Vector2(graphicsContext.ScreenSize.Width/2f, 464), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Time: ", zombieStatsProvider.TotalTime, new Vector2(graphicsContext.ScreenSize.Width / 2f, 416), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Speed: ", zombieStatsProvider.SpeedMultiplier, new Vector2(graphicsContext.ScreenSize.Width / 2f, 440), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Spawn Rate: ", zombieStatsProvider.SpawnRate, new Vector2(graphicsContext.ScreenSize.Width / 2f, 464), Color.White);
             }
         }
 
         private void DrawLives(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
             const int Size = 24;
-            const int OffsetFromBorder = 8;
 
             TextureDefinition heartTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Heart");
             for (int i = 0; i < playerInfo.TotalLives; i++)
@@ -78,34 +79,31 @@ namespace Skypiea.View
                     color = new Color(72, 72, 72) * 0.75f;
                 }
 
-                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(OffsetFromBorder + (i + 0.5f) * Size, OffsetFromBorder + 0.5f * Size), color, 0, 2);
+                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(UIOffsetFromBorder+ (i + 0.5f) * Size, UIOffsetFromBorder + 0.5f * Size), color, 0, 2);
             }
         }
 
         private void DrawScore(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
-            graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, playerInfo.Score, new Vector2(8, 32), Color.White);
-            graphicsContext.SpriteBatch.DrawString(graphicsContext.FontContainer.DefaultFont, "Best: ", _highscoreManager.Highscore, new Vector2(8, 64), Color.White);
+            const string FontName = "Minecraftia.20";
+            graphicsContext.SpriteBatch.DrawStringFaded(graphicsContext.FontContainer[FontName], playerInfo.Score, new Vector2(8, 32));
         }
 
         private void DrawWeaponInfo(GraphicsContext graphicsContext)
         {
-            const string FontName = "SegoeWP.16";
+            const string FontName = "Minecraftia.20";
+
             CWeapon weaponComponent = _player.Get<CWeapon>();
-
             SpriteFont font = graphicsContext.FontContainer[FontName];
-            graphicsContext.SpriteBatch.DrawString(font, weaponComponent.Weapon.Type.GetDisplayName(), new Vector2(graphicsContext.ScreenSize.Width - 8, 8), Corner.TopRight, Color.White);
 
-            Vector2 position = new Vector2(graphicsContext.ScreenSize.Width - 8, 32);
+            // weapon name
+            graphicsContext.SpriteBatch.DrawStringFaded(font, weaponComponent.Weapon.Type.GetDisplayName(), new Vector2(8, 72));
+
+            // bullets remaining
             int? bulletsRemaining = weaponComponent.Weapon.AmmoRemaining;
             if (bulletsRemaining.HasValue)
             {
-                graphicsContext.SpriteBatch.DrawString(font, bulletsRemaining.Value, font.AdjustCorner(bulletsRemaining.Value, Corner.TopRight, position), Color.White);
-            }
-            else
-            {
-                const string InfinityDisplayString = "Infinity";
-                graphicsContext.SpriteBatch.DrawString(font, InfinityDisplayString, font.AdjustCorner(InfinityDisplayString, Corner.TopRight, position), Color.White);
+                graphicsContext.SpriteBatch.DrawStringFaded(font, bulletsRemaining.Value, font.AdjustCorner(bulletsRemaining.Value, Corner.TopLeft, new Vector2(8, 104)));
             }
         }
     }

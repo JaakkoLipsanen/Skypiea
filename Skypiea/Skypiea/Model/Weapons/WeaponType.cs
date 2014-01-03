@@ -12,7 +12,7 @@ namespace Skypiea.Model.Weapons
         RocketLauncher = 2,
         Laser = 3,
         Minigun = 4,
-        Ricochet = 5,
+        Bouncer = 5,
         Flamethrower = 6,
         Waterblaster = 7,
     }

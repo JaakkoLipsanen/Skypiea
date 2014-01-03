@@ -1,15 +1,14 @@
-﻿using System;
-using Flai;
+﻿using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.DataStructures;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model.Weapons;
+using System;
 
 namespace Skypiea.View
 {
@@ -37,9 +36,9 @@ namespace Skypiea.View
                 {
                     graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.White, entity.Transform.Rotation, 2);
                 }
-                else if (bullet.Weapon.Type == WeaponType.Ricochet)
+                else if (bullet.Weapon.Type == WeaponType.Bouncer)
                 {
-                    graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DimGray, entity.Transform.Rotation, 1.2f);
+                  //  graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DimGray, entity.Transform.Rotation, 1.2f);
                     graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DarkGray, entity.Transform.Rotation, 1);
                 }
                 else if (bullet.Weapon.Type == WeaponType.Flamethrower)
@@ -69,7 +68,7 @@ namespace Skypiea.View
                 case WeaponType.RocketLauncher:
                     return SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/RocketBullet");
 
-                case WeaponType.Ricochet:
+                case WeaponType.Bouncer:
                     return SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/RicochetBullet");
 
                 case WeaponType.Flamethrower:

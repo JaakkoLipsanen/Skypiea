@@ -33,18 +33,29 @@ namespace Skypiea.View
 
         private void DrawWeaponDrop(GraphicsContext graphicsContext, Entity entity)
         {
+            Vector2i position = Vector2i.Round(entity.Transform.Position);
+            CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
+
+            TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
+            float rotationOffset = graphicsContext.TotalSeconds;
+            const int Fans = 6;
+            for (int i = 0; i < Fans; i++)
+            {
+                float rotation = FlaiMath.TwoPi / Fans * i + rotationOffset;
+                graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, Color.White * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.3f);
+            }
+
             if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
             {
                 return;
             }
 
-            const float Size = 27;
+            const float Size = 30;
             const string FontName = "Minecraftia.16";
 
-            CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
-            graphicsContext.PrimitiveRenderer.DrawRectangle(entity.Transform.Position, Size, new Color(72, 72, 228));
-            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), entity.Transform.Position, 0, 0.85f);
-            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(entity.Transform.Position, Size), Color.White, 2);
+            graphicsContext.PrimitiveRenderer.DrawRectangle(position, Size, Color.White);
+            graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(position, Size), Color.Black, 4);
+            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), position, Color.White, Color.Black, 0, 1f);
         }
 
         private void DrawLifeDrop(GraphicsContext graphicsContext, Entity entity)
@@ -52,12 +63,12 @@ namespace Skypiea.View
             // fans
             TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
             float rotationOffset = graphicsContext.TotalSeconds;
-
+            Color color = graphicsContext.TotalSeconds % 2 > 1 ? Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f) : Color.PaleVioletRed;
             const int Fans = 6;
             for (int i = 0; i < Fans; i++)
             {
                 float rotation = FlaiMath.TwoPi / Fans * i + rotationOffset;
-                graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, Color.PaleVioletRed * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.5f);
+                graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, color * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.5f);
             }
 
             // if the drop is blinking, then don't render the "heart"

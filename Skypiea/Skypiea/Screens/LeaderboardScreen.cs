@@ -23,12 +23,12 @@ namespace Skypiea.Screens
     public class LeaderboardScreen : GameScreen
     {
         private const float ScoreSlotHeight = 32;
-        private const float OffsetFromTop = 164;
+        private const float OffsetFromTop = 196;
 
         private readonly ScrollingLeaderboard _leaderboard;
         private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
-        private readonly Dictionary<LeaderboardScope, int> _ranks = new Dictionary<LeaderboardScope, int>();
+        private readonly Dictionary<LeaderboardScope, ScoreRank> _ranks = new Dictionary<LeaderboardScope, ScoreRank>();
 
         private ScrollerButton _dailyLeaderboardButton;
         private ScrollerButton _overallLeaderboardButton;
@@ -115,14 +115,15 @@ namespace Skypiea.Screens
 
             if (_ranks.ContainsKey(_leaderboard.CurrentScope))
             {
-                int rank = _ranks[_leaderboard.CurrentScope];
-                if (rank == 0) // user doesn't have a rank on this leaderboard
+                ScoreRank rank = _ranks[_leaderboard.CurrentScope];
+                if (rank.Rank == 0) // user doesn't have a rank on this leaderboard
                 {
                     graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You have no rank on this leaderboard", new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
                 }
                 else // user has a rank on this leaderboard
                 {
-                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You are " + rank, Common.GetOrdinalSuffix(rank), new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You are " + rank.Rank, Common.GetOrdinalSuffix(rank.Rank), new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "with a score of ", rank.Score, new Vector2(graphicsContext.ScreenSize.Width / 2f, 156), Color.White);
                 }
             }
 
@@ -229,7 +230,21 @@ namespace Skypiea.Screens
                 return;
             }
 
-            _ranks.Add(response.Data.Scope, response.Data.Rank);
+            int rank = response.Data.Rank;
+            int score = (rank == 0) ? 0 : (int)response.Data.Score.Result;
+            _ranks.Add(response.Data.Scope, new ScoreRank(rank, score));
+        }
+
+        private class ScoreRank
+        {
+            public int Rank { get; private set; }
+            public int Score { get; private set; }
+
+            public ScoreRank(int rank, int score)
+            {
+                this.Rank = rank;
+                this.Score = score;
+            }
         }
     }
 }
