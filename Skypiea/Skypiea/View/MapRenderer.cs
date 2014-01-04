@@ -17,7 +17,7 @@ namespace Skypiea.View
         public MapRenderer(World world)
         {
             _world = world;
-            _color = (world.WorldType == WorldType.Grass && false) ? Color.DarkGray : Color.LightGray;
+            _color = Color.LightGray;
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)

@@ -6,10 +6,10 @@ namespace Skypiea.Leaderboards
 {
     public static class HighscoreHelper
     {
-        private const string HighscoreFilePath = "highscores.dat";
+        private const string FilePath = "highscores.dat";
         public static HighscoreManager CreateHighscoreManager()
         {
-            return new HighscoreManager(HighscoreHelper.HighscoreFilePath);
+            return new HighscoreManager(HighscoreHelper.FilePath);
         }
 
         public static void SubmitScore(int score)
@@ -46,11 +46,28 @@ namespace Skypiea.Leaderboards
         {
             using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
             {
-                if (isolatedStorage.FileExists(HighscoreHelper.HighscoreFilePath))
+                if (isolatedStorage.FileExists(HighscoreHelper.FilePath))
                 {
-                    isolatedStorage.DeleteFile(HighscoreHelper.HighscoreFilePath);
+                    isolatedStorage.DeleteFile(HighscoreHelper.FilePath);
                 }
             }
+        }
+
+        // checks if the highscore is the actual highscore that is saved to scoreloop
+        // basically if the player re-installs the game, the highscore on scoreloop is saved 
+        // but the "local" highscore is resetted
+        public static void EnsureHighscoreIsUpToDate()
+        {
+            ScoreloopManager leaderboardManager = FlaiGame.Current.Services.Get<ScoreloopManager>();
+            HighscoreManager highscoreManager = FlaiGame.Current.Services.Get<HighscoreManager>();
+
+            leaderboardManager.GetUserScore(LeaderboardScope.AllTime, 0, response =>
+            {
+                if (response.Success && response.Data != null && highscoreManager.UpdateHighscore((int)response.Data.Result))
+                {
+                    highscoreManager.SaveToFile();
+                }
+            });
         }
 
         public static bool IsHighscore(int score)

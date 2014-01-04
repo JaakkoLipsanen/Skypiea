@@ -94,7 +94,7 @@ namespace Skypiea.View
             {
                 Emitters = new ParticleEmitterCollection
                 {
-                    new ParticleEmitter(4000, 2f, new CircleEmitter(10, false, false))
+                    new ParticleEmitter(4000, 1f, new CircleEmitter(10, false, false))
                     {
                         ReleaseParameters = new ReleaseParameters
                         {

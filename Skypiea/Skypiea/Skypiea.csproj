@@ -138,8 +138,7 @@
     <Compile Include="Model\Weapons\WeaponType.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldGenerator.cs" />
-    <Compile Include="Model\WorldType.cs" />
-    <Compile Include="Model\ZombieType.cs" />
+    <Compile Include="Prefabs\ZombieType.cs" />
     <Compile Include="Prefabs\Bullets\FlamethrowerBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\BouncerBulletPrefab.cs" />
@@ -163,6 +162,8 @@
     <Compile Include="Screens\SkypieaSplashScreen.cs" />
     <Compile Include="Settings\SettingsHelper.cs" />
     <Compile Include="Settings\SkypieaSettings.cs" />
+    <Compile Include="Stats\StatsHelper.cs" />
+    <Compile Include="Stats\StatsManager.cs" />
     <Compile Include="Systems\AchievementSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="Systems\Player\PlayerDropPickupSystem.cs" />
     <Compile Include="Systems\Player\PlayerPassiveSystem.cs" />
     <Compile Include="Systems\Player\PlayerWeaponManagerSystem.cs" />
+    <Compile Include="Systems\StatsTrackerSystem.cs" />
     <Compile Include="Systems\VirtualThumbstickSystem.cs" />
     <Compile Include="Systems\Zombie\RusherZombieAISystem.cs" />
     <Compile Include="Systems\SystemProcessOrder.cs" />

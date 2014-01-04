@@ -14,7 +14,7 @@ namespace Skypiea.View
 {
     public class PlayerRenderer : FlaiRenderer
     {
-        private const float UIOffsetFromBorder = 12;
+        private const float UIOffsetFromBorder = 16;
 
         private readonly Entity _player;
         private readonly IHighscoreManager _highscoreManager;
@@ -79,7 +79,7 @@ namespace Skypiea.View
                     color = new Color(72, 72, 72) * 0.75f;
                 }
 
-                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(UIOffsetFromBorder+ (i + 0.5f) * Size, UIOffsetFromBorder + 0.5f * Size), color, 0, 2);
+                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(UIOffsetFromBorder - 10 + (i + 0.5f) * Size, UIOffsetFromBorder + 0.5f * Size), color, 0, 2);
             }
         }
 

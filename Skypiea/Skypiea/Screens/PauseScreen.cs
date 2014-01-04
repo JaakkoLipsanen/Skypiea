@@ -90,9 +90,12 @@ namespace Skypiea.Screens
                 return;
             }
 
-            this.ScreenManager.RemoveAllScreens();
-            this.ScreenManager.AddScreen(new MenuBackgroundScreen());
-            this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
+            this.Exited += () =>
+            {
+                this.ScreenManager.AddScreen(new MenuBackgroundScreen());
+                this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
+            };
+            this.ScreenManager.ExitAllScreens();
         }
     }
 }

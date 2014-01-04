@@ -45,8 +45,9 @@ namespace Skypiea.Systems
             Size screenSize = FlaiGame.Current.ScreenSize;
             if (settingsManager.Settings.ThumbstickStyle == ThumbstickStyle.Fixed)
             {
-                movementThumbstick = VirtualThumbstick.CreateFixed(new Vector2(120f, screenSize.Height - 120f));
-                rotationThumbstick = VirtualThumbstick.CreateFixed(new Vector2(screenSize.Width - 120f, screenSize.Height - 120f));
+                const float OffsetFromBorder = 0;
+                movementThumbstick = VirtualThumbstick.CreateFixed(new Vector2(120f + OffsetFromBorder, screenSize.Height - 120f - OffsetFromBorder), 84f);
+                rotationThumbstick = VirtualThumbstick.CreateFixed(new Vector2(screenSize.Width - 120f - OffsetFromBorder, screenSize.Height - 120f - OffsetFromBorder), 84f);
             }
             else
             {

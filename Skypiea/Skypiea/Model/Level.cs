@@ -44,9 +44,9 @@ namespace Skypiea.Model
             this.GameOver.InvokeIfNotNull();
         }
 
-        public static Level Generate(WorldType worldType)
+        public static Level Generate()
         {
-            return new Level(WorldGenerator.Generate(worldType));
+            return new Level(WorldGenerator.Generate());
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Skypiea.Systems.Zombie
 
     public class ZombieStatsSystem : EntitySystem, IZombieStatsProvider
     {
-        private const float ZombieStartSpawnTime = 0.75f;
+        private const float ZombieStartSpawnTime = 0.85f;
         private const float UpdateOnlySpawnRateEnd = 120;
         private const float UpdateOnlySpeedEnd = ZombieStatsSystem.UpdateOnlySpawnRateEnd + 100;
 

@@ -5,6 +5,7 @@ using Flai.Graphics;
 using Flai.ScreenManagement;
 using Flai.ScreenManagement.Screens;
 using Microsoft.Xna.Framework;
+using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
@@ -29,11 +30,10 @@ namespace Skypiea.Screens
 
         protected override void LoadContent(bool instancePreserved)
         {
-            Stopwatch sw = Stopwatch.StartNew();
             this.SimulateEntityWorld();
-            Debug.WriteLine("simulation: " + sw.Elapsed.TotalMilliseconds);
             this.LoadAssets();
-            Debug.WriteLine("assets: " + sw.Elapsed.TotalMilliseconds);
+            
+            HighscoreHelper.EnsureHighscoreIsUpToDate();
         }
 
         protected override void PreloadAssets()
@@ -72,9 +72,9 @@ namespace Skypiea.Screens
 
         private void SimulateEntityWorld()
         {
-            _world = new World(WorldType.Grass);
+            _world = World.CreateSimulationWorld();
 
-            _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
+            _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero); // SkypieaConstants.MapSizeInPixels.ToVector2());
         //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.RotationThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
         //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.MovementThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
 

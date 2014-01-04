@@ -5,9 +5,9 @@ namespace Skypiea.Model
 {
     public static class WorldGenerator
     {
-        public static World Generate(WorldType worldType)
+        public static World Generate()
         {
-            World world = new World(worldType);
+            World world = new World();
             WorldGenerator.CreateEntities(world);
             world.Initialize();
             

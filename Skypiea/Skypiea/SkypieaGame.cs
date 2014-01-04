@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Leaderboards;
 using Skypiea.Screens;
 using Skypiea.Settings;
+using Skypiea.Stats;
 
 namespace Skypiea
 {
@@ -20,10 +21,11 @@ namespace Skypiea
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
-            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 104), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory, Visible = false });
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory, Visible = false });
 
             _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
             _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
+            _serviceContainer.Add(StatsHelper.CreateStatsManager());
             _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
         }
 

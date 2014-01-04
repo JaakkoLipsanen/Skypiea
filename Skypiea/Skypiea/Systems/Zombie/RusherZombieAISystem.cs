@@ -4,7 +4,6 @@ using Flai.CBES.Systems;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Model.Boosters;
 
 namespace Skypiea.Systems.Zombie
@@ -18,6 +17,11 @@ namespace Skypiea.Systems.Zombie
 
         private IBoosterState _boosterState;
         private IZombieStatsProvider _zombieStatsProvider;
+
+        protected override int ProcessOrder
+        {
+            get { return SystemProcessOrder.Update; }
+        }
 
         protected override void Initialize()
         {
@@ -151,7 +155,7 @@ namespace Skypiea.Systems.Zombie
         private void StartRushing(Entity zombie, CRusherZombieAI rusherAI)
         {
             // start rushing
-            Vector2 target = _player.Transform.Position + _playerInfo.MovementVector * 0.25f; // target where the player would be in 0.25s 
+            Vector2 target = _player.Transform.Position + _playerInfo.MovementPerSecond * 0.25f; // target where the player would be in 0.25s 
             rusherAI.Target = target - (zombie.Transform.Position - target) * 0.75f; // rush 75% "over" the player
             zombie.Transform.LookAt(rusherAI.Target);
 

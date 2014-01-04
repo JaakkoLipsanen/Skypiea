@@ -8,7 +8,7 @@ namespace Skypiea.Model.Weapons
 {
     public class Minigun : BulletWeapon
     {
-        private const int BulletCount = 140;
+        private const int BulletCount = 160;
         private const float BulletSpeed = SkypieaConstants.PixelsPerMeter * 40f;
         public override WeaponType Type
         {

@@ -61,7 +61,7 @@ namespace Skypiea.Systems.Player
             Vector2 previousPosition = player.Transform.Position;
             player.Transform.Position += _movementThumbstick.Direction.GetValueOrDefault() * speed * updateContext.DeltaSeconds;
             player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, SkypieaConstants.MapSizeInPixels - Vector2.One * PositionClampOffset);
-            _playerInfo.MovementVector = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
+            _playerInfo.MovementPerSecond = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
 
             // rotation
             if (_rotationThumbstick.Direction.HasValue && _rotationThumbstick.Direction != Vector2.Zero)

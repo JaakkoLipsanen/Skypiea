@@ -22,17 +22,14 @@ namespace Skypiea.Screens
 
     public class GameplayScreen : GameScreen, IGameContainer
     {
-        private readonly WorldType _worldType;
-
         private Level _level;
         private LevelRenderer _levelRenderer;
         private bool _isPaused = false;
        
         public bool IsGameOver { get; private set; }
 
-        public GameplayScreen(WorldType worldType)
+        public GameplayScreen()
         {
-            _worldType = worldType;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeType = Flai.ScreenManagement.FadeType.FadeToBlack;
@@ -58,6 +55,10 @@ namespace Skypiea.Screens
         protected override void Deactivate()
         {
             _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
+            if (this.IsActive)
+            {
+                this.Pause();
+            }
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -94,15 +95,17 @@ namespace Skypiea.Screens
             this.IsGameOver = false;
             _level.GameOver -= this.OnGameOver;
             _levelRenderer.Unload();
+            _level.World.Shutdown();
+
             this.LoadLevel();
         }
 
         private void LoadLevel()
         {
-            _level = Level.Generate(_worldType);
+            _level = Level.Generate();
             _levelRenderer = new LevelRenderer(_level);
             _level.EntityWorld.Services.Add<IGameContainer>(this);
-            _level.UiContainer.Add(new TexturedButton(new Sprite(this.ContentProvider.DefaultManager.LoadTexture("PauseButton")), new Vector2(this.Game.ScreenSize.Width - 32, 24), this.Pause));
+            _level.UiContainer.Add(new TexturedButton(new Sprite(this.ContentProvider.DefaultManager.LoadTexture("PauseButton")), new Vector2(this.Game.ScreenSize.Width - 32, 24), this.Pause) { InflateAmount = 32 });
 
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;

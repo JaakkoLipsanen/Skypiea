@@ -9,14 +9,14 @@ namespace Skypiea.Model.Weapons
 {
     public class Bouncer : BulletWeapon
     {
-        private const int BulletCount = 30;
+        private const int BulletCount = 40;
         public override WeaponType Type
         {
             get { return WeaponType.Bouncer; }
         }
 
         public Bouncer(float ammoMultiplier)
-            : base((int)(Bouncer.BulletCount * ammoMultiplier), 0.575f)
+            : base((int)(Bouncer.BulletCount * ammoMultiplier), 0.525f)
         {
         }
 

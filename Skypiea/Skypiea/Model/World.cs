@@ -11,7 +11,6 @@ namespace Skypiea.Model
     {
         private readonly EntityWorld _entityWorld;
         private readonly ParticleEngine _particleEngine;
-        private readonly WorldType _worldType;
 
         public EntityWorld EntityWorld
         {
@@ -24,21 +23,19 @@ namespace Skypiea.Model
             get { return _particleEngine; }
         }
 
-        public WorldType WorldType
+        public World()
+            : this(false)
         {
-            get { return _worldType; }
         }
 
-        public World(WorldType worldType)
+        private World(bool isSimulation)
         {
-            _worldType = worldType;
-
             _entityWorld = new EntityWorld();
             _particleEngine = new ParticleEngine();
 
             _entityWorld.Services.Add<IParticleEngine>(_particleEngine);
 
-            this.CreateSystems();
+            this.CreateSystems(isSimulation);
         }
 
         public void Initialize()
@@ -57,7 +54,7 @@ namespace Skypiea.Model
             _entityWorld.Update(updateContext);
         }
 
-        private void CreateSystems()
+        private void CreateSystems(bool isSimulation)
         {
             _entityWorld.AddSystem<ZombieAttackSystem>();
             _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
@@ -85,9 +82,19 @@ namespace Skypiea.Model
             _entityWorld.AddSystem<ZombieStatsSystem>();
             _entityWorld.AddSystem<VirtualThumbstickSystem>();
 
-            _entityWorld.AddSystem<AchievementSystem>();
-            _entityWorld.AddSystem<HighscoreSystem>();
+            if (!isSimulation)
+            {
+                _entityWorld.AddSystem<AchievementSystem>();
+                _entityWorld.AddSystem<HighscoreSystem>();;
+                _entityWorld.AddSystem<StatsTrackerSystem>();
+            }
+
             _entityWorld.AddSystem<PlayerPassiveSystem>();
+        }
+
+        public static World CreateSimulationWorld()
+        {
+            return new World(true);
         }
     }
 }

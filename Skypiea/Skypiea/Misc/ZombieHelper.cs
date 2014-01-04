@@ -45,6 +45,7 @@ namespace Skypiea.Misc
 
             return killed;
         }
+
         public static bool Kill(Entity zombie, Vector2? explosionVelocity)
         {
             const float LotsOfDamage = 1000 * 1000;

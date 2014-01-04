@@ -45,7 +45,7 @@ namespace Skypiea.Components
         }
 
         // current movement per second vector.
-        public Vector2 MovementVector { get; set; }
+        public Vector2 MovementPerSecond { get; set; }
 
         public CPlayerInfo(int totalLives)
         {

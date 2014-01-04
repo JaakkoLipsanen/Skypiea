@@ -1,6 +1,3 @@
-using System;
-using System.Diagnostics;
-using System.Linq;
 using Flai;
 using Flai.Achievements;
 using Flai.DataStructures;
@@ -12,7 +9,9 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Achievements;
+using Skypiea.Stats;
 using Skypiea.Ui;
+using System;
 
 namespace Skypiea.Screens
 {
@@ -20,7 +19,7 @@ namespace Skypiea.Screens
     {
         private const float SlotHeight = 120;
         private const float TextOffsetFromBorder = 8;
-        private const float OffsetFromTop = 128;
+        private const float OffsetFromTop = 206;
 
         private readonly AchievementManager _achievementManager = AchievementHelper.CreateAchivementManager();
         private readonly ReadOnlyArray<Achievement> _achievements;
@@ -74,12 +73,30 @@ namespace Skypiea.Screens
         {
             graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize));
             this.DrawTitle(graphicsContext);
+            this.DrawStats(graphicsContext);
             this.DrawAchievements(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
             graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
+        }
+
+        private void DrawTitle(GraphicsContext graphicsContext)
+        {
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.32"], "Achievements", new Vector2(graphicsContext.ScreenSize.Width / 2f, 50));
+        }
+
+        private void DrawStats(GraphicsContext graphicsContext)
+        {
+            StatsManager statsManager = this.Game.Services.Get<StatsManager>();
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Kills: ", statsManager.Kills, new Vector2(graphicsContext.ScreenSize.Width / 2f, 110), Color.White);
+
+            int previous = GraphicalGuidelines.DecimalPrecisionInText;
+            GraphicalGuidelines.DecimalPrecisionInText = 1;
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Time played: ", statsManager.TimePlayedInMinutes, " min", new Vector2(graphicsContext.ScreenSize.Width / 2f, 146), Color.White);
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Distance run: ", (int)statsManager.TotalMovement, " meters", new Vector2(graphicsContext.ScreenSize.Width / 2f, 182), Color.White);
+            GraphicalGuidelines.DecimalPrecisionInText = previous;
         }
 
         private void DrawAchievements(GraphicsContext graphicsContext)
@@ -100,11 +117,6 @@ namespace Skypiea.Screens
                 this.DrawProgression(graphicsContext, achievement, slotArea);
                 this.DrawGroupIndex(graphicsContext, achievement, slotArea);
             }
-        }
-
-        private void DrawTitle(GraphicsContext graphicsContext)
-        {
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.32"], "Achievements", new Vector2(graphicsContext.ScreenSize.Width / 2f, 50));
         }
 
         private void DrawSlotBackground(GraphicsContext graphicsContext, Achievement achievement, RectangleF slotArea)
@@ -169,7 +181,7 @@ namespace Skypiea.Screens
                         float verticalPosition = AchievementScreen.OffsetFromTop + (i + 0.5f) * AchievementScreen.SlotHeight;
                         ScrollerToggleButton toggleButton = new ScrollerToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width - 90, verticalPosition), new SizeF(160, 50)), "Enabled", "Disabled", _scroller)
                         {
-                            DrawOutlines = true, 
+                            DrawOutlines = true,
                             IsToggled = passiveSkill.IsEnabled,
                             Color = passiveSkill.IsEnabled ? Color.White : Color.Gray,
                         };

@@ -11,7 +11,7 @@ namespace Skypiea.View
 {
     public class AchievementRenderer : FlaiRenderer
     {
-        private const float AchievementShowTime = 4f;
+        private const float AchievementShowTime = 3f;
 
         private readonly EntityWorld _entityWorld;
         private readonly Timer _achievementShowTimer = new Timer(AchievementRenderer.AchievementShowTime);
@@ -38,28 +38,27 @@ namespace Skypiea.View
             {
                 const float OffsetFromBorder = 8;
                 const float TextOffset = 8;
-                const float FadeTime = 0.25f;
                 const float Height = 96;
                 const float VerticalPosition = 90;
 
-                const float BackgroundAlpha = 0.4f;
-                const float TextAlpha = 0.85f;
+                const float BackgroundAlpha = 0.3f;
+                const float TextAlpha = 0.75f;
 
-                float alpha = FlaiMath.Min(_achievementShowTimer.ElapsedTime / FadeTime, (AchievementRenderer.AchievementShowTime - _achievementShowTimer.ElapsedTime) / FadeTime, 1);
+                float alpha = this.GetAlpha();
 
                 SpriteFont font = graphicsContext.FontContainer["Minecraftia.16"];
-                float width = FlaiMath.Max(font.GetStringWidth(_currentAchievement.Name), font.GetStringWidth(_currentAchievement.ShortDescription)) + TextOffset * 2;
+                float maxWidth = FlaiMath.Max(font.GetStringWidth(_currentAchievement.Name), font.GetStringWidth(_currentAchievement.ShortDescription)) + TextOffset * 2;
 
-                float left = graphicsContext.ScreenSize.Width - OffsetFromBorder - width + (1 - alpha) * width / 2f;
-                float centerX = left + width / 2f;
+                float left = graphicsContext.ScreenSize.Width - OffsetFromBorder - maxWidth + (1 - alpha) * maxWidth / 2f;
+                float centerX = left + maxWidth / 2f;
 
                 // background
                 graphicsContext.PrimitiveRenderer.DrawRectangle(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * BackgroundAlpha * alpha);
+                    new RectangleF(left, VerticalPosition, maxWidth, Height), Color.Black * BackgroundAlpha * alpha);
 
                 // background outlines
                 graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(
-                    new RectangleF(left, VerticalPosition, width, Height), Color.Black * alpha * TextAlpha, 1);
+                    new RectangleF(left, VerticalPosition, maxWidth, Height), Color.Black * alpha * TextAlpha, 1);
 
                 // name
                 graphicsContext.SpriteBatch.DrawStringCentered(
@@ -69,6 +68,12 @@ namespace Skypiea.View
                 graphicsContext.SpriteBatch.DrawStringCentered(
                     font, _currentAchievement.ShortDescription, new Vector2(centerX, VerticalPosition + TextOffset * 2 + font.GetCharacterHeight() * 3 / 2f), Color.White * alpha * TextAlpha);
             }
+        }
+
+        private float GetAlpha()
+        {
+            const float FadeTime = 0.25f;
+            return FlaiMath.Min(_achievementShowTimer.ElapsedTime / FadeTime, (AchievementRenderer.AchievementShowTime - _achievementShowTimer.ElapsedTime) / FadeTime, 1);       
         }
 
         private void OnAchievementUnlocked(Achievement achievement)

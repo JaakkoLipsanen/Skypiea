@@ -5,7 +5,6 @@ using Flai.DataStructures;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 using Skypiea.Model.Boosters;
 
 namespace Skypiea.Systems.Zombie

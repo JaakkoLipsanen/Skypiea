@@ -67,6 +67,11 @@ namespace Skypiea.Systems.Player
         private void OnLifeDropPicked(Entity entity)
         {
             _playerInfo.AddLife();
+            if (Global.Random.NextFromOdds(_passiveStats.ChanceToGetTwoLivesOnDrop))
+            {
+                _playerInfo.AddLife();
+            }
+
             entity.Delete();
         }
     }

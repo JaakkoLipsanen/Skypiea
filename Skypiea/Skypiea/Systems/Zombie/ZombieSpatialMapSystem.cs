@@ -30,6 +30,11 @@ namespace Skypiea.Systems.Zombie
         private readonly EntityTracker _zombieEntityTracker = EntityTracker.FromAspect(Aspect.All<CZombieInfo>());
         private readonly ZombieGrid _zombieGrid = new ZombieGrid();
 
+        protected override int ProcessOrder
+        {
+            get { return SystemProcessOrder.PostUpdate; }
+        }
+
         protected override void PreInitialize()
         {
             this.EntityWorld.Services.Add<IZombieSpatialMap>(this);
@@ -105,21 +110,13 @@ namespace Skypiea.Systems.Zombie
 
         public ReadOnlyBag<Entity> GetAllIntersecting(RectangleF area)
         {
-            throw new NotImplementedException();
-            //_returnEntities.Clear();
-            //for (int i = 0; i < _zombieEntityTracker.Entities.Count; i++)
-            //{
-            //    Entity zombie = _zombieEntityTracker.Entities[i];
-            //    if (zombie.Get<CZombieInfo>().AreaCircle.Intersects(area))
-            //    {
-            //        _returnEntities.Add(zombie);
-            //    }
-            //}
-
-            //return _readOnlyReturnEntities;
+            Ensure.IsValid(area);
+            return _zombieGrid.GetAllIntersecting(area);
         }
 
         #endregion
+
+        #region ZombieGrid
 
         private class ZombieGrid
         {
@@ -178,6 +175,42 @@ namespace Skypiea.Systems.Zombie
                             if (zombieInfo.AreaCircle.Intersects(searchCircle))
                             {
                                 _returnEntities.Add(zombie);
+                            }
+                        }
+                    }
+                }
+
+                return _readOnlyReturnEntities;
+            }
+
+            public ReadOnlyBag<Entity> GetAllIntersecting(RectangleF searchArea)
+            {
+                _returnEntities.Clear();
+
+                int left = (int)FlaiMath.Max(0, this.GetIndexX(searchArea.Left) - 1);
+                int right = (int)FlaiMath.Min(ZombieGrid.GridSize.Width - 1, FlaiMath.Ceiling(this.GetIndexX(searchArea.Right)) + 1);
+                int top = (int)FlaiMath.Max(0, this.GetIndexY(searchArea.Top) - 1);
+                int bottom = (int)FlaiMath.Min(ZombieGrid.GridSize.Height - 1, FlaiMath.Ceiling(this.GetIndexY(searchArea.Bottom)) + 1);
+
+                for (int y = top; y <= bottom; y++)
+                {
+                    for (int x = left; x <= right; x++)
+                    {
+                        // "zombie is far enough from the search border, lets assume that it intersects with the searchArea"
+                        if (x > left + 1 && x < right - 2 && y > top + 1 && y < bottom - 2)
+                        {
+                            _returnEntities.AddAll(this.GetCell(x, y));
+                        }
+                        else
+                        {
+                            // otherwise check if the zombie intersects
+                            foreach (Entity zombie in this.GetCell(x, y))
+                            {
+                                CZombieInfo zombieInfo = zombie.Get<CZombieInfo>();
+                                if (zombieInfo.AreaRectangle.Intersects(searchArea))
+                                {
+                                    _returnEntities.Add(zombie);
+                                }
                             }
                         }
                     }
@@ -311,5 +344,7 @@ namespace Skypiea.Systems.Zombie
                 return new Vector2i(position / ZombieGrid.CellSize);
             }
         }
+
+        #endregion
     }
 }

@@ -4,7 +4,6 @@ using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
@@ -21,6 +20,11 @@ namespace Skypiea.View
 
         protected override void Draw(GraphicsContext graphicsContext, Entity entity, CDrop drop)
         {
+            if (!this.IsVisible(graphicsContext, drop))
+            {
+                return;
+            }
+            
             if (drop.DropType == DropType.Weapon)
             {
                 this.DrawWeaponDrop(graphicsContext, entity);
@@ -29,6 +33,17 @@ namespace Skypiea.View
             {
                 this.DrawLifeDrop(graphicsContext, entity);
             }
+        }
+
+        private bool IsVisible(GraphicsContext graphicsContext, CDrop drop)
+        {
+            const float MaximumDropRadius = 160;
+            if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(RectangleF.CreateCentered(drop.Transform.Position, MaximumDropRadius)))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void DrawWeaponDrop(GraphicsContext graphicsContext, Entity entity)
@@ -63,7 +78,7 @@ namespace Skypiea.View
             // fans
             TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
             float rotationOffset = graphicsContext.TotalSeconds;
-            Color color = graphicsContext.TotalSeconds % 2 > 1 ? Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f) : Color.PaleVioletRed;
+            Color color = Color.Lerp(Color.Red, Color.PaleVioletRed, 0.25f);
             const int Fans = 6;
             for (int i = 0; i < Fans; i++)
             {

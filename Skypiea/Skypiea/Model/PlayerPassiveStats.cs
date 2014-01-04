@@ -10,6 +10,7 @@ namespace Skypiea.Model
         float DropIncreaseMultiplier { get; }
         float ChanceToKillEveryoneOnDeath { get; }
         float ChanceForZombieExplodeOnDeath { get; }
+        float ChanceToGetTwoLivesOnDrop { get; }
 
         bool SpawnWithThreeLives { get; }
         bool SpawnWithRandomWeapon { get; }
@@ -26,6 +27,7 @@ namespace Skypiea.Model
         public float DropIncreaseMultiplier { get; set; }
         public float ChanceToKillEveryoneOnDeath { get; set; }
         public float ChanceForZombieExplodeOnDeath { get; set; }
+        public float ChanceToGetTwoLivesOnDrop { get; set; }
 
         public bool SpawnWithThreeLives { get; set; }
         public bool SpawnWithRandomWeapon { get; set; }

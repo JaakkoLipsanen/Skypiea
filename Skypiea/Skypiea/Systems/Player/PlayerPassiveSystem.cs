@@ -1,4 +1,3 @@
-using Flai;
 using Flai.Achievements;
 using Flai.CBES.Systems;
 using Skypiea.Achievements;
@@ -12,9 +11,12 @@ namespace Skypiea.Systems.Player
         protected override void PreInitialize()
         {
             this.EntityWorld.Services.Add<IPlayerPassiveStats>(_playerPassiveStats);
-            IAchievementManager achievementManager = this.EntityWorld.Services.Get<IAchievementManager>();
-            this.ProcessAchievements(achievementManager);
-            achievementManager.AchievementUnlocked += this.ProcessAchievement;
+            IAchievementManager achievementManager = this.EntityWorld.Services.TryGet<IAchievementManager>();
+            if (achievementManager != null) // is null in simulation
+            {
+                this.ProcessAchievements(achievementManager);
+                achievementManager.AchievementUnlocked += this.ProcessAchievement;
+            }
         }
 
         private void ProcessAchievements(IAchievementManager achievementManager)

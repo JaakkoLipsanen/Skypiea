@@ -26,7 +26,7 @@ namespace Skypiea.Achievements.Trackers
         {
             if (!_achievement.IsUnlocked)
             {
-                _progression.Current = FlaiMath.Min(_progression.Max, _progression.Current + Vector2.Distance(_previousPosition, _playerTransform.Position) / SkypieaConstants.PixelsPerMeter);
+                _progression.Current = FlaiMath.Min(_progression.Max, _progression.Current + Vector2.Distance(_previousPosition, _playerTransform.Position) / SkypieaConstants.PixelsPerMeter * SkypieaConstants.MeterMultiplier);
                 _previousPosition = _playerTransform.Position;
             }
         }

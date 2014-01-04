@@ -19,7 +19,6 @@ namespace Skypiea.Screens
     public class MainMenuScreen : GameScreen
     {
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
-        private TextMultiToggleButton<WorldType> _worldTypeToggleButton;
         private TextMultiToggleButton<WeaponType> _weaponTypeToggleButton;
         private TextToggleButton _zombiesToggleButton;
         private TextMultiToggleButton<GraphicalQuality> _graphicsToggleButton;
@@ -36,6 +35,7 @@ namespace Skypiea.Screens
             this.FadeType = FadeType.FadeAlpha;
             this.FadeIn = fadeIn;
             this.FadeOut = FadeDirection.Right;
+
             HighscoreHelper.ResubmitHighscoreIfNeeded();
         }
 
@@ -84,7 +84,6 @@ namespace Skypiea.Screens
             _uiContainer.Add(new TextBlock(ApplicationInfo.ShortVersion, new Vector2(24, 40)) { Color = Color.White * 0.15f, Font = "SegoeWP.16" });
 
             // DEBUG STUFF
-            _uiContainer.Add(_worldTypeToggleButton = new TextMultiToggleButton<WorldType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 440), 150), EnumHelper.GetValues<WorldType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
             _uiContainer.Add(_zombiesToggleButton = new TextToggleButton(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 4f, 440), 150), "All zombies", "Only Rushers") { Font = "SegoeWP.24", Tag = "D" });
 
             _uiContainer.Add(_weaponTypeToggleButton = new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray(), EnumHelper.GetName) { Font = "SegoeWP.24", Tag = "D" });
@@ -115,7 +114,7 @@ namespace Skypiea.Screens
             TestingGlobals.GraphicalQuality = _graphicsToggleButton.SelectedValue;
 
             this.FadeOut = FadeDirection.Up;
-            this.ScreenManager.LoadScreen(new GameplayScreen(_worldTypeToggleButton.SelectedValue));
+            this.ScreenManager.LoadScreen(new GameplayScreen());
         }
 
         private void OnAchievementsClicked()
