@@ -44,7 +44,6 @@ namespace Skypiea.Screens
         protected override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Begin();
-
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.5f);
             //if (!this.IsExiting)
             {

@@ -11,13 +11,18 @@ namespace Skypiea.View
     public class MapRenderer : FlaiRenderer
     {
         private readonly Color _color;
-
-        private readonly World _world;
         private readonly string _mapTextureName = MapRenderer.GetRandomMap();
+        private readonly SpriteEffects _spriteEffects;
+
+        // ookaayy... world isn't used... but I won't remove it since it's strange if the renderer doesnt take any parameters :D :D
         public MapRenderer(World world)
         {
-            _world = world;
             _color = Color.LightGray;
+
+            // create sprite effect that is either None, Horizontal, Vertical or Both 
+            _spriteEffects = Global.Random.NextBoolean() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
+            _spriteEffects = Global.Random.NextBoolean() ? _spriteEffects | SpriteEffects.FlipVertically : _spriteEffects;
+
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -26,7 +31,7 @@ namespace Skypiea.View
             Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
                  _contentProvider.DefaultManager.LoadTexture(_mapTextureName), //_world.WorldType.GetMapTextureName()),
-                 -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, SkypieaViewConstants.PixelSize);
+                 -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, Vector2.Zero, SkypieaViewConstants.PixelSize, _spriteEffects, 0f);
         }
 
         // draws the side "fades" (makes the map fade to black)
@@ -87,7 +92,7 @@ namespace Skypiea.View
 
         private static string GetRandomMap()
         {
-            const int Count = 7;
+            const int Count = 8;
             return "Map/MapTextures/Map" + Global.Random.Next(1, Count + 1);
         }
     }
