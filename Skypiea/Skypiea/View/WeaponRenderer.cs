@@ -10,9 +10,12 @@ namespace Skypiea.View
 {
     public class WeaponRenderer : FlaiRenderer
     {
+        private readonly EntityWorld _entityWorld;
         private readonly CWeapon _playerWeapon;
+
         public WeaponRenderer(EntityWorld entityWorld)
         {
+            _entityWorld = entityWorld;
             _playerWeapon = entityWorld.FindEntityByName(EntityNames.Player).Get<CWeapon>();
         }
 
@@ -32,7 +35,7 @@ namespace Skypiea.View
                 TextureDefinition laserTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/Laser");
 
                 // can't use texture wrapping so create the same effect by drawing the laser twice
-                float firstPartLength = laserTexture.Height - (graphicsContext.TotalSeconds * 200f % laserTexture.Height);
+                float firstPartLength = laserTexture.Height - (_entityWorld.TotalUpdateTime * 200f % laserTexture.Height);
                 Rectangle firstPartSource = new RectangleF(0, firstPartLength, laserTexture.Width, laserTexture.Height - firstPartLength).ToRectangle();
                 graphicsContext.SpriteBatch.Draw(laserTexture, laser.LaserSegment.Start, firstPartSource, Color.White, FlaiMath.GetAngle(laser.LaserSegment.Direction) - FlaiMath.PiOver2, new Vector2(laserTexture.Width / 2f, 0), Scale);
 

@@ -13,11 +13,9 @@ namespace Skypiea.View
 {
     public class ZombieRenderer : EntityRenderer
     {
-        private readonly IZombieSpatialMap _spatialMap;
         public ZombieRenderer(EntityWorld entityWorld)
             : base(entityWorld, Aspect.All<CZombieInfo>())
         {
-            _spatialMap = entityWorld.Services.Get<IZombieSpatialMap>();
         }
 
         // using _spatialMap.GetAllIntersecting(CCamera2D.Active.GetArea(graphicsContext.ScreenSize))) causes all kinds of problems (render order changes when zombies move from cell and pretty sure other things too)

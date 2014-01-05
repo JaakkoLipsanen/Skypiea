@@ -52,7 +52,7 @@ namespace Skypiea.View
             CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
 
             TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
-            float rotationOffset = graphicsContext.TotalSeconds;
+            float rotationOffset = _entityWorld.TotalUpdateTime;
             const int Fans = 6;
             for (int i = 0; i < Fans; i++)
             {
@@ -77,8 +77,8 @@ namespace Skypiea.View
         {
             // fans
             TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/LifeDropFan");
-            float rotationOffset = graphicsContext.TotalSeconds;
-            Color color = Color.Lerp(Color.Red, Color.PaleVioletRed, 0.25f);
+            float rotationOffset = _entityWorld.TotalUpdateTime;
+            Color color = Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f);
             const int Fans = 6;
             for (int i = 0; i < Fans; i++)
             {
@@ -94,7 +94,7 @@ namespace Skypiea.View
 
             // heart
             const float Scale = SkypieaViewConstants.PixelSize * 1.5f;
-            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2f) * 0.1f));
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f));
         }
     }
 }

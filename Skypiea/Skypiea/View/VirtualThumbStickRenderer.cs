@@ -1,12 +1,10 @@
-﻿using Flai;
-using Flai.CBES;
+﻿using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.CBES.Graphics;
 using Flai.Graphics;
 using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
-using Skypiea.Screens;
 
 namespace Skypiea.View
 {

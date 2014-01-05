@@ -21,7 +21,7 @@ namespace Skypiea
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
-            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.DetailedFPSAndMemory, Visible = false });
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.All, Visible = false });
 
             _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
             _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());

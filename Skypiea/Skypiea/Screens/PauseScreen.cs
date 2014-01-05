@@ -4,6 +4,7 @@ using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Skypiea.Screens
 {
@@ -57,7 +58,7 @@ namespace Skypiea.Screens
 
             graphicsContext.SpriteBatch.Begin();
 
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * (1f - this.TransitionPosition) * 0.35f);
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * (1f - this.TransitionPosition) * 0.4f);
             if (!this.IsExiting)
             {
                 _uiContainer.Draw(graphicsContext, true);

@@ -84,8 +84,8 @@ namespace Skypiea.Systems.Zombie
 
         public ReadOnlyBag<Entity> GetZombiesWithCenterInRange(Vector2 position, float range)
         {
-            Ensure.IsValid(range);
-            Ensure.True(range > 0);
+            Assert.IsValid(range);
+            Assert.True(range > 0);
 
             return _zombieGrid.GetAllWithinRange(position, range);
         }
@@ -148,7 +148,7 @@ namespace Skypiea.Systems.Zombie
                 for (int i = 0; i < zombies.Count; i++)
                 {
                     Vector2i index = this.GetIndex(zombies[i].Transform.Position);
-                    if (Check.WithinRange(index.X, 0, ZombieGrid.GridSize.Width - 1) && Check.WithinRange(index.Y, 0, ZombieGrid.GridSize.Height - 1))
+                    if (index.X >= 0 && index.Y >= 0 && index.X < ZombieGrid.GridSize.Width && index.Y < ZombieGrid.GridSize.Height)
                     {
                         this.GetCell(index.X, index.Y).Add(zombies[i]);
                     }
@@ -256,23 +256,53 @@ namespace Skypiea.Systems.Zombie
                 return _readOnlyReturnEntities;
             }
 
+            // okay this is be very "(micro :P -)optimized" since this is the biggest bottleneck (zombie separation uses this)
             public ReadOnlyBag<Entity> GetAllWithinRange(Vector2 position, float range)
             {
                 _returnEntities.Clear();
 
-                Circle searchCircle = new Circle(position, range);
-                int left = (int)FlaiMath.Max(0, this.GetIndexX(searchCircle.Left));
-                int right = (int)FlaiMath.Min(ZombieGrid.GridSize.Width - 1, FlaiMath.Ceiling(this.GetIndexX(searchCircle.Right)));
-                int top = (int)FlaiMath.Max(0, this.GetIndexY(searchCircle.Top));
-                int bottom = (int)FlaiMath.Min(ZombieGrid.GridSize.Height - 1, FlaiMath.Ceiling(this.GetIndexY(searchCircle.Bottom)));
+                /* "bounds" checking inlined */
+                int left = (int)this.GetIndexX(position.X - range);
+                if (left < 0)
+                {
+                    left = 0;
+                }
 
+                int right = (int)Math.Ceiling(this.GetIndexX(position.X + range));
+                if (right >= ZombieGrid.GridSize.Width)
+                {
+                    right = ZombieGrid.GridSize.Width - 1;
+                }
+
+                int top = (int)this.GetIndexY(position.Y - range);
+                if (top < 0)
+                {
+                    top = 0;
+                }
+
+                int bottom = (int)Math.Ceiling(this.GetIndexY(position.Y + range));
+                if (bottom >= ZombieGrid.GridSize.Height)
+                {
+                    bottom = ZombieGrid.GridSize.Height - 1;
+                }
+
+                float rangeSquared = range * range;
                 for (int y = top; y <= bottom; y++)
                 {
                     for (int x = left; x <= right; x++)
                     {
-                        foreach (Entity zombie in this.GetCell(x, y))
+                        Bag<Entity> cell = this.GetCell(x, y);
+                        for (int i = 0; i < cell.Count; i++)
                         {
-                            if (searchCircle.Contains(zombie.Transform.Position))
+                            Entity zombie = cell.GetRaw(i); // GetRaw == no unnecessary checks
+
+                            // Vector2.DistanceSquared inlined
+                            // Transform.LocalPosition is faster than Transform.Position
+                            float xDelta = zombie.Transform.LocalPosition.X - position.X;
+                            float yDelta = zombie.Transform.LocalPosition.Y - position.Y;
+
+                            // Circle.Contains inlined
+                            if (xDelta * xDelta + yDelta * yDelta < rangeSquared)
                             {
                                 _returnEntities.Add(zombie);
                             }

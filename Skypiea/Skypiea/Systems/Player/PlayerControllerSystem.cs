@@ -48,7 +48,7 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
-        //  player.Transform.Position = SkypieaConstants.MapSizeInPixels / 2f + (Vector2.UnitX * 400).Rotate(updateContext.TotalSeconds / 4f);
+          // player.Transform.Position = SkypieaConstants.MapSizeInPixels / 2f + (Vector2.UnitX * 400).Rotate(updateContext.TotalSeconds / 4f);
           
             const float PositionClampOffset = -SkypieaConstants.PixelsPerMeter;
             const float DefaultSpeed = SkypieaConstants.PixelsPerMeter * 4.5f;

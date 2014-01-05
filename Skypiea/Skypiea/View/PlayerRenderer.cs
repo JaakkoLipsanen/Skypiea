@@ -16,13 +16,13 @@ namespace Skypiea.View
     {
         private const float UIOffsetFromBorder = 16;
 
+        private readonly EntityWorld _entityWorld;
         private readonly Entity _player;
-        private readonly IHighscoreManager _highscoreManager;
 
         public PlayerRenderer(EntityWorld entityWorld)
         {
+            _entityWorld = entityWorld;
             _player = entityWorld.FindEntityByName(EntityNames.Player);
-            _highscoreManager = FlaiGame.Current.Services.Get<HighscoreManager>();
 
             CCamera2D.Active = _player.Get<CCamera2D>();
         }
@@ -41,7 +41,7 @@ namespace Skypiea.View
             {
                 const float Scale = 50 * GlobalScale;
                 Vector2 position = Vector2i.Round(_player.Transform.Position);
-                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, position, new Color(32, 32, 255) * 0.5f, graphicsContext.TotalSeconds * 5f, (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 6) / 6f) * Scale);
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, position, new Color(32, 32, 255) * 0.5f, _entityWorld.TotalUpdateTime * 5f, (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 6) / 6f) * Scale);
             }
 
             graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Zombie"), _player.Transform.Position, color, _player.Transform.Rotation, GlobalScale);
@@ -68,8 +68,6 @@ namespace Skypiea.View
 
         private void DrawLives(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
-            const int Size = 24;
-
             TextureDefinition heartTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Heart");
             for (int i = 0; i < playerInfo.TotalLives; i++)
             {
@@ -79,6 +77,7 @@ namespace Skypiea.View
                     color = new Color(72, 72, 72) * 0.75f;
                 }
 
+                const int Size = 24;
                 graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(UIOffsetFromBorder - 10 + (i + 0.5f) * Size, UIOffsetFromBorder + 0.5f * Size), color, 0, 2);
             }
         }
