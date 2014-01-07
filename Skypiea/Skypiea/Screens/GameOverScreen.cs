@@ -4,6 +4,7 @@ using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
 using System;
+using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Leaderboards;
 
 namespace Skypiea.Screens
@@ -24,6 +25,7 @@ namespace Skypiea.Screens
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeType = FadeType.FadeAlpha;
+            this.EnabledGestures = GestureType.Tap;
 
             this.CreateUiElements(score);
         }

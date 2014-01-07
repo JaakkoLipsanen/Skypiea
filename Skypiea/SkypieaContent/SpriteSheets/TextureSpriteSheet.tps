@@ -36,7 +36,7 @@
         <key>dataFormat</key>
         <string>xml</string>
         <key>textureFileName</key>
-        <filename>../Textures/TextureSpriteSheet.png</filename>
+        <filename></filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -54,7 +54,7 @@
             </struct>
         </struct>
         <key>shapePadding</key>
-        <uint>2</uint>
+        <uint>8</uint>
         <key>jpgQuality</key>
         <uint>80</uint>
         <key>pngOptimizationLevel</key>
@@ -64,7 +64,7 @@
         <key>textureFormat</key>
         <enum type="SettingsBase::TextureFormat">png</enum>
         <key>borderPadding</key>
-        <uint>2</uint>
+        <uint>8</uint>
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
@@ -80,7 +80,7 @@
             <int>-1</int>
         </QSize>
         <key>reduceBorderArtifacts</key>
-        <true/>
+        <false/>
         <key>algorithmSettings</key>
         <struct type="AlgorithmSettings">
             <key>algorithm</key>
@@ -127,7 +127,7 @@
             <key>data</key>
             <struct type="DataFile">
                 <key>name</key>
-                <filename>TextureSpriteSheet.xml</filename>
+                <filename></filename>
             </struct>
         </map>
         <key>multiPack</key>
@@ -156,7 +156,7 @@
             <key>innerPadding</key>
             <uint>0</uint>
             <key>extrude</key>
-            <uint>0</uint>
+            <uint>8</uint>
             <key>trimThreshold</key>
             <uint>1</uint>
             <key>trimMode</key>
@@ -166,14 +166,18 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>../Textures/Drops</filename>
-            <filename>../Textures/Map</filename>
-            <filename>../Textures/PostProcessing</filename>
-            <filename>../Textures/Weapons</filename>
-            <filename>../Textures/BoosterTextBackground.png</filename>
-            <filename>../Textures/Heart.png</filename>
-            <filename>../Textures/MenuBackground.png</filename>
-            <filename>../Textures/Zombie.png</filename>
+            <filename>D:/Drops</filename>
+            <filename>D:/PostProcessing</filename>
+            <filename>D:/Weapons</filename>
+            <filename>D:/BoosterTextBackground.png</filename>
+            <filename>D:/Heart.png</filename>
+            <filename>D:/MenuBackground.png</filename>
+            <filename>D:/PauseButton.png</filename>
+            <filename>D:/ThumbstickBase.png</filename>
+            <filename>D:/Zombie.png</filename>
+            <filename>D:/Map/SideFadeTexture.png</filename>
+            <filename>D:/Map/MapTextures</filename>
+            <filename>D:/Map/CornerFadeTexture.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

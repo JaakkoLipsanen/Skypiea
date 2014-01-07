@@ -44,12 +44,6 @@ namespace Skypiea.Systems
             _achievementManager.AchievementUnlocked += this.OnAchievementUnlocked;
         }
 
-        protected override void Shutdown()
-        {
-            _achievementTrackerCollection.Shutdown();
-            _achievementManager.SaveToFile();
-        }
-
         protected override void Update(UpdateContext updateContext)
         {
             _achievementTrackerCollection.Update(updateContext);
@@ -73,9 +67,10 @@ namespace Skypiea.Systems
             this.AchievementUnlocked.InvokeIfNotNull(achievement);
         }
 
+        // called when either GameOverMessage or GameExitMessage message is sent
         private void OnGameOver()
         {
-            _achievementManager.SaveToFile();
+            _achievementManager.Save();
         }
     }
 }

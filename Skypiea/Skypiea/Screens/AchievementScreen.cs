@@ -25,6 +25,7 @@ namespace Skypiea.Screens
         private readonly ReadOnlyArray<Achievement> _achievements;
         private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
+        private bool _needsSaving = false;
 
         public override bool IsPopup
         {
@@ -61,7 +62,11 @@ namespace Skypiea.Screens
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                _achievementManager.SaveToFile();
+                if (_needsSaving)
+                {
+                    _achievementManager.Save();
+                }
+
                 this.ExitScreen();
                 this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Right), new Delay(0.25f));
             }
@@ -121,7 +126,7 @@ namespace Skypiea.Screens
 
         private void DrawSlotBackground(GraphicsContext graphicsContext, Achievement achievement, RectangleF slotArea)
         {
-            Color color = achievement.IsUnlocked ? new Color(32, 56, 32) : new Color(56, 32, 32);
+            Color color = achievement.IsUnlocked ? new Color(32, 64, 32) : new Color(64, 32, 32);
             graphicsContext.PrimitiveRenderer.DrawRectangle(slotArea, color * 0.25f);
             graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(slotArea, Color.Black, 2);
         }
@@ -161,6 +166,8 @@ namespace Skypiea.Screens
 
         #endregion
 
+        #region Create UI
+
         private void CreateUI()
         {
             this.CreateTogglePassiveSkillButtons();
@@ -168,6 +175,9 @@ namespace Skypiea.Screens
 
         private void CreateTogglePassiveSkillButtons()
         {
+            Color enabledColor = Color.White;
+            Color disabledColor = Color.Gray;
+
             for (int i = 0; i < _achievements.Count; i++)
             {
                 Achievement achievement = _achievements[i];
@@ -183,13 +193,15 @@ namespace Skypiea.Screens
                         {
                             DrawOutlines = true,
                             IsToggled = passiveSkill.IsEnabled,
-                            Color = passiveSkill.IsEnabled ? Color.White : Color.Gray,
+                            Color = passiveSkill.IsEnabled ? enabledColor : disabledColor,
                         };
 
                         toggleButton.Toggled += isToggled =>
                         {
                             passiveSkill.IsEnabled = isToggled;
-                            toggleButton.Color = isToggled ? Color.White : Color.Gray;
+                            toggleButton.Color = isToggled ? enabledColor : disabledColor;
+
+                            _needsSaving = true;
                         };
 
                         _uiContainer.Add(toggleButton);
@@ -197,5 +209,7 @@ namespace Skypiea.Screens
                 }
             }
         }
+
+        #endregion
     }
 }

@@ -36,12 +36,12 @@ namespace Skypiea.Systems
 
         private void OnGameOver(GameOverMessage message)
         {
-            _statsManager.SaveToFile();
+            _statsManager.Save();
         }
 
         private void OnGameExit(GameExitMessage message)
         {
-            _statsManager.SaveToFile();
+            _statsManager.Save();
         }
 
         private void OnZombieKilled(ZombieKilledMessage message)

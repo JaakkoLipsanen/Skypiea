@@ -1,6 +1,5 @@
-using Flai;
+using Flai.General;
 using System.IO;
-using System.IO.IsolatedStorage;
 
 namespace Skypiea.Leaderboards
 {
@@ -9,11 +8,10 @@ namespace Skypiea.Leaderboards
         int Highscore { get; }
     }
 
-    public class HighscoreManager : IHighscoreManager
+    public class HighscoreManager : PersistentManager, IHighscoreManager
     {
         private const int VersionTag = 1;
-
-        private readonly string _highscoreFilePath;
+        
         private int _highscore;
         private bool _isHighscorePostedToScoreloop = true;
 
@@ -28,13 +26,9 @@ namespace Skypiea.Leaderboards
             set { _isHighscorePostedToScoreloop = value; }
         }
 
-        public HighscoreManager(string highscoreFilePath)
+        public HighscoreManager(string filePath)
+            : base(filePath, LoadOption.Automatic)
         {
-            Ensure.NotNullOrWhitespace(highscoreFilePath);
-            Ensure.IsValidPath(highscoreFilePath);
-
-            _highscoreFilePath = highscoreFilePath;
-            this.LoadFromFile();
         }
 
         public virtual bool UpdateHighscore(int newScore)
@@ -48,40 +42,19 @@ namespace Skypiea.Leaderboards
             return false;
         }
 
-        public void SaveToFile()
+        protected override void WriteInner(BinaryWriter writer)
         {
-            using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (BinaryWriter writer = new BinaryWriter(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Create)))
-                {
-                    writer.Write(HighscoreManager.VersionTag);
-                    writer.Write(_highscore);
-                    writer.Write(_isHighscorePostedToScoreloop);
-                    this.SaveInner(writer);
-                }
-            }
+            writer.Write(HighscoreManager.VersionTag);
+            writer.Write(_highscore);
+            writer.Write(_isHighscorePostedToScoreloop);
         }
 
-        private void LoadFromFile()
+        protected override void ReadInner(BinaryReader reader)
         {
-            using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(_highscoreFilePath))
-                {
-                    using (BinaryReader reader = new BinaryReader(isolatedStorage.OpenFile(_highscoreFilePath, FileMode.Open)))
-                    {
-                        // can be used later
-                        int versionTag = reader.ReadInt32();
+            int versionTag = reader.ReadInt32();
 
-                        _highscore = reader.ReadInt32();
-                        _isHighscorePostedToScoreloop = reader.ReadBoolean();
-                        this.LoadInner(reader);
-                    }
-                }
-            }
+            _highscore = reader.ReadInt32();
+            _isHighscorePostedToScoreloop = reader.ReadBoolean();
         }
-
-        protected virtual void SaveInner(BinaryWriter writer) { }
-        protected virtual void LoadInner(BinaryReader reader) { }
     }
 }

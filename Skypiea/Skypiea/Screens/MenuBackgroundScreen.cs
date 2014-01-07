@@ -3,7 +3,7 @@ using Flai.Graphics;
 using Flai.ScreenManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Skypiea.Misc;
+using Skypiea.Settings;
 using Skypiea.View;
 using System;
 
@@ -27,7 +27,8 @@ namespace Skypiea.Screens
 
         protected override void PostDraw(GraphicsContext graphicsContext)
         {
-            if (TestingGlobals.GraphicalQuality == GraphicalQuality.High)
+            SkypieaSettingsManager _settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
+            if (_settingsManager.Settings.GraphicalQuality == GraphicalQuality.High)
             {
                 graphicsContext.SpriteBatch.Begin(SamplerState.PointWrap);
                 this.DrawNoise(graphicsContext);
@@ -42,14 +43,14 @@ namespace Skypiea.Screens
         private void DrawVignette(GraphicsContext graphicsContext)
         {
             // todo: use sprite sheet
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("PostProcessing/Vignette"));
+            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Vignette"));
             //graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "PostProcessing/Vignette")); // ...
             //graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "PostProcessing/Vignette")); // ...
         }
 
         private void DrawNoise(GraphicsContext graphicsContext)
         {
-            var noiseTexture = SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "PostProcessing/Noise");
+            var noiseTexture = SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
                 for (int y = Global.Random.Next(-360, 0); y < graphicsContext.ScreenSize.Height; y += noiseTexture.Height)

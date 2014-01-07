@@ -34,14 +34,15 @@ namespace Skypiea.View
                 }
 
                 // base
-                graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value, Color.Gray * 0.75f * alpha);
+                TextureDefinition thumbstickTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "ThumbstickBase");
+                graphicsContext.SpriteBatch.DrawCentered(thumbstickTexture, thumbstick.CenterPosition.Value, Color.Gray * 0.75f * alpha);
 
                 if (thumbstick.Direction.HasValue)
                 {
                     // if the thumbstick style is relative, then never draw the "name of the thumbstick", if the style is fixed then draw the name only if the direction IS zero
                     if (thumbstick.Style == ThumbstickStyle.Relative || thumbstick.Direction != Vector2.Zero)
                     {
-                        graphicsContext.SpriteBatch.DrawCentered(_contentProvider.DefaultManager.LoadTexture("ThumbstickBase"), thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f * alpha, 0, 0.5f);
+                        graphicsContext.SpriteBatch.DrawCentered(thumbstickTexture, thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f * alpha, 0, 0.5f);
                     }
                     else
                     {

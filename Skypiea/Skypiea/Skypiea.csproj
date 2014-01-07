@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Skypiea</RootNamespace>
-    <AssemblyName>Skypiea</AssemblyName>
+    <AssemblyName>Final Fight Z</AssemblyName>
     <XnaRefreshLevel>1</XnaRefreshLevel>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
@@ -20,15 +20,14 @@
     <XapFilename>$(AssemblyName).xap</XapFilename>
     <SilverlightManifestTemplate>Properties\AppManifest.xml</SilverlightManifestTemplate>
     <XnaWindowsPhoneManifestTemplate>Properties\WMAppManifest.xml</XnaWindowsPhoneManifestTemplate>
-    <TileImage>
-    </TileImage>
-    <TileTitle>Skypiea</TileTitle>
+    <TileImage>Tile336x336.png</TileImage>
+    <TileTitle>Final Fight Z</TileTitle>
     <SupportedCultures>
     </SupportedCultures>
     <ApplicationIcon>
     </ApplicationIcon>
-    <Thumbnail>
-    </Thumbnail>
+    <Thumbnail>Tile159x159.png</Thumbnail>
+    <GameStartupType>Skypiea.SkypieaGame</GameStartupType>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|Windows Phone' ">
     <DebugSymbols>true</DebugSymbols>
@@ -110,6 +109,7 @@
     <Compile Include="Misc\DropHelper.cs" />
     <Compile Include="Misc\EntityTags.cs" />
     <Compile Include="Misc\ParticleEffectID.cs" />
+    <Compile Include="Misc\RateHelper.cs" />
     <Compile Include="Misc\SkypieaConstants.cs" />
     <Compile Include="Misc\TestingGlobals.cs" />
     <Compile Include="Misc\ZombieHelper.cs" />
@@ -154,6 +154,7 @@
     <Compile Include="Screens\AchievementScreen.cs" />
     <Compile Include="Screens\GameOverScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
+    <Compile Include="Screens\HelpScreen.cs" />
     <Compile Include="Screens\LeaderboardScreen.cs" />
     <Compile Include="Screens\MainMenuScreen.cs" />
     <Compile Include="Screens\MenuBackgroundScreen.cs" />
@@ -214,6 +215,9 @@
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
       <SubType>Designer</SubType>
     </None>
+    <None Include="Skypiea_2014_01_07_13_15_16.sap" />
+    <None Include="Skypiea_2014_01_07_13_17_21.sap" />
+    <None Include="Skypiea_2014_01_07_15_54_12.sap" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Flai\Flai.Scoreloop\Flai.Scoreloop.csproj">
@@ -229,6 +233,11 @@
       <XnaReferenceType>Content</XnaReferenceType>
       <Project>{BDB81562-3CC3-44B0-B723-5B575DEC8273}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Tile159x159.png" />
+    <Content Include="Tile300x300.png" />
+    <Content Include="Tile336x336.png" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

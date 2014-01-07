@@ -1,6 +1,7 @@
 using System;
 using Flai;
 using Flai.Graphics;
+using Flai.IO;
 using Flai.Misc;
 using Flai.Scoreloop;
 using Microsoft.Xna.Framework;
@@ -18,12 +19,13 @@ namespace Skypiea
     public class SkypieaGame : FlaiGame
     {
         private readonly ScoreloopManager _scoreloopManager;
+        private readonly SkypieaSettingsManager _settingsManager;
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
             this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.All, Visible = false });
 
-            _serviceContainer.Add(SettingsHelper.CreateSettingsManager());
+            _serviceContainer.Add(_settingsManager = SettingsHelper.CreateSettingsManager());
             _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
             _serviceContainer.Add(StatsHelper.CreateStatsManager());
             _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
@@ -37,7 +39,13 @@ namespace Skypiea
         protected override void OnExiting(object sender, EventArgs args)
         {
             _scoreloopManager.Close();
+            _settingsManager.Save();
             base.OnExiting(sender, args);
+        }
+
+        protected override void OnDeactivated(object sender, EventArgs args)
+        {
+            _settingsManager.Save();
         }
 
         protected override void UpdateInner(UpdateContext updateContext)
@@ -68,7 +76,10 @@ namespace Skypiea
         protected override void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
-          //  e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
+            if (OperatingSystemHelper.Version == WindowsPhoneVersion.WP7)
+            {
+                e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
+            }
         }
     }
 }

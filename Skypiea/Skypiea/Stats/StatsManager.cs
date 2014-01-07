@@ -1,17 +1,35 @@
-using Flai;
+using Flai.General;
+using System;
 using System.IO;
-using System.IO.IsolatedStorage;
 
 namespace Skypiea.Stats
 {
-    public class StatsManager
+    public class StatsManager : PersistentManager
     {
         private const int VersionTag = 1;
-        private readonly string _filePath;
 
-        public int Kills { get; set; }
-        public float TimePlayed { get; set; }
-        public float TotalMovement { get; set; }
+        private int _kills;
+        private float _timePlayed;
+        private float _totalMovement;
+        private bool _hasChanged = false;
+
+        public int Kills
+        {
+            get { return _kills; }
+            set { this.SetValue(ref _kills, value); }
+        }
+
+        public float TimePlayed
+        {
+            get { return _timePlayed; }
+            set { this.SetValue(ref _timePlayed, value); }
+        }
+
+        public float TotalMovement
+        {
+            get { return _totalMovement; }
+            set { this.SetValue(ref _totalMovement, value); }
+        }
 
         public float TimePlayedInMinutes
         {
@@ -24,45 +42,43 @@ namespace Skypiea.Stats
         }
 
         public StatsManager(string filePath)
+             : base(filePath, LoadOption.Automatic)
         {
-            Ensure.NotNullOrWhitespace(filePath);
-            Ensure.IsValidPath(filePath);
-
-            _filePath = filePath;
-            this.LoadFromFile();
         }
 
-        public void SaveToFile()
+        protected override void WriteInner(BinaryWriter writer)
         {
-            using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                using (BinaryWriter writer = new BinaryWriter(isolatedStorage.OpenFile(_filePath, FileMode.Create)))
-                {
-                    writer.Write(StatsManager.VersionTag);
+            writer.Write(StatsManager.VersionTag);
 
-                    writer.Write(this.Kills);
-                    writer.Write(this.TimePlayed);
-                    writer.Write(this.TotalMovement);
-                }
-            }
+            writer.Write(this.Kills);
+            writer.Write(this.TimePlayed);
+            writer.Write(this.TotalMovement);
+
+            _hasChanged = false;
         }
 
-        private void LoadFromFile()
+        protected override void ReadInner(BinaryReader reader)
         {
-            using (IsolatedStorageFile isolatedStorage = IsolatedStorageFile.GetUserStoreForApplication())
-            {
-                if (isolatedStorage.FileExists(_filePath))
-                {
-                    using (BinaryReader reader = new BinaryReader(isolatedStorage.OpenFile(_filePath, FileMode.Open)))
-                    {
-                        // can be used later
-                        int versionTag = reader.ReadInt32();
+            // can be used later
+            int versionTag = reader.ReadInt32();
 
-                        this.Kills = reader.ReadInt32();
-                        this.TimePlayed = reader.ReadSingle();
-                        this.TotalMovement = reader.ReadSingle();
-                    }
-                }
+            this.Kills = reader.ReadInt32();
+            this.TimePlayed = reader.ReadSingle();
+            this.TotalMovement = reader.ReadSingle();
+        }
+
+        protected override bool NeedsSaving()
+        {
+            return _hasChanged;
+        }
+
+        private void SetValue<T>(ref T variable, T value)
+            where T : IEquatable<T>
+        {
+            if (!variable.Equals(value))
+            {
+                variable = value;
+                _hasChanged = true;
             }
         }
     }

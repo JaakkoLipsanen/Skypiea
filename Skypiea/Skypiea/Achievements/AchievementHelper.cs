@@ -12,7 +12,7 @@ namespace Skypiea.Achievements
         private const string AchievementFilePath = "achievements.dat";
         public static AchievementManager CreateAchivementManager()
         {
-            AchievementManager achievementManager = new AchievementManager(AchievementHelper.CreateAchievements(), AchievementHelper.AchievementFilePath);
+            AchievementManager achievementManager = new AchievementManager(AchievementHelper.AchievementFilePath, AchievementHelper.CreateAchievements());
             AchievementHelper.CreateAchievementGroups(achievementManager);
             return achievementManager;
         }
@@ -23,17 +23,25 @@ namespace Skypiea.Achievements
             PassiveSkill zombieKillReward = new PassiveSkill("Player shoots faster", passiveStats => passiveStats.FireRateMultiplier += 0.1f);
 
             Bag<Achievement> achievements = new Bag<Achievement>();
+            
+            // "important"
             AchievementHelper.CreatePersistentKillingAchievements(achievements);
             AchievementHelper.CreatePersistentRunningAchievements(achievements);
+            AchievementHelper.CreateScoreAchievements(achievements);
+
+            // "kill XXX"
             AchievementHelper.CreateKillInTimeAchievements(achievements);
-            AchievementHelper.CreateLivesAtAnyPointOfGameAchievements(achievements);
             AchievementHelper.CreateKillRushersWhileRushingAchievements(achievements);
+            AchievementHelper.CreateKillWithInvulnerabilityAchievements(achievements);
+            AchievementHelper.CreateKillWithSingleRocketAchievments(achievements);
+
             AchievementHelper.CreateSurviveWithoutKillingAchievements(achievements);
             AchievementHelper.CreateSurviveWithoutMovingAchievements(achievements);
-            AchievementHelper.CreateKillWithInvulnerabilityAchievements(achievements);
-            AchievementHelper.CreateScoreAchievements(achievements);
-            AchievementHelper.CreateKillWithSingleRocketAchievments(achievements);
+
+            AchievementHelper.CreateLivesAtAnyPointOfGameAchievements(achievements);
             AchievementHelper.CreateSpendLaserWithoutKillingAchievements(achievements);
+
+            // not atm
             AchievementHelper.CreateIAPAchievements(achievements);
 
             return achievements;

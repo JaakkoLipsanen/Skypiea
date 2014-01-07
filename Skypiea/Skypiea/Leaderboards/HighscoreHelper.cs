@@ -17,8 +17,9 @@ namespace Skypiea.Leaderboards
             HighscoreManager highscoreManager = FlaiGame.Current.Services.Get<HighscoreManager>();
             if (highscoreManager.UpdateHighscore(score))
             {
+                // don't save if not necessary
                 highscoreManager.IsHighscorePostedToLeaderboards = false;
-                highscoreManager.SaveToFile();
+                highscoreManager.Save();
             }
 
             ScoreloopManager leaderboardManager = FlaiGame.Current.Services.Get<ScoreloopManager>(); // todo todo todo jos submission ei onnistu niin myöhemmin (vähän niinkun tehty atm)
@@ -27,8 +28,12 @@ namespace Skypiea.Leaderboards
                 // if the score was highscore and the submission failed, then make sure it'll be submitted later
                 if (response.Success && score == highscoreManager.Highscore)
                 {
-                    highscoreManager.IsHighscorePostedToLeaderboards = true;
-                    highscoreManager.SaveToFile();
+                    // don't save if not necessary
+                    if (highscoreManager.IsHighscorePostedToLeaderboards == false)
+                    {
+                        highscoreManager.IsHighscorePostedToLeaderboards = true;
+                        highscoreManager.Save();
+                    }
                 }
             });
         }
@@ -65,7 +70,7 @@ namespace Skypiea.Leaderboards
             {
                 if (response.Success && response.Data != null && highscoreManager.UpdateHighscore((int)response.Data.Result))
                 {
-                    highscoreManager.SaveToFile();
+                    highscoreManager.Save();
                 }
             });
         }

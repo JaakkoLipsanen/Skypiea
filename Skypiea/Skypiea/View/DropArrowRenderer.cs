@@ -58,7 +58,7 @@ namespace Skypiea.View
 
         private void DrawLifeDropArrow(GraphicsContext graphicsContext, CDrop drop, Vector2 screenPosition, float scale)
         {
-            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Drops/Life"), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, 0, 6 * scale);
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, 0, 6 * scale);
         }
 
         private void DrawWeaponDropArrow(GraphicsContext graphicsContext, CDrop drop, Vector2 screenPosition, float scale)

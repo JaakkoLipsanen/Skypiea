@@ -1,0 +1,78 @@
+-- MAPIT --
+- full grass map
+- full desert map
+- kunnon desert/stone/ehk‰ grass map
+- ehk lava kivi mappeja
+- "abstraktit"
+
+-- FIX --
+
+- spritesheettiin suuremmat v‰lit: t‰l hetkel tulee graafisii glitchei ainakin corner fade tekstuureissa! X
+- todo: map rendering k‰ytt‰‰ sprite sheettei. atm ei k‰yt‰ X
+- ota debug ominaisuudet pois (ja pause menu homma) X
+- culture testausta jossainm‰‰rin X
+- ‰l‰ k‰yt‰ piirto efekteis graphicsContext.TotalSeconds, muuten liikkuu vaik pausel tms X
+- separation optimointi X (varmista et tarpeeks?)
+- todo: statsei bugi simulation tappaa zombien ja muuttaa statsei! X
+- pause button suuremmaks X
+- checkkaa scoreloopista oikea highscore ettei k‰y niin et n‰ytet‰‰n "new highscore" mut oikeesti ei oo. siis re-installaus juttu. X
+- cullaus X
+- statsien running on v‰‰r‰ X
+- n‰yt‰ review-prompt tyylii 5.:ll‰ kerralla jos ei oo viel reviawattu X (5. kerta) 
+
+-- NIMI --
+
+- Final Fight Z 5-5 = 10
+
+///////////////////////////////////////////////////////
+- Last Light Z 3-0 = 3
+
+
+///////////////////////
+- Zombie Attack 2-1 = 3
+- Rise of the Dead 3-0 = 3
+
+- Dying Earth 2-1 = 3
+
+
+-- PƒTSIƒ --
+- FB nappula "like"/"share this score!"
+- the one with everything (all achies) ja IAP achievment
+- varmista et load more scores toimii
+- simulointien optimointi/tsekkaa ainakin/fiksaa viel lis‰‰ tˆkkimist‰
+- ehk soundit
+- ehk‰ jotain erikois mappeja tyylii achilla unlockattavaks esim joku pattern tai vector taidetta tai "pony world"
+- ehk‰ "no ammo used" booster
+- ehk‰ "black box"/tapa kaikki zombit maailmassa. sika harvinainen
+- queue achievement rendereriin?
+- treasure goblin tyylisi‰ "piste-apajoita"
+- OPTIMOINNIT/SIMULOINNIT FIXAA
+- Main Menu jos tarpeeks kauan idle, niin joku zombie menee screenin l‰pi taustalla tyylii sini-funktiota
+- life droppiin mustat reunat ymp‰rille?
+- score bonus booster
+- relative thumbstick ei "liikuta" jos painaa mut ei ved‰. fiksaa?
+- ehk animointii/interaktiivisuutta help screeniin?
+- player lives tekstuurit paremmaks?
+- smooth fadet tutorialiin
+- syd‰n graffoihin mustat outlinet
+- chromatic aberration menu teksteihin?
+- s‰‰d‰ tilej‰? esim niin et tilejen reunat fadentuu mustaksi niin, et mustal teemalla reunoja ei n‰‰.
+- doodle run update mis poista pubcenter ad ja pist‰ skypiea ad. poista boxstrikest‰ ad
+- tee 1000x800 featured backgroundi!
+
+-----
+-- ZOMBIT -- (N? ehk p‰tsill‰?)
+- Poison zombie
+- Explosion zombie (yhdist‰ poisonin kanssa?)
+
+-- EN! --
+- ehk‰: blanktexture samaan sprite sheettiin kuin mis muutkin tekstuurit on ja GraphicsContext.BlankTexture settablaksi. (ei ehk jaksa)
+- rocket launcher fires kittens M/N
+- chance to kill zombie when zombie hits player M/N
+
+
+-- HELP SCREEN --
+- PLAYER UI
+- VIRTUALTHUMBSTICKIT UI
+- BOOSTER UI
+- DROPIT

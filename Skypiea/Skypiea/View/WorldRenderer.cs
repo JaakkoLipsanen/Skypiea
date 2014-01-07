@@ -76,6 +76,7 @@ namespace Skypiea.View
 
             graphicsContext.SpriteBatch.GlobalAlpha.Push(_playerUIAlpha);
             _playerRenderer.DrawUI(graphicsContext);
+            _boosterStateRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.GlobalAlpha.Pop();
             
             graphicsContext.SpriteBatch.GlobalAlpha.Push(_otherUIAlpha);
@@ -83,7 +84,6 @@ namespace Skypiea.View
             _virtualThumbStickRenderer.Draw(graphicsContext);
 
             _dropArrowRenderer.Draw(graphicsContext);
-            _boosterStateRenderer.Draw(graphicsContext);
             _achievementRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.GlobalAlpha.Pop();
         }

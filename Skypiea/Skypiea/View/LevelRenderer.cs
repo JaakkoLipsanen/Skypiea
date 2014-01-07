@@ -3,8 +3,8 @@ using Flai.CBES.Components;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Skypiea.Misc;
 using Skypiea.Model;
+using Skypiea.Settings;
 
 namespace Skypiea.View
 {
@@ -48,7 +48,9 @@ namespace Skypiea.View
         private void DrawWithoutCamera(GraphicsContext graphicsContext)
         {
             _worldRenderer.DrawUI(graphicsContext, _level.UiContainer);
-            if (TestingGlobals.GraphicalQuality == GraphicalQuality.High)
+
+            SkypieaSettingsManager _settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
+            if (_settingsManager.Settings.GraphicalQuality == GraphicalQuality.High)
             {
                 this.DrawNoise(graphicsContext);
                 this.DrawVignette(graphicsContext);
@@ -58,7 +60,7 @@ namespace Skypiea.View
         // todo: move to it's own class along with vignette etc
         private void DrawNoise(GraphicsContext graphicsContext)
         {
-            TextureDefinition noiseTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "PostProcessing/Noise");
+            TextureDefinition noiseTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
                 for (int y = Global.Random.Next(-360, 0); y < graphicsContext.ScreenSize.Height; y += noiseTexture.Height)
@@ -71,7 +73,7 @@ namespace Skypiea.View
         private void DrawVignette(GraphicsContext graphicsContext)
         {
             // todo: use sprite sheet
-            graphicsContext.SpriteBatch.DrawFullscreen(_contentProvider.DefaultManager.LoadTexture("PostProcessing/Vignette"));
+            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "Vignette"));
         }
     }
 }

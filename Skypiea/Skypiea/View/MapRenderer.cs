@@ -30,7 +30,7 @@ namespace Skypiea.View
             // draws the actual map texture
             Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
-                 _contentProvider.DefaultManager.LoadTexture(_mapTextureName), //_world.WorldType.GetMapTextureName()),
+                 SkypieaViewConstants.LoadTexture(_contentProvider, _mapTextureName), //_world.WorldType.GetMapTextureName()),
                  -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, Vector2.Zero, SkypieaViewConstants.PixelSize, _spriteEffects, 0f);
         }
 
@@ -40,6 +40,7 @@ namespace Skypiea.View
             this.DrawSides(graphicsContext);
             this.DrawCorners(graphicsContext);
 
+            // clear to black
             RectangleF cameraArea = CCamera2D.Active.GetArea();
             if (cameraArea.Left < -SkypieaViewConstants.FadeLength)
             {
@@ -62,7 +63,7 @@ namespace Skypiea.View
 
         private void DrawSides(GraphicsContext graphicsContext)
         {
-            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "Map/SideFadeTexture");
+            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "SideFadeTexture");
             Rectangle horizontalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapWidthInPixels / SkypieaViewConstants.PixelSize));
             Rectangle verticalSourceRectangle = new Rectangle(0, 0, texture.Width, FlaiMath.Min(texture.Height, SkypieaConstants.MapHeightInPixels / SkypieaViewConstants.PixelSize));
 
@@ -79,7 +80,7 @@ namespace Skypiea.View
 
         private void DrawCorners(GraphicsContext graphicsContext)
         {
-            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "Map/CornerFadeTexture");
+            TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "CornerFadeTexture");
 
             // top
             graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, Corner.BottomRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize); // top-left
@@ -92,8 +93,8 @@ namespace Skypiea.View
 
         private static string GetRandomMap()
         {
-            const int Count = 8;
-            return "Map/MapTextures/Map" + Global.Random.Next(1, Count + 1);
+            const int Count = 9;
+            return "Map" + Global.Random.Next(1, Count + 1);
         }
     }
 }

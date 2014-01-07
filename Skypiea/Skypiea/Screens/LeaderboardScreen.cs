@@ -94,10 +94,12 @@ namespace Skypiea.Screens
             }
         }
 
+        #region Draw
+
         protected override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Begin(_scroller.GetTransformMatrix(graphicsContext.ScreenSize));
-            this.DrawScores(graphicsContext);
+            this.DrawInner(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
             graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
@@ -105,58 +107,79 @@ namespace Skypiea.Screens
             graphicsContext.SpriteBatch.End();
         }
 
-        private void DrawScores(GraphicsContext graphicsContext)
+        private void DrawInner(GraphicsContext graphicsContext)
         {
-            SpriteFont scoreFont = graphicsContext.FontContainer["Minecraftia.20"];
+            this.DrawMessage(graphicsContext);
+            this.DrawRanks(graphicsContext);
+            this.DrawScores(graphicsContext);
+        }
+
+        private void DrawMessage(GraphicsContext graphicsContext)
+        {
             if (!string.IsNullOrWhiteSpace(_failMessage) || _leaderboard.Scores.Count == 0)
             {
-                graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, _failMessage ?? "Loading...", new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.20"], _failMessage ?? "Loading...", new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
             }
+        }
 
+        private void DrawRanks(GraphicsContext graphicsContext)
+        {
             if (_ranks.ContainsKey(_leaderboard.CurrentScope))
             {
+                SpriteFont font = graphicsContext.FontContainer["Minecraftia.20"];
                 ScoreRank rank = _ranks[_leaderboard.CurrentScope];
+
                 if (rank.Rank == 0) // user doesn't have a rank on this leaderboard
                 {
-                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You have no rank on this leaderboard", new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                    graphicsContext.SpriteBatch.DrawStringCentered(font, "You have no rank on this leaderboard", new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
                 }
                 else // user has a rank on this leaderboard
                 {
-                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "You are " + rank.Rank, Common.GetOrdinalSuffix(rank.Rank), new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
-                    graphicsContext.SpriteBatch.DrawStringCentered(scoreFont, "with a score of ", rank.Score, new Vector2(graphicsContext.ScreenSize.Width / 2f, 156), Color.White);
+                    graphicsContext.SpriteBatch.DrawStringCentered(font, "You are " + rank.Rank, Common.GetOrdinalSuffix(rank.Rank), new Vector2(graphicsContext.ScreenSize.Width / 2f, 124), Color.White);
+                    graphicsContext.SpriteBatch.DrawStringCentered(font, "with a score of ", rank.Score, new Vector2(graphicsContext.ScreenSize.Width / 2f, 156), Color.White);
                 }
             }
+        }
 
+        private void DrawScores(GraphicsContext graphicsContext)
+        {
             if (_leaderboard.Scores.Count == 0)
             {
                 return;
             }
 
-            const float HorizontalOffset = 32;
-            const float ScoreHeight = 32;
-
+            SpriteFont scoreFont = graphicsContext.FontContainer["Minecraftia.20"];
             RectangleF scrollerArea = _scroller.GetArea(graphicsContext.ScreenSize);
-            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreHeight - 1, 0, _leaderboard.ScoresLoaded);
-            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreHeight), 0, _leaderboard.ScoresLoaded);
+
+            int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / ScoreSlotHeight - 1, 0, _leaderboard.ScoresLoaded);
+            int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / ScoreSlotHeight), 0, _leaderboard.ScoresLoaded);
 
             for (int i = topVisible; i < bottomVisible; i++)
             {
-                float verticalPosition = OffsetFromTop + ScoreHeight * i;
-                ScoreloopScore score = _leaderboard.Scores[i % _leaderboard.Scores.Count];
-                ulong rank = (ulong)(i + 1); // score.Rank;
-                int rankDigits = FlaiMath.DigitCount(rank);
-
-                // rank
-                graphicsContext.SpriteBatch.DrawString(scoreFont, rank, ".", new Vector2(HorizontalOffset, verticalPosition), Color.White);
-
-                // user name
-                float userNameHorizontalOffset = (rankDigits >= 3 ? 24 * (rankDigits - 2) : 0); // "if 3 or more digits, then add some offset to right, otherwise 0". this makes all usernames of scores 0-100 to start at same offset from left
-                graphicsContext.SpriteBatch.DrawString(scoreFont, score.User.Login, new Vector2(HorizontalOffset + 72 + userNameHorizontalOffset, verticalPosition), Color.White);
-
-                // TODO: dont call score.Result.ToString().....
-                graphicsContext.SpriteBatch.DrawString(scoreFont, ((int)score.Result).ToString(), new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, Color.White);
+                this.DrawScore(graphicsContext, scoreFont, i);
             }
         }
+
+        private void DrawScore(GraphicsContext graphicsContext, SpriteFont font, int rankIndex)
+        {
+            const float HorizontalOffset = 32;
+            float verticalPosition = OffsetFromTop + ScoreSlotHeight * rankIndex;
+            ScoreloopScore score = _leaderboard.Scores[rankIndex % _leaderboard.Scores.Count];
+            ulong rank = (ulong)(rankIndex + 1);
+            int rankDigits = FlaiMath.DigitCount(rank);
+
+            // rank
+            graphicsContext.SpriteBatch.DrawString(font, rank, ".", new Vector2(HorizontalOffset, verticalPosition), Color.White);
+
+            // user name
+            float userNameHorizontalOffset = (rankDigits >= 3 ? 24 * (rankDigits - 2) : 0); // "if 3 or more digits, then add some offset to right, otherwise 0". this makes all usernames of scores 0-100 to start at same offset from left
+            graphicsContext.SpriteBatch.DrawString(font, score.User.Login, new Vector2(HorizontalOffset + 72 + userNameHorizontalOffset, verticalPosition), Color.White);
+
+            // TODO: dont call score.Result.ToString().....
+            graphicsContext.SpriteBatch.DrawString(font, ((int)score.Result).ToString(), new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, Color.White);
+        }
+
+        #endregion
 
         private void CreateUI()
         {
@@ -164,6 +187,8 @@ namespace Skypiea.Screens
             _uiContainer.Add(_overallLeaderboardButton = new ScrollerButton("Overall", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 64), _scroller, this.OnOverallButtonClicked) { Font = "Minecraftia.24", Color = Color.DimGray });
             _uiContainer.Add(_loadMoreScoresButton = new ScrollerButton("Load more scores", new Vector2(this.Game.ScreenSize.Width / 2f, 100), _scroller, this.OnLoadMoreScoresClicked) { Font = "Minecraftia.24", Enabled = false, Visible = false });
         }
+
+        #region OnXXX
 
         private void OnLoadMoreScoresClicked()
         {
@@ -234,6 +259,8 @@ namespace Skypiea.Screens
             int score = (rank == 0) ? 0 : (int)response.Data.Score.Result;
             _ranks.Add(response.Data.Scope, new ScoreRank(rank, score));
         }
+
+        #endregion
 
         private class ScoreRank
         {

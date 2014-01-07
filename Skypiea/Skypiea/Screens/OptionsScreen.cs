@@ -1,15 +1,19 @@
 using Flai;
 using Flai.General;
 using Flai.Graphics;
+using Flai.IO;
 using Flai.Misc;
 using Flai.Scoreloop;
 using Flai.ScreenManagement;
 using Flai.Ui;
+using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Scoreloop.CoreSocial.API;
 using Skypiea.Settings;
 using System;
+using Skypiea.View;
 
 namespace Skypiea.Screens
 {
@@ -53,7 +57,7 @@ namespace Skypiea.Screens
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
             {
-                _settingsManager.SaveToFile();
+                _settingsManager.Save();
                 this.ExitScreen();
                 this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Down), new Delay(0.25f));
             }
@@ -79,11 +83,40 @@ namespace Skypiea.Screens
             // rename scoreloop name
             _uiContainer.Add(new TextButton("Rename leaderboard username", new Vector2(this.Game.ScreenSize.Width / 2f, 300), this.OnRenameUserNameClicked) { Font = "Minecraftia.24" });
             _uiContainer.Add(_renameResultTextBlock = new TextBlock("", new Vector2(this.Game.ScreenSize.Width / 2f, 330)) { Visible = false, Font = "Minecraftia.16" });
+
+            // contacxt
+            _uiContainer.Add(new TextBlock("Contact/Feedback", new Vector2(this.Game.ScreenSize.Width / 2f, 400)) { Font = "Minecraftia.20", Color = Color.Gray });
+            _uiContainer.Add(new TextButton("jaakko.lipsanen@outlook.com", new Vector2(this.Game.ScreenSize.Width / 2f, 435), () =>
+            {
+                if (this.IsExiting || Guide.IsVisible)
+                {
+                    return;
+                }
+
+                EmailComposeTask composeTask = new EmailComposeTask { Subject = "Feedback for Final Fight Z", To = "jaakko.lipsanen@outlook.com" };
+                composeTask.Show();
+            }) { Font = "Minecraftia.16" });
+
+            // show graphical quality only on WP7
+            if (OperatingSystemHelper.Version == WindowsPhoneVersion.WP7)
+            {
+                _uiContainer.Add(new TextBlock("Graphical quality", new Vector2(this.Game.ScreenSize.Width / 2f, 70)) { Font = "Minecraftia.32", Color = Color.Gray });
+                _uiContainer.Add(new TextMultiToggleButton<GraphicalQuality>(
+                    RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 120), new SizeF(100, 50)),
+                    EnumHelper.GetValues<GraphicalQuality>(),
+                    EnumHelper.GetName,
+                    this.OnGraphicalQualityChanged) { Font = "Minecraftia.24" }).SetSelectedValue(_settingsManager.Settings.GraphicalQuality);
+            }
         }
 
         private void OnThumbstickStyleChanged(ThumbstickStyle thumbstickStyle)
         {
             _settingsManager.Settings.ThumbstickStyle = thumbstickStyle;
+        }
+
+        private void OnGraphicalQualityChanged(GraphicalQuality graphicalQuality)
+        {
+            _settingsManager.Settings.GraphicalQuality = graphicalQuality;
         }
 
         private void OnRenameUserNameClicked()

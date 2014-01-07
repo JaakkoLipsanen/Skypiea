@@ -32,7 +32,7 @@ namespace Skypiea.View
             if (laser.IsShooting)
             {
                 const float Scale = 3;
-                TextureDefinition laserTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/Laser");
+                TextureDefinition laserTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Laser");
 
                 // can't use texture wrapping so create the same effect by drawing the laser twice
                 float firstPartLength = laserTexture.Height - (_entityWorld.TotalUpdateTime * 200f % laserTexture.Height);

@@ -66,10 +66,10 @@ namespace Skypiea.View
             switch (weaponType)
             {
                 case WeaponType.RocketLauncher:
-                    return SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/RocketBullet");
+                    return SkypieaViewConstants.LoadTexture(_contentProvider, "RocketBullet");
 
                 case WeaponType.Bouncer:
-                    return SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/RicochetBullet");
+                    return SkypieaViewConstants.LoadTexture(_contentProvider, "RicochetBullet");
 
                 case WeaponType.Flamethrower:
                 case WeaponType.Waterblaster:
@@ -78,7 +78,7 @@ namespace Skypiea.View
                 case WeaponType.AssaultRifle:
                 case WeaponType.Shotgun:
                 case WeaponType.Minigun:
-                    return SkypieaViewConstants.LoadTexture(_contentProvider, "Weapons/Bullet");
+                    return SkypieaViewConstants.LoadTexture(_contentProvider, "Bullet");
 
                 default:
                     throw new ArgumentException("weaponType");

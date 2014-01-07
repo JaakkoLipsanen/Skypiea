@@ -25,7 +25,7 @@ namespace Skypiea.Screens
         private Level _level;
         private LevelRenderer _levelRenderer;
         private bool _isPaused = false;
-       
+
         public bool IsGameOver { get; private set; }
 
         public GameplayScreen()
@@ -55,7 +55,7 @@ namespace Skypiea.Screens
         protected override void Deactivate()
         {
             _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
-            if (this.IsActive)
+            if (this.IsActive || this.ScreenManager.Screens.Count == 1) // if game is not over or paused
             {
                 this.Pause();
             }
@@ -71,8 +71,12 @@ namespace Skypiea.Screens
             {
                 _isPaused = false;
             }
+            else if (!_isPaused && this.ScreenManager.Screens.Count == 1 && !this.IsActive) // if paused or gameover, then update, but if calling/in background, then DONT UPDATE!!
+            {
+                this.Pause();
+            }
 
-            if (!_isPaused)
+            if (!_isPaused && !this.IsExiting)
             {
                 _level.Update(updateContext);
                 _levelRenderer.Update(updateContext);
@@ -86,8 +90,11 @@ namespace Skypiea.Screens
 
         public void Pause()
         {
-            _isPaused = true;
-            this.ScreenManager.AddScreen(new PauseScreen());
+            if (!this.IsExiting)
+            {
+                _isPaused = true;
+                this.ScreenManager.AddScreen(new PauseScreen());
+            }
         }
 
         public void Restart()
@@ -105,7 +112,7 @@ namespace Skypiea.Screens
             _level = Level.Generate();
             _levelRenderer = new LevelRenderer(_level);
             _level.EntityWorld.Services.Add<IGameContainer>(this);
-            _level.UiContainer.Add(new TexturedButton(new Sprite(this.ContentProvider.DefaultManager.LoadTexture("PauseButton")), new Vector2(this.Game.ScreenSize.Width - 32, 24), this.Pause) { InflateAmount = 32 });
+            _level.UiContainer.Add(new TexturedButton(new Sprite(SkypieaViewConstants.LoadTexture(this.ContentProvider, "PauseButton")), new Vector2(this.Game.ScreenSize.Width - 32, 24), this.Pause) { InflateAmount = 32 });
 
             _levelRenderer.LoadContent();
             _level.GameOver += this.OnGameOver;
