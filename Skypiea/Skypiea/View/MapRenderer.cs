@@ -72,7 +72,8 @@ namespace Skypiea.View
         }
 
         private void DrawBackgroundClear(GraphicsContext graphicsContext)
-        { // clear to black
+        { 
+            // clear to black
             RectangleF cameraArea = CCamera2D.Active.GetArea();
             if (cameraArea.Left < -SkypieaViewConstants.FadeLength)
             {
