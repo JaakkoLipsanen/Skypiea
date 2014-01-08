@@ -25,7 +25,8 @@ namespace Skypiea.Misc
                 return true;
             }
 
-            bool killed = health.TakeDamage(damage * BoosterHelper.GetZombieDamageRedcutionMultiplier(zombie.EntityWorld.Services.Get<IBoosterState>()));
+            IBoosterState boosterState = zombie.EntityWorld.Services.Get<IBoosterState>();
+            bool killed = health.TakeDamage(damage * BoosterHelper.GetZombieDamageRedcutionMultiplier(boosterState));
             if (explosionVelocity.HasValue)
             {
                 if (killed)
@@ -61,7 +62,8 @@ namespace Skypiea.Misc
 
         public static void TriggerBloodExplosion(CTransform2D transform, Vector2 velocity)
         {
-            ParticleEffect effect = transform.Entity.EntityWorld.Services.Get<IParticleEngine>()[ParticleEffectID.ZombieExplosion];
+            IParticleEngine particleEngine = transform.Entity.EntityWorld.Services.Get<IParticleEngine>();
+            ParticleEffect effect = particleEngine[ParticleEffectID.ZombieExplosion];
             RotationalPointEmitter emitter = (RotationalPointEmitter)effect.Emitters[0].EmitterStyle;
             if (velocity == Vector2.Zero)
             {
@@ -85,7 +87,8 @@ namespace Skypiea.Misc
 
         public static void TriggerBloodSplatter(CTransform2D transform, Vector2 direction)
         {
-            transform.Entity.EntityWorld.Services.Get<IParticleEngine>()[ParticleEffectID.ZombieBloodSplatter].Trigger(transform.Position);
+            IParticleEngine particleEngine = transform.Entity.EntityWorld.Services.Get<IParticleEngine>();
+            particleEngine[ParticleEffectID.ZombieBloodSplatter].Trigger(transform.Position);
         }
     }
 }

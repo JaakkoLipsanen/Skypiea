@@ -6,7 +6,10 @@ namespace Skypiea.Misc
     {
         public static bool IsBlinking(CLifeTime lifeTime)
         {
-            return lifeTime.TimeRemaining < 5 && lifeTime.TimeRemaining % 0.4f < 0.1f;
+            const float BlinkStartTime = 5;
+            const float BlinkPeriod = 0.4f;
+            const float BlinkTime = 0.1f;
+            return lifeTime.TimeRemaining < BlinkStartTime && lifeTime.TimeRemaining % BlinkPeriod < BlinkTime;
         }
     }
 }

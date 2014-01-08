@@ -1,5 +1,4 @@
-﻿using System;
-namespace Skypiea.Misc
+﻿namespace Skypiea.Misc
 {
     public static class EntityTags
     {

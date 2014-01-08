@@ -26,7 +26,7 @@ namespace Skypiea.Misc
                         settingsManager.Settings.IsRateWindowShown = true;
                         settingsManager.Save();
 
-                        // result == 0 -> "rate now! pressed
+                        // result == 0 -> "rate now!" pressed
                         if (result == 0)
                         {
                             ApplicationInfo.OpenApplicationReviewPage();
