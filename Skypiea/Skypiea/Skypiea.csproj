@@ -123,7 +123,6 @@
     <Compile Include="Model\Boosters\ZombieSpeedBooster.cs" />
     <Compile Include="Model\DropType.cs" />
     <Compile Include="Model\Level.cs" />
-    <Compile Include="Model\PassiveHelper.cs" />
     <Compile Include="Model\PlayerPassiveStats.cs" />
     <Compile Include="Model\Weapons\AssaultRifle.cs" />
     <Compile Include="Model\Weapons\BulletWeapon.cs" />

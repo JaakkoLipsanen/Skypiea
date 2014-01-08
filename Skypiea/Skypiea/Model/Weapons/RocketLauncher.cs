@@ -25,9 +25,9 @@ namespace Skypiea.Model.Weapons
         {
         }
 
-        protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
+        protected override void ShootInner(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<RocketLauncherBulletPrefab>(playerEntity.Transform, this);
+            entityWorld.CreateEntityFromPrefab<RocketLauncherBulletPrefab>(playerEntity.Transform, this);
             this.DecreaseBulletCount();
         }
 

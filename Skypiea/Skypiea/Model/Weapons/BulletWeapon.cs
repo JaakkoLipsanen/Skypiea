@@ -41,17 +41,17 @@ namespace Skypiea.Model.Weapons
             this.UpdateInner(updateContext);
         }
 
-        public sealed override void Shoot(UpdateContext updateContext, Entity playerEntity)
+        public sealed override void Shoot(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity)
         {
             if (this.CanShoot && !this.IsFinished)
             {
-                this.ShootInner(updateContext, playerEntity);
+                this.ShootInner(updateContext, entityWorld, playerEntity);
                 _bulletTimer.Restart();
             }
         }
 
         protected virtual void UpdateInner(UpdateContext updateContext) { }
-        protected abstract void ShootInner(UpdateContext updateContext, Entity playerEntity);
+        protected abstract void ShootInner(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity);
 
         public virtual bool OnBulletHitCallback(UpdateContext updateContext, CBullet bullet, Entity entityHit)
         {

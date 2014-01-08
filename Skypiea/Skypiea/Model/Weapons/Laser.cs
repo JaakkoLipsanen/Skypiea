@@ -1,4 +1,3 @@
-using System;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
@@ -49,10 +48,10 @@ namespace Skypiea.Model.Weapons
             this.IsShooting = false;
         }
 
-        public override void Shoot(UpdateContext updateContext, Entity playerEntity)
+        public override void Shoot(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity)
         {
-            float boosterAttackSpeedMultiplier = BoosterHelper.GetPlayerAttackSpeedMultiplier(playerEntity.EntityWorld.Services.Get<IBoosterState>());
-            float passiveAttackSpeedMultiplier = playerEntity.EntityWorld.Services.Get<IPlayerPassiveStats>().FireRateMultiplier;
+            float boosterAttackSpeedMultiplier = BoosterHelper.GetPlayerAttackSpeedMultiplier(entityWorld.Services.Get<IBoosterState>());
+            float passiveAttackSpeedMultiplier = entityWorld.Services.Get<IPlayerPassiveStats>().FireRateMultiplier;
             float attackSpeedMultiplier = boosterAttackSpeedMultiplier * passiveAttackSpeedMultiplier;
 
             if (this.CanShoot)
@@ -63,8 +62,8 @@ namespace Skypiea.Model.Weapons
                     _ammoRemaining = 0;
                 }
 
-                this.LaserSegment = this.GetLaserSegment(playerEntity.Transform, playerEntity.EntityWorld);
-                IZombieSpatialMap zombieSpatialMap = playerEntity.EntityWorld.Services.Get<IZombieSpatialMap>();
+                this.LaserSegment = this.GetLaserSegment(playerEntity.Transform, entityWorld);
+                IZombieSpatialMap zombieSpatialMap = entityWorld.Services.Get<IZombieSpatialMap>();
                 foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(this.LaserSegment, Laser.MaxHitDistance))
                 {
                     if (zombie.Get<CHealth>().IsAlive && ZombieHelper.TakeDamage(zombie, Laser.DamagePerSecond * attackSpeedMultiplier * updateContext.DeltaSeconds, null))

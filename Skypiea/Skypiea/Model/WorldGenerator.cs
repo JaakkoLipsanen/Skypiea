@@ -17,8 +17,6 @@ namespace Skypiea.Model
         private static void CreateEntities(World world)
         {
             world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, SkypieaConstants.MapSizeInPixels / 2f);
-
-            // virtual thumbsticks are now created on VirtualThumbstickSystem
         }
     }
 }

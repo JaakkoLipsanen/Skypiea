@@ -28,10 +28,10 @@ namespace Skypiea.Model.Weapons
             get { return WeaponType.Flamethrower; }
         }
 
-        protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
+        protected override void ShootInner(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity)
         {
-            playerEntity.EntityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(playerEntity.Transform, this);
-            playerEntity.EntityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(playerEntity.Transform, this);
+            entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(playerEntity.Transform, this);
+            entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(playerEntity.Transform, this);
 
             _bulletCounter += 0.33333f;
             if (_bulletCounter > 1)

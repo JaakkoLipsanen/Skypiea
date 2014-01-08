@@ -17,7 +17,7 @@ namespace Skypiea.Model.Weapons
         }
 
         public virtual void Update(UpdateContext updateContext, EntityWorld entityWorld) { }
-        public abstract void Shoot(UpdateContext updateContext, Entity playerEntity);
+        public abstract void Shoot(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity);
         public virtual void OnNewInstancePickedUp() { }
     }
 }

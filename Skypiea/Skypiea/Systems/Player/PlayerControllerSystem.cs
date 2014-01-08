@@ -69,7 +69,7 @@ namespace Skypiea.Systems.Player
                 player.Transform.RotationVector = FlaiMath.NormalizeOrZero(_rotationThumbstick.Direction.GetValueOrDefault());
                 if (_weapon.Weapon.CanShoot)
                 {
-                    _weapon.Weapon.Shoot(updateContext, player); // normalized thumbstick direction
+                    _weapon.Weapon.Shoot(updateContext, this.EntityWorld, player); // normalized thumbstick direction
                 }
             }
             // If rotation thumbstick is not pressed, then the movement determines the direction

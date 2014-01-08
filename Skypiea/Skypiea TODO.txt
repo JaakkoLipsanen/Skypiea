@@ -31,6 +31,7 @@
 - contact nappula main menuun? vaik ylä vasen reunaan?
 
 
+
 - relative thumbstick ei "liikuta" jos painaa mut ei vedä. fiksaa? X (en tehny, must ihan jees näin, varmista?)
 - smooth fadet tutorialiin X (en tehny tutoriaaliin sisäisesti smooth fadeja, mut tein helpscreenin fade outista smoothin)
 

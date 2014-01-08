@@ -20,13 +20,14 @@ namespace Skypiea.Model.Weapons
         {
         }
 
-        protected override void ShootInner(UpdateContext updateContext, Entity playerEntity)
+        protected override void ShootInner(UpdateContext updateContext, EntityWorld entityWorld, Entity playerEntity)
         {
             const int Bullets = 6;
             const float SpreadAngle = 0.3f;
             for (int i = 0; i < Bullets; i++)
             {
-                playerEntity.EntityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, -SpreadAngle / 2f + i / (float)Bullets * SpreadAngle);
+                float angle = -SpreadAngle / 2f + i / (float)Bullets * SpreadAngle;
+                entityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(playerEntity.Transform, this, angle);
             }
 
             this.DecreaseBulletCount();
