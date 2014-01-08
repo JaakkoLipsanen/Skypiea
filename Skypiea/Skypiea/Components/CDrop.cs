@@ -6,7 +6,6 @@ namespace Skypiea.Components
     public class CDrop : PoolableComponent
     {
         public DropType DropType { get; private set; }
-
         public void Initialize(DropType dropType)
         {
             this.DropType = dropType;

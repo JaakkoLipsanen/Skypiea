@@ -25,6 +25,7 @@ namespace Skypiea.Components
             Vector2 newPosition = _realPosition;
             if (!_mapAreaWithNormalCamera.Contains(newPosition))
             {
+                // horizontal
                 if (newPosition.X < CameraSlowdownStartDistance)
                 {
                     newPosition.X = FlaiMath.Scale(FlaiMath.Max(0, newPosition.X), 0, CameraSlowdownStartDistance, CameraSlowdownEndDistance, CameraSlowdownStartDistance);
@@ -37,6 +38,7 @@ namespace Skypiea.Components
                         SkypieaConstants.MapWidthInPixels - CameraSlowdownStartDistance, SkypieaConstants.MapWidthInPixels - CameraSlowdownEndDistance);
                 }
 
+                // vertical
                 if (newPosition.Y < CameraSlowdownStartDistance)
                 {
                     newPosition.Y = FlaiMath.Scale(FlaiMath.Max(0, newPosition.Y), 0, CameraSlowdownStartDistance, CameraSlowdownEndDistance, CameraSlowdownStartDistance);

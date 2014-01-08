@@ -55,6 +55,7 @@ namespace Skypiea.Settings
             this.IsRateWindowShown = reader.ReadBoolean();
             this.IsFirstHelpShown = reader.ReadBoolean();
 
+            // LaunchCounts has changed
             this.HasChanged = true;
         }
     }
