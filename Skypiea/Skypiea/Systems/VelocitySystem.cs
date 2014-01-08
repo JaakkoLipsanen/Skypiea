@@ -2,7 +2,6 @@ using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
 using Flai.CBES.Systems;
-using Skypiea.Components;
 
 namespace Skypiea.Systems
 {

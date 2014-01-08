@@ -22,6 +22,7 @@ namespace Skypiea.Systems.Zombie
 
         private void OnZombieKilled(ZombieKilledMessage message)
         {
+            // insta killed zombies can't explode
             if (message.Zombie.Get<CZombieInfo>().KillReason == KillReason.Instakill)
             {
                 return;

@@ -67,7 +67,6 @@ namespace Skypiea.Components
             this.TotalLives = FlaiMath.Max(this.TotalLives, this.LivesRemaining);
         }
 
-        // todo: subscribe to message?
         public void KillPlayer()
         {
             if (this.IsInvulnerable)
@@ -80,6 +79,10 @@ namespace Skypiea.Components
             _respawnInvulnerabilityTimer.Restart();
 
             this.Entity.EntityWorld.BroadcastMessage(this.Entity.EntityWorld.FetchMessage<PlayerKilledMessage>().Initialize(this)); // blaarghh.. ugly...
+            if (this.LivesRemaining == 0)
+            {
+                this.EntityWorld.BroadcastMessage(new GameOverMessage());
+            }
         }
     }
 }

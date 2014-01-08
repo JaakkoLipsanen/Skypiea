@@ -4,7 +4,6 @@ using Flai.CBES.Components;
 using Flai.CBES.Systems;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 
 namespace Skypiea.Systems
 {

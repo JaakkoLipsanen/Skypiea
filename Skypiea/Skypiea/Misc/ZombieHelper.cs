@@ -6,12 +6,30 @@ using Flai.Graphics.Particles.EmitterStyles;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Model.Boosters;
+using Skypiea.Prefabs;
 using Skypiea.View;
 
 namespace Skypiea.Misc
 {
     public static class ZombieHelper
     {
+        public static int GetScore(ZombieType type)
+        {
+            switch (type)
+            {
+                case ZombieType.Normal:
+                    return 100;
+                case ZombieType.Fat:
+                    return 200;
+
+                case ZombieType.Rusher:
+                    return 150;
+
+                default:
+                    return 100;
+            }
+        }
+
         public static bool TakeDamage(Entity zombie, float damage)
         {
             return ZombieHelper.TakeDamage(zombie, damage, null);

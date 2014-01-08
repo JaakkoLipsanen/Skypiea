@@ -168,7 +168,6 @@
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />
-    <Compile Include="Systems\GameStatsTrackerSystem.cs" />
     <Compile Include="Systems\HighscoreSystem.cs" />
     <Compile Include="Systems\LifeDropGeneratorSystem.cs" />
     <Compile Include="Systems\Player\PlayerControllerSystem.cs" />

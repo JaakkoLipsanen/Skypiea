@@ -93,19 +93,6 @@ namespace Skypiea.Systems.Zombie
         public ReadOnlyBag<Entity> GetAllIntersecting(Segment2D segment)
         {
             throw new NotImplementedException();
-
-            //_returnEntities.Clear();
-            //for (int i = 0; i < _zombieEntityTracker.Entities.Count; i++)
-            //{
-            //    Entity zombie = _zombieEntityTracker.Entities[i];
-            //    if (Segment2D.Intersects(segment, zombie.Get<CZombieInfo>().AreaCircle))
-            //    {
-            //        _returnEntities.Add(zombie);
-            //    }
-
-            //}
-
-            //return _readOnlyReturnEntities;
         }
 
         public ReadOnlyBag<Entity> GetAllIntersecting(RectangleF area)

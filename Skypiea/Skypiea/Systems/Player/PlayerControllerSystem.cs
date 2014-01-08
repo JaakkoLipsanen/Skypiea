@@ -48,8 +48,12 @@ namespace Skypiea.Systems.Player
                 return;
             }
 
-          // player.Transform.Position = SkypieaConstants.MapSizeInPixels / 2f + (Vector2.UnitX * 400).Rotate(updateContext.TotalSeconds / 4f);
-          
+            this.Move(updateContext, player);
+            this.Rotate(updateContext, player); 
+        }
+
+        private void Move(UpdateContext updateContext, Entity player)
+        {
             const float PositionClampOffset = -SkypieaConstants.PixelsPerMeter;
             const float DefaultSpeed = SkypieaConstants.PixelsPerMeter * 4.5f;
 
@@ -62,7 +66,10 @@ namespace Skypiea.Systems.Player
             player.Transform.Position += _movementThumbstick.Direction.GetValueOrDefault() * speed * updateContext.DeltaSeconds;
             player.Transform.Position = Vector2.Clamp(player.Transform.Position, Vector2.One * PositionClampOffset, SkypieaConstants.MapSizeInPixels - Vector2.One * PositionClampOffset);
             _playerInfo.MovementPerSecond = (updateContext.DeltaSeconds == 0) ? Vector2.Zero : (player.Transform.Position - previousPosition) / updateContext.DeltaSeconds;
+        }
 
+        private void Rotate(UpdateContext updateContext, Entity player)
+        {
             // rotation
             if (_rotationThumbstick.Direction.HasValue && _rotationThumbstick.Direction != Vector2.Zero)
             {

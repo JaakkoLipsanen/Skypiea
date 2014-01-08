@@ -41,11 +41,7 @@ namespace Skypiea.Systems.Zombie
             {
                 Entity zombieEntity = entities[i];
 
-                // todo: if playerTransform.Position == transform.position, then targetVelocity will be NaN
-                Vector2 targetVelocity = Vector2.Normalize(player.Transform.Position - zombieEntity.Transform.Position) * (isFleeing ? -1 : 1);
-
-                // todo: this is really jittery/stuttering. one fix could be that basically don't normalize the separation/target vectors, and instead allow movements that are less/smaller than the "movement"/Speed
-                // todo: >> also maybe the rotation could depend also on separationVelocity, but be smoothed so that the rotation isn't that jittery... also not 100% sure if GetSeparationVector works correctly (the smoothing far away -> close)
+                Vector2 targetVelocity = ((player.Transform.Position - zombieEntity.Transform.Position) * (isFleeing ? -1 : 1)).NormalizeOrZero();
                 Vector2 separationVelocity = this.GetSeparationVector(zombieEntity, entities) * 1f;
 
                 float speed = zombieEntity.Get<CBasicZombieAI>().Speed * speedMultiplier * (isFleeing ? 0.75f : 1);
@@ -55,15 +51,13 @@ namespace Skypiea.Systems.Zombie
             }
         }
 
-        // todo: this is ultra slow. i mean really really ultra slow. do some kind of quad-tree/grid thingy
+        // this is still not perfect and has some "jittering". also normal zombies don't react to fats or vice versa..
         private Vector2 GetSeparationVector(Entity targetZombie, ReadOnlyBag<Entity> entities)
         {
             const float SeparationDistance = 52;
             CZombieInfo zombieInfo = targetZombie.Get<CZombieInfo>();
 
             Vector2 nearbyDistanceSum = Vector2.Zero;
-            int count = 0;
-
             IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity other in zombieSpatialMap.GetZombiesWithCenterInRange(targetZombie.Transform, SeparationDistance)) // meh.. using this "CenterInRange" ignores the size of the zombie...
             {
@@ -77,41 +71,10 @@ namespace Skypiea.Systems.Zombie
                     float distance = Vector2.Distance(targetZombie.Transform.Position, other.Transform.Position);
                     float inverseNormalizedDistance = 1 - distance / SeparationDistance;
                     nearbyDistanceSum += Vector2.Normalize(targetZombie.Transform.Position - other.Transform.Position) * inverseNormalizedDistance * inverseNormalizedDistance;
-                    count++;
                 }
             }
 
             return (nearbyDistanceSum == Vector2.Zero) ? Vector2.Zero : nearbyDistanceSum * 12.5f;
-
-            #region Smooth Test
-
-            //// const float SeparationDistance = 38;
-
-            //   Vector2 nearbyDistanceSum = Vector2.Zero;
-            //   int count = 0;
-
-            //   CZombieInfo zombieInfo = targetZombie.Get<CZombieInfo>();
-            //   float separationDistance = zombieInfo.Size + 6;
-
-            //   IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
-            //   foreach (Entity other in zombieSpatialMap.GetAllIntersecting(targetZombie.Transform, separationDistance)) // meh.. using this "CenterInRange" ignores the size of the zombie...
-            //   {
-            //       if (other.Get<CZombieInfo>().Type != ZombieType.Normal || other == targetZombie)
-            //       {
-            //           continue;
-            //       }
-
-            //       if (targetZombie.Transform.Position != other.Transform.Position)
-            //       {
-            //           float distance = zombieInfo.AreaCircle.MinDistance(other.Transform.Position); // Vector2.Distance(targetZombie.Transform.Position, other.Transform.Position);
-            //           nearbyDistanceSum += Vector2.Normalize(targetZombie.Transform.Position - other.Transform.Position) * FlaiMath.Pow(1 - distance / separationDistance, 2);
-            //           count++;
-            //       }
-            //   }
-
-            //   return (nearbyDistanceSum == Vector2.Zero) ? Vector2.Zero : nearbyDistanceSum * 5;
-
-            #endregion
         }
     }
 }

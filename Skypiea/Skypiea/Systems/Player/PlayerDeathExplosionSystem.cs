@@ -12,15 +12,12 @@ namespace Skypiea.Systems.Player
     public class PlayerDeathExplosionSystem : EntitySystem
     {
         private readonly EntityTracker _zombieEntityTracker = EntityTracker.FromAspect(Aspect.All<CZombieInfo>());
-        private Entity _player;
         private IPlayerPassiveStats _passiveStats;
 
         protected override void Initialize()
         {
             this.EntityWorld.AddEntityTracker(_zombieEntityTracker);
             this.EntityWorld.SubscribeToMessage<PlayerKilledMessage>(this.OnPlayerKilled);
-
-            _player = this.EntityWorld.FindEntityByName(EntityNames.Player);
             _passiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
         }
 

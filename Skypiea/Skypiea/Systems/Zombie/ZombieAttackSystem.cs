@@ -44,11 +44,6 @@ namespace Skypiea.Systems.Zombie
                 if (!_playerInfo.IsInvulnerable)
                 {
                     _playerInfo.KillPlayer();
-                    if (_playerInfo.LivesRemaining == 0)
-                    {
-                        this.EntityWorld.BroadcastMessage(new GameOverMessage());
-                    }
-
                     return;
                 }
 

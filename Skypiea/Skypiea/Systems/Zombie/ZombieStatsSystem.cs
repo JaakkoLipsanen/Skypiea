@@ -23,7 +23,6 @@ namespace Skypiea.Systems.Zombie
         private CPlayerInfo _playerInfo;
         private float _spawnRate = 1;
         private float _speedMultiplier = 1;
-        //  private float _zombieDamageReductionMultiplier = 1;
 
         private float _totalPlayTime = 0f;
         private float TotalSpawnRateUpdateTime
@@ -85,7 +84,7 @@ namespace Skypiea.Systems.Zombie
             _totalPlayTime += updateContext.DeltaSeconds;
 
             _spawnRate = ZombieStatsSystem.ZombieStartSpawnTime / FlaiMath.Max(0.001f, FlaiMath.Pow(this.TotalSpawnRateUpdateTime / 2f, 0.25f));
-            _speedMultiplier = FlaiMath.Max(1, FlaiMath.Pow(this.TotalSpeedUpdateTime / 4f, 1 / 10f)); // todo this 1 / 12 exponent is too low, the increase at the end is way too slow
+            _speedMultiplier = FlaiMath.Max(1, FlaiMath.Pow(this.TotalSpeedUpdateTime / 4f, 1 / 10f));
         }
     }
 }

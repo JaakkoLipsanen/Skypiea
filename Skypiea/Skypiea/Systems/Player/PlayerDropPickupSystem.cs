@@ -29,12 +29,12 @@ namespace Skypiea.Systems.Player
             _passiveStats = this.EntityWorld.Services.Get<IPlayerPassiveStats>();
         }
 
-        public override void Process(UpdateContext updateContext, Entity entity, CDrop velocity)
+        public override void Process(UpdateContext updateContext, Entity entity, CDrop drop)
         {
             const float MinDistance = SkypieaConstants.PixelsPerMeter;
             if (Vector2.Distance(_player.Transform.Position, entity.Transform.Position) < MinDistance)
             {
-                if (velocity.DropType == DropType.Weapon)
+                if (drop.DropType == DropType.Weapon)
                 {
                     this.OnWeaponDropPicked(entity);
                 }

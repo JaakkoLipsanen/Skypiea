@@ -64,6 +64,8 @@ namespace Skypiea.Systems.Zombie
             }
         }
 
+        #region AI States
+
         private void UpdateWanderingAwayFromPlayer(UpdateContext updateContext, Entity zombie, CRusherZombieAI rusherAI)
         {
             // if player is alive, set the state back to wandering
@@ -127,6 +129,10 @@ namespace Skypiea.Systems.Zombie
                 this.StartRushingStun(rusherAI);
             }
         }
+
+        #endregion
+
+        #region Misc Private Methods
 
         // returns true if the target is reached
         private bool MoveTowardsTarget(Entity zombie, CRusherZombieAI rusherAI, float movementAmount)
@@ -198,5 +204,7 @@ namespace Skypiea.Systems.Zombie
             // generates target that is away from the player with [-0.25, 0.25] rotational offset (radians)
             rusherAI.Target = rusherAI.Transform.Position + FlaiMath.GetAngleVector(rotationPlayerToRusher + rotationOffset)*Global.Random.NextFloat(MinTargetDistance, MaxTargetDistance);
         }
+
+        #endregion
     }
 }
