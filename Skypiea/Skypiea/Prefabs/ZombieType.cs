@@ -1,5 +1,5 @@
 
-namespace Skypiea.Model
+namespace Skypiea.Prefabs
 {
     public enum ZombieType
     {

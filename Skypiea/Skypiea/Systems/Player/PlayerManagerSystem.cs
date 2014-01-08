@@ -4,6 +4,7 @@ using Skypiea.Components;
 using Skypiea.Messages;
 using Skypiea.Misc;
 using Skypiea.Model;
+using Skypiea.Prefabs;
 
 namespace Skypiea.Systems.Player
 {

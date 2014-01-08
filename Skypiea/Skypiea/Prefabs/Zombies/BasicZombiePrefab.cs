@@ -2,7 +2,6 @@ using Flai.CBES;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 
 namespace Skypiea.Prefabs.Zombies
 {

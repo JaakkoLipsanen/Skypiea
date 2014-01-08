@@ -7,6 +7,7 @@ using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Model;
+using Skypiea.Prefabs;
 
 namespace Skypiea.View
 {

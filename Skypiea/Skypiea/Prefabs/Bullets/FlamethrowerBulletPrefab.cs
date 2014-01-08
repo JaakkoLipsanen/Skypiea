@@ -12,10 +12,12 @@ namespace Skypiea.Prefabs.Bullets
         private static readonly SizeF BulletSize = new SizeF(12, 12);
         protected override void BuildEntity(EntityWorld entityWorld, Entity entity, ParameterCollection parameters)
         {
+            const float MaxAngleOffset = 0.3f;
             const float Speed = SkypieaConstants.PixelsPerMeter * 14.25f;
+
             CTransform2D transform = parameters.Get<CTransform2D>(0);
             BulletWeapon weapon = parameters.Get<BulletWeapon>(1);
-            float angleOffset = Global.Random.NextFloat(-0.3f, 0.3f);
+            float angleOffset = Global.Random.NextFloat(-MaxAngleOffset, MaxAngleOffset);
 
             entity.Transform.Position = transform.Position;
             entity.Transform.Rotation = transform.Rotation + angleOffset;

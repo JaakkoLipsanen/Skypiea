@@ -2,7 +2,6 @@ using Flai.CBES;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 
 namespace Skypiea.Prefabs.Zombies
 {
@@ -15,7 +14,6 @@ namespace Skypiea.Prefabs.Zombies
             entity.AddFromPool<CRusherZombieAI>();
             entity.AddFromPool<CZombieInfo>().Initialize(ZombieType.Rusher, RusherZombiePrefab.Size);
             entity.AddFromPool<CHealth>().Initialize(10);
-
             entity.Tag = EntityTags.Zombie;
         }
     }

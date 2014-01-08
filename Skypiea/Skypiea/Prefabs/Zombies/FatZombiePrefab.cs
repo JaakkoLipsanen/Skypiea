@@ -2,7 +2,6 @@ using Flai.CBES;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
-using Skypiea.Model;
 
 namespace Skypiea.Prefabs.Zombies
 {
@@ -16,7 +15,6 @@ namespace Skypiea.Prefabs.Zombies
             entity.AddFromPool<CBasicZombieAI>().Initialize(FatZombiePrefab.Speed);
             entity.AddFromPool<CZombieInfo>().Initialize(ZombieType.Fat, FatZombiePrefab.Size);
             entity.AddFromPool<CHealth>().Initialize(75);
-
             entity.Tag = EntityTags.Zombie;
         }
     }
