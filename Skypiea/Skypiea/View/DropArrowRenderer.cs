@@ -42,8 +42,9 @@ namespace Skypiea.View
 
             CDrop drop = entity.Get<CDrop>();
             Vector2 screenPosition = this.GetArrowScreenBorderPosition(graphicsContext, entity.Transform.Position);
+            RectangleF cameraArea = CCamera2D.Active.GetArea();
 
-            float distanceFromBorder = CCamera2D.Active.GetArea().MinDistance(drop.Transform.Position);
+            float distanceFromBorder = cameraArea.MinDistance(drop.Transform.Position);
             float scale = FlaiMath.Scale(distanceFromBorder, 0, 1536, 1, 0.25f);
 
             if (drop.DropType == DropType.Life)
@@ -58,7 +59,8 @@ namespace Skypiea.View
 
         private void DrawLifeDropArrow(GraphicsContext graphicsContext, CDrop drop, Vector2 screenPosition, float scale)
         {
-            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, 0, 6 * scale);
+            const float BaseScale = 6;
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, 0, BaseScale * scale);
         }
 
         private void DrawWeaponDropArrow(GraphicsContext graphicsContext, CDrop drop, Vector2 screenPosition, float scale)
@@ -76,10 +78,8 @@ namespace Skypiea.View
 
         private Vector2 GetArrowScreenBorderPosition(GraphicsContext graphicsContext, Vector2 entityPosition)
         {
-            Vector2 screenCenter = graphicsContext.ScreenSize / 2f;
-
-            Vector2 direction = entityPosition - CCamera2D.Active.Position;// CCamera2D.Active.WorldToScreen(graphicsContext.ScreenSize, entityPosition);
-            Ray2D ray = new Ray2D(screenCenter, Vector2.Normalize(direction));
+            Vector2 direction = entityPosition - CCamera2D.Active.Position;
+            Ray2D ray = new Ray2D(graphicsContext.ScreenSize / 2f, Vector2.Normalize(direction)); // ray from screen center to the direction of the drop
             if (!Check.IsValid(ray))
             {
                 return -Vector2.One * 10000; // invalid number

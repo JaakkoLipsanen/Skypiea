@@ -8,15 +8,13 @@ namespace Skypiea.View
 {
     public class BoosterStateRenderer : FlaiRenderer
     {
-        private readonly EntityWorld _entityWorld;
         private readonly IBoosterState _boosterState;
         private Booster _currentBooster;
         private float _alpha = 0f;
 
         public BoosterStateRenderer(EntityWorld entityWorld)
         {
-            _entityWorld = entityWorld;
-            _boosterState = _entityWorld.Services.Get<IBoosterState>();
+            _boosterState = entityWorld.Services.Get<IBoosterState>();
         }
 
         protected override void UpdateInner(UpdateContext updateContext)
@@ -32,27 +30,36 @@ namespace Skypiea.View
                 {
                     _currentBooster = _boosterState.ActiveBooster;
                 }
-            }
-            else
-            {
-                const float ConstantAlpha = 0.85f;
-                graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "BoosterTextBackground"), new Vector2(graphicsContext.ScreenSize.Width / 2f, 32), Color.White * _alpha * 0.75f * ConstantAlpha, 0, new Vector2(2.2f, 1.6f));
 
-                Color color = _currentBooster.IsPlayerBooster ? new Color(0, 230, 100) : new Color(255, 64, 64);
-                graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer["Minecraftia.24"], _currentBooster.DisplayName, new Vector2(graphicsContext.ScreenSize.Width / 2f, 36), Color.Black * _alpha * ConstantAlpha, color * _alpha);
-                graphicsContext.SpriteBatch.DrawStringFadedCentered(
-                    graphicsContext.FontContainer["Minecraftia.20"], 
-                    (_currentBooster.TimeRemaining >= 10 ? "0:" : "0:0"), _currentBooster.TimeRemaining,
-                    new Vector2(graphicsContext.ScreenSize.Width / 2f, 72), Color.Black * _alpha * ConstantAlpha, Color.White * _alpha * ConstantAlpha);
+                return;
             }
+
+            this.DrawBooster(graphicsContext);           
+        }
+
+        private void DrawBooster(GraphicsContext graphicsContext)
+        {
+            const float BaseAlpha = 0.85f;
+
+            // draw background texture
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "BoosterTextBackground"), new Vector2(graphicsContext.ScreenSize.Width / 2f, 32), Color.White * _alpha * 0.75f * BaseAlpha, 0, new Vector2(2.2f, 1.6f));
+
+            // draw text
+            Color textColor = _currentBooster.IsPlayerBooster ? new Color(0, 230, 100) : new Color(255, 64, 64);
+            graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer["Minecraftia.24"], _currentBooster.DisplayName, new Vector2(graphicsContext.ScreenSize.Width / 2f, 36), Color.Black * _alpha * BaseAlpha, textColor * _alpha);
+            graphicsContext.SpriteBatch.DrawStringFadedCentered(
+                graphicsContext.FontContainer["Minecraftia.20"],
+                (_currentBooster.TimeRemaining >= 10 ? "0:" : "0:0"), _currentBooster.TimeRemaining,
+                new Vector2(graphicsContext.ScreenSize.Width / 2f, 72), Color.Black * _alpha * BaseAlpha, Color.White * _alpha * BaseAlpha);
         }
 
         private void UpdateAlpha(UpdateContext graphicsContext)
         {
+            const float FadeSpeed = 2f;
             if (_boosterState.ActiveBooster == null)
             {
                 // fade out
-                _alpha = FlaiMath.Max(_alpha - graphicsContext.DeltaSeconds * 2f, 0);
+                _alpha = FlaiMath.Max(_alpha - graphicsContext.DeltaSeconds * FadeSpeed, 0);
                 if (_alpha <= 0)
                 {
                     _currentBooster = null;
@@ -61,7 +68,7 @@ namespace Skypiea.View
             else
             {
                 // fade in
-                _alpha = FlaiMath.Min(_alpha + graphicsContext.DeltaSeconds * 2f, 1);
+                _alpha = FlaiMath.Min(_alpha + graphicsContext.DeltaSeconds * FadeSpeed, 1);
             }
         }
     }

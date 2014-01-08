@@ -22,7 +22,7 @@ namespace Skypiea.View
     {
         private readonly EntityWorld _entityWorld;
         private readonly ParticleEngine _particleEngine;
-        private readonly SpriteBatchParticleRenderer _particleRenderer = new SpriteBatchParticleRenderer() { IsSpriteBatchAlreadyRunning = true };
+        private readonly SpriteBatchParticleRenderer _particleRenderer = new SpriteBatchParticleRenderer { IsSpriteBatchAlreadyRunning = true };
 
         public ParticleEffectRenderer(EntityWorld entityWorld, ParticleEngine particleEngine)
         {
@@ -160,9 +160,12 @@ namespace Skypiea.View
 
         private void CreateZombieExplosion()
         {
+            // UUGGLLYYY.. this could be done more wisely but whatever... basicly, first version is normal blood explosion and the second one is the "zombie birthday party" explosion
             IPlayerPassiveStats passiveStats = _entityWorld.Services.Get<IPlayerPassiveStats>();
             if (!passiveStats.ZombieBirthdayParty)
             {
+                #region Blood
+
                 _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
                 {
                     Emitters = new ParticleEmitterCollection
@@ -185,7 +188,6 @@ namespace Skypiea.View
                                 new OpacityFadeModifier() {InitialOpacity = 0.75f},
                                 new ColorInterpolatorModifier() {InitialColor = Color.DarkRed, FinalColor = Color.Black},
                                 new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 18},
-                                //   new RotationModifier() { RotationRate = 4f },
                             },
                         },
 
@@ -207,7 +209,6 @@ namespace Skypiea.View
                                 new OpacityFadeModifier() {InitialOpacity = 0.4f},
                                 new ColorInterpolatorModifier() {InitialColor = Color.DarkRed, FinalColor = Color.Black},
                                 new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 20},
-                                //    new RotationModifier() { RotationRate = 4f },
                             },
                         },
                     },
@@ -217,9 +218,13 @@ namespace Skypiea.View
                         new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
                     }
                 });
+
+                #endregion
             }
             else
             {
+                #region Zombie Birthday Party
+
                 _particleEngine.Add(ParticleEffectID.ZombieExplosion, new ParticleEffect
                 {
                     Emitters = new ParticleEmitterCollection
@@ -263,7 +268,6 @@ namespace Skypiea.View
                                 new OpacityFadeModifier() {InitialOpacity = 0.4f},
                                 new HueShiftModifier() { HueShiftAmount = 360f },
                                 new ScaleTriInterpolatorModifier() {InitialScale = 0, MedianScale = 10, Median = 0.333f, FinalScale = 20},
-                                //    new RotationModifier() { RotationRate = 4f },
                             },
                         },
                     },
@@ -273,6 +277,8 @@ namespace Skypiea.View
                         new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
                     }
                 });
+
+                #endregion
             }
         }
 

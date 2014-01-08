@@ -215,9 +215,6 @@
       <XnaPlatformSpecific>true</XnaPlatformSpecific>
       <SubType>Designer</SubType>
     </None>
-    <None Include="Skypiea_2014_01_07_13_15_16.sap" />
-    <None Include="Skypiea_2014_01_07_13_17_21.sap" />
-    <None Include="Skypiea_2014_01_07_15_54_12.sap" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Flai\Flai.Scoreloop\Flai.Scoreloop.csproj">

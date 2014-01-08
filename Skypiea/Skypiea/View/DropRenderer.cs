@@ -24,7 +24,7 @@ namespace Skypiea.View
             {
                 return;
             }
-            
+
             if (drop.DropType == DropType.Weapon)
             {
                 this.DrawWeaponDrop(graphicsContext, entity);
@@ -38,7 +38,8 @@ namespace Skypiea.View
         private bool IsVisible(GraphicsContext graphicsContext, CDrop drop)
         {
             const float MaximumDropRadius = 160;
-            if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(RectangleF.CreateCentered(drop.Transform.Position, MaximumDropRadius)))
+            RectangleF dropArea = RectangleF.CreateCentered(drop.Transform.Position, MaximumDropRadius);
+            if (CCamera2D.Active.GetArea(graphicsContext.ScreenSize).Intersects(dropArea))
             {
                 return true;
             }
@@ -48,18 +49,7 @@ namespace Skypiea.View
 
         private void DrawWeaponDrop(GraphicsContext graphicsContext, Entity entity)
         {
-            Vector2i position = Vector2i.Round(entity.Transform.Position);
-            CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
-
-            TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "LifeDropFan");
-            float rotationOffset = _entityWorld.TotalUpdateTime;
-            const int Fans = 6;
-            for (int i = 0; i < Fans; i++)
-            {
-                float rotation = FlaiMath.TwoPi / Fans * i + rotationOffset;
-                graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, Color.White * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.3f);
-            }
-
+            this.DrawFans(graphicsContext, entity.Transform.Position, Color.White * 0.5f, 0.3f);
             if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
             {
                 return;
@@ -68,6 +58,9 @@ namespace Skypiea.View
             const float Size = 30;
             const string FontName = "Minecraftia.16";
 
+            CWeaponDrop weaponDrop = entity.Get<CWeaponDrop>();
+            Vector2i position = Vector2i.Round(entity.Transform.Position);
+
             graphicsContext.PrimitiveRenderer.DrawRectangle(position, Size, Color.White);
             graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(position, Size), Color.Black, 4);
             graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), position, Color.White, Color.Black, 0, 1f);
@@ -75,26 +68,29 @@ namespace Skypiea.View
 
         private void DrawLifeDrop(GraphicsContext graphicsContext, Entity entity)
         {
-            // fans
-            TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "LifeDropFan");
-            float rotationOffset = _entityWorld.TotalUpdateTime;
-            Color color = Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f);
-            const int Fans = 6;
-            for (int i = 0; i < Fans; i++)
-            {
-                float rotation = FlaiMath.TwoPi / Fans * i + rotationOffset;
-                graphicsContext.SpriteBatch.Draw(fanTexture, entity.Transform.Position, color * 0.5f, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), 0.5f);
-            }
-
-            // if the drop is blinking, then don't render the "heart"
+            this.DrawFans(graphicsContext, entity.Transform.Position, Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f) * 0.5f, 0.5f);
             if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
             {
                 return;
             }
 
             // heart
-            const float Scale = SkypieaViewConstants.PixelSize * 1.5f;
-            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), entity.Transform.Position, Color.White, 0f, Scale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f));
+            const float BaseScale = SkypieaViewConstants.PixelSize * 1.5f;
+            float scale = BaseScale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f);
+            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), entity.Transform.Position, Color.White, 0f, scale);
+        }
+
+        private void DrawFans(GraphicsContext graphicsContext, Vector2 position, Color color, float scale)
+        {
+            TextureDefinition fanTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "LifeDropFan");
+            float fanRotation = _entityWorld.TotalUpdateTime;
+
+            const int FanCount = 6;
+            for (int i = 0; i < FanCount; i++)
+            {
+                float rotation = FlaiMath.TwoPi / FanCount * i + fanRotation;
+                graphicsContext.SpriteBatch.Draw(fanTexture, position, color, rotation, new Vector2(fanTexture.Width / 2f, fanTexture.Height), scale);
+            }
         }
     }
 }

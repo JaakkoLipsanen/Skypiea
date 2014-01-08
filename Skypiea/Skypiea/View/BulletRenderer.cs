@@ -30,34 +30,36 @@ namespace Skypiea.View
                     continue;
                 }
 
-                CBullet bullet = entity.Get<CBullet>(); // not used :P       
-                TextureDefinition texture = this.GetTexture(bullet.Weapon.Type);
-                if (bullet.Weapon.Type == WeaponType.RocketLauncher)
-                {
-                    graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.White, entity.Transform.Rotation, 2);
-                }
-                else if (bullet.Weapon.Type == WeaponType.Bouncer)
-                {
-                  //  graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DimGray, entity.Transform.Rotation, 1.2f);
-                    graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DarkGray, entity.Transform.Rotation, 1);
-                }
-                else if (bullet.Weapon.Type == WeaponType.Flamethrower)
-                {
-                    CLifeTime lifeTime = entity.Get<CLifeTime>();
-                    Color color = Color.Lerp(Color.LightGoldenrodYellow, Color.OrangeRed, 1 - lifeTime.NormalizedTimeRemaining) * 0.75f;
-                    graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, color * lifeTime.NormalizedTimeRemaining, 0, FlaiMath.Scale(lifeTime.NormalizedTimeRemaining, 1, 0, 8, 32));
-                }
-                else if (bullet.Weapon.Type == WeaponType.Waterblaster)
-                {
-                    CLifeTime lifeTime = entity.Get<CLifeTime>();
-                    Color color = Color.Lerp(Color.AliceBlue, new Color(0, 69, 255), 1 - lifeTime.NormalizedTimeRemaining) * 0.75f;
-                    graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, color * lifeTime.NormalizedTimeRemaining, 0, FlaiMath.Scale(lifeTime.NormalizedTimeRemaining, 1, 0, 8, 32));
-                }
-                else
-                {
-                    // graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, Color.Yellow * 0.5f, entity.Transform.Rotation, new Vector2(16, 3));
-                    graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, new Color(255, 255, 128) * 0.625f, entity.Transform.Rotation, 4);
-                }
+                this.DrawBullet(graphicsContext, entity, entity.Get<CBullet>());
+            }
+        }
+
+        private void DrawBullet(GraphicsContext graphicsContext, Entity entity, CBullet bullet)
+        {     
+            TextureDefinition texture = this.GetTexture(bullet.Weapon.Type);
+            if (bullet.Weapon.Type == WeaponType.RocketLauncher)
+            {
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.White, entity.Transform.Rotation, 2);
+            }
+            else if (bullet.Weapon.Type == WeaponType.Bouncer)
+            {
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DarkGray, entity.Transform.Rotation, 1);
+            }
+            else if (bullet.Weapon.Type == WeaponType.Flamethrower)
+            {
+                CLifeTime lifeTime = entity.Get<CLifeTime>();
+                Color color = Color.Lerp(Color.LightGoldenrodYellow, Color.OrangeRed, 1 - lifeTime.NormalizedTimeRemaining) * 0.75f;
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, color * lifeTime.NormalizedTimeRemaining, 0, FlaiMath.Scale(lifeTime.NormalizedTimeRemaining, 1, 0, 8, 32));
+            }
+            else if (bullet.Weapon.Type == WeaponType.Waterblaster)
+            {
+                CLifeTime lifeTime = entity.Get<CLifeTime>();
+                Color color = Color.Lerp(Color.AliceBlue, new Color(0, 69, 255), 1 - lifeTime.NormalizedTimeRemaining) * 0.75f;
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, color * lifeTime.NormalizedTimeRemaining, 0, FlaiMath.Scale(lifeTime.NormalizedTimeRemaining, 1, 0, 8, 32));
+            }
+            else
+            {
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, new Color(255, 255, 128) * 0.625f, entity.Transform.Rotation, 4);
             }
         }
 

@@ -57,9 +57,9 @@ namespace Skypiea.View
             }
         }
 
-        // todo: move to it's own class along with vignette etc
         private void DrawNoise(GraphicsContext graphicsContext)
         {
+            // todo: draw only stuff thats visible in the screen? or just simply use texture wrapping....
             TextureDefinition noiseTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
@@ -72,7 +72,6 @@ namespace Skypiea.View
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            // todo: use sprite sheet
             graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "Vignette"));
         }
     }

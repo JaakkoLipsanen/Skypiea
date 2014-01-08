@@ -17,36 +17,34 @@ namespace Skypiea.View
 
         protected override void Draw(GraphicsContext graphicsContext, Entity entity)
         {
-            CVirtualThumbstick virtualThumbstick = entity.Get<CVirtualThumbstick>();
-            this.DrawThumbStick(graphicsContext, virtualThumbstick);
+            this.DrawThumbStick(graphicsContext, entity.Get<CVirtualThumbstick>());
         }
 
         private void DrawThumbStick(GraphicsContext graphicsContext, CVirtualThumbstick virtualThumbstickComponent)
         {
-            const float MaxDistance = 60f;
             VirtualThumbstick thumbstick = virtualThumbstickComponent.Thumbstick;
+
+            // if the thumbstick style is relative and the user isn't pressing down, the CenterPosition doesn't have a value.
+            // don't draw the thumbstick in that case
             if (thumbstick.CenterPosition.HasValue)
             {
-                float alpha = 1;
-                if ((thumbstick.Style == ThumbstickStyle.Fixed &&  thumbstick.Direction != Vector2.Zero) || (thumbstick.Style == ThumbstickStyle.Relative && thumbstick.Direction.HasValue))
-                {
-                    alpha = 0.5f;
-                }
+                TextureDefinition thumbstickTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "ThumbstickBase");
+                float alpha = thumbstick.IsPressed ? 0.5f : 1f;
 
                 // base
-                TextureDefinition thumbstickTexture = SkypieaViewConstants.LoadTexture(_contentProvider, "ThumbstickBase");
                 graphicsContext.SpriteBatch.DrawCentered(thumbstickTexture, thumbstick.CenterPosition.Value, Color.Gray * 0.75f * alpha);
-
                 if (thumbstick.Direction.HasValue)
                 {
-                    // if the thumbstick style is relative, then never draw the "name of the thumbstick", if the style is fixed then draw the name only if the direction IS zero
-                    if (thumbstick.Style == ThumbstickStyle.Relative || thumbstick.Direction != Vector2.Zero)
+                    // draw the "position"/direction texture only if the thumbstick is actually pressed
+                    if (thumbstick.IsPressed)
                     {
+                        const float MaxDistance = 60f;
                         graphicsContext.SpriteBatch.DrawCentered(thumbstickTexture, thumbstick.CenterPosition.Value + thumbstick.Direction.Value * MaxDistance, Color.LightGray * 0.5f * alpha, 0, 0.5f);
                     }
+                    // otherwise draw the text on the thumbstick
                     else
                     {
-                        string name = virtualThumbstickComponent.Entity.Name == EntityNames.MovementThumbStick ? "MOVEMENT" : "SHOOTING";
+                        string name = (virtualThumbstickComponent.Entity.Name == EntityNames.MovementThumbStick) ? "MOVEMENT" : "SHOOTING";
                         graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.24"], name, thumbstick.CenterPosition.Value, Color.White * 0.5f * alpha);
                     }
                 }

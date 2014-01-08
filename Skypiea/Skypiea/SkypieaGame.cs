@@ -20,6 +20,7 @@ namespace Skypiea
     {
         private readonly ScoreloopManager _scoreloopManager;
         private readonly SkypieaSettingsManager _settingsManager;
+
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
@@ -76,6 +77,9 @@ namespace Skypiea
         protected override void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
         {
             e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
+
+            // use 4-bit (per channel) color format for WP7. Atleast Omnia 7 has a horrible banding with SurfaceFormat.Color.
+            // Lumia's don't probably have but whatever
             if (OperatingSystemHelper.Version == WindowsPhoneVersion.WP7)
             {
                 e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;

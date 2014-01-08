@@ -13,14 +13,12 @@ namespace Skypiea.View
     {
         private const float AchievementShowTime = 3f;
 
-        private readonly EntityWorld _entityWorld;
         private readonly Timer _achievementShowTimer = new Timer(AchievementRenderer.AchievementShowTime);
         private Achievement _currentAchievement;
 
         public AchievementRenderer(EntityWorld entityWorld)
         {
-            _entityWorld = entityWorld;
-            _entityWorld.Services.Get<IAchievementManager>().AchievementUnlocked += this.OnAchievementUnlocked;
+            entityWorld.Services.Get<IAchievementManager>().AchievementUnlocked += this.OnAchievementUnlocked;
         }
 
         protected override void UpdateInner(UpdateContext updateContext)
@@ -51,14 +49,11 @@ namespace Skypiea.View
 
                 float left = graphicsContext.ScreenSize.Width - OffsetFromBorder - maxWidth + (1 - alpha) * maxWidth / 2f;
                 float centerX = left + maxWidth / 2f;
+                RectangleF backgroundArea = new RectangleF(left, VerticalPosition, maxWidth, Height);
 
-                // background
-                graphicsContext.PrimitiveRenderer.DrawRectangle(
-                    new RectangleF(left, VerticalPosition, maxWidth, Height), Color.Black * BackgroundAlpha * alpha);
-
-                // background outlines
-                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(
-                    new RectangleF(left, VerticalPosition, maxWidth, Height), Color.Black * alpha * TextAlpha, 1);
+                // background & outlines
+                graphicsContext.PrimitiveRenderer.DrawRectangle(backgroundArea, Color.Black * BackgroundAlpha * alpha);
+                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(backgroundArea, Color.Black * TextAlpha * alpha, 1);
 
                 // name
                 graphicsContext.SpriteBatch.DrawStringCentered(
@@ -73,7 +68,9 @@ namespace Skypiea.View
         private float GetAlpha()
         {
             const float FadeTime = 0.25f;
-            return FlaiMath.Min(_achievementShowTimer.ElapsedTime / FadeTime, (AchievementRenderer.AchievementShowTime - _achievementShowTimer.ElapsedTime) / FadeTime, 1);       
+            return FlaiMath.Min(1,
+                _achievementShowTimer.ElapsedTime / FadeTime, 
+                (AchievementRenderer.AchievementShowTime - _achievementShowTimer.ElapsedTime) / FadeTime);       
         }
 
         private void OnAchievementUnlocked(Achievement achievement)

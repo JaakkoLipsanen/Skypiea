@@ -1,6 +1,8 @@
 ﻿using Flai;
+using Flai.Audio;
 using Flai.Graphics;
 using Flai.Ui;
+using Microsoft.Xna.Framework.GamerServices;
 using Skypiea.Model;
 using Skypiea.Screens;
 
@@ -23,8 +25,8 @@ namespace Skypiea.View
         private readonly VirtualThumbStickRenderer _virtualThumbStickRenderer;
         private readonly DropArrowRenderer _dropArrowRenderer;
 
-        private float _playerUIAlpha = 0f;
-        private float _otherUIAlpha = 0f;
+        private float _playerUiAlpha = 0f;
+        private float _otherUiAlpha = 0f;
 
         public WorldRenderer(World world)
         {
@@ -45,11 +47,13 @@ namespace Skypiea.View
 
         protected override void LoadContentInner()
         {
+            // loadcontent on others?
             _particleEffectRenderer.LoadContent();
         }
 
         protected override void UpdateInner(UpdateContext updateContext)
         {
+            // update on others?
             _boosterStateRenderer.Update(updateContext);
             _achievementRenderer.Update(updateContext);
         }
@@ -70,21 +74,33 @@ namespace Skypiea.View
 
         public void DrawUI(GraphicsContext graphicsContext, BasicUiContainer levelUiContainer)
         {
-            IGameContainer gameContainer = _world.EntityWorld.Services.Get<IGameContainer>();
-            _playerUIAlpha = FlaiMath.Clamp(_playerUIAlpha + ((gameContainer.IsActive || !gameContainer.IsGameOver) ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1); // player ui doesn't fade out when paused
-            _otherUIAlpha = FlaiMath.Clamp(_otherUIAlpha + (gameContainer.IsActive ? 1 : -1) * 4 * graphicsContext.DeltaSeconds, 0, 1);
+            const float FadeSpeed = 4;
+            float fadeAmount = graphicsContext.DeltaSeconds * FadeSpeed;
 
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(_playerUIAlpha);
+            IGameContainer gameContainer = _world.EntityWorld.Services.Get<IGameContainer>();
+
+            // player ui shouldn't fade out when paused, thus !gameContainer.IsGameOver check
+            _playerUiAlpha += fadeAmount * ((gameContainer.IsActive || !gameContainer.IsGameOver) ? 1 : -1);
+            _playerUiAlpha = _playerUiAlpha.Clamp(0, 1);
+
+            // all other ui should fade out when game over or paused
+            _otherUiAlpha += fadeAmount * (gameContainer.IsActive ? 1 : -1);
+            _otherUiAlpha = _otherUiAlpha.Clamp(0, 1);
+
+            // draw with player UI alpha (player UI + booster)
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(_playerUiAlpha);
             _playerRenderer.DrawUI(graphicsContext);
             _boosterStateRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.GlobalAlpha.Pop();
-            
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(_otherUIAlpha);
+
+            // draw all other UI (pause, thumbsticks, drop arrow, achievement)
+            graphicsContext.SpriteBatch.GlobalAlpha.Push(_otherUiAlpha);
+
             levelUiContainer.Draw(graphicsContext, true);
             _virtualThumbStickRenderer.Draw(graphicsContext);
-
             _dropArrowRenderer.Draw(graphicsContext);
             _achievementRenderer.Draw(graphicsContext);
+
             graphicsContext.SpriteBatch.GlobalAlpha.Pop();
         }
     }

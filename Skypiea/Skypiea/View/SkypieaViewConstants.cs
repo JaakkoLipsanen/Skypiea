@@ -13,9 +13,9 @@ namespace Skypiea.View
         public const float DropArrowAlpha = 0.75f;
         public const string SpriteSheetName = "TextureSpriteSheet";
 
+        // not a constant but whatever. fits here
         public static TextureDefinition LoadTexture(IContentProvider contentProvider, string textureName)
         {
-          //  return new TextureDefinition(contentProvider.DefaultManager.LoadTexture(textureName));
             return contentProvider.DefaultManager.LoadTextureFromSpriteSheet(SkypieaViewConstants.SpriteSheetName, textureName);
         }
     }

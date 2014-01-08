@@ -7,7 +7,6 @@ using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Model;
-using Skypiea.Systems.Zombie;
 
 namespace Skypiea.View
 {
@@ -21,7 +20,9 @@ namespace Skypiea.View
         // using _spatialMap.GetAllIntersecting(CCamera2D.Active.GetArea(graphicsContext.ScreenSize))) causes all kinds of problems (render order changes when zombies move from cell and pretty sure other things too)
         protected override void Draw(GraphicsContext graphicsContext, ReadOnlyBag<Entity> entities)
         {
-            const float RealTextureSize = 48;
+            // the texture size is actually 63x63, but the area in the texture that is of the actual zombie (no shadows) is 48x48
+            const float BaseTextureSize = 48;
+
             RectangleF cameraArea = CCamera2D.Active.GetArea(graphicsContext.ScreenSize);
             TextureDefinition texture = SkypieaViewConstants.LoadTexture(_contentProvider, "Zombie");
 
@@ -30,7 +31,7 @@ namespace Skypiea.View
                 CZombieInfo zombieInfo = zombie.Get<CZombieInfo>();
                 if (zombieInfo.AreaRectangle.Intersects(cameraArea))
                 {
-                    float scale = zombieInfo.Size / RealTextureSize;
+                    float scale = zombieInfo.Size / BaseTextureSize;
                     graphicsContext.SpriteBatch.DrawCentered(texture, zombie.Transform.Position, ZombieRenderer.GetColor(zombieInfo), zombie.Transform.Rotation, scale);
                 }
             }

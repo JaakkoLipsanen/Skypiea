@@ -22,7 +22,6 @@ namespace Skypiea.View
             // create sprite effect that is either None, Horizontal, Vertical or Both 
             _spriteEffects = Global.Random.NextBoolean() ? SpriteEffects.FlipHorizontally : SpriteEffects.None;
             _spriteEffects = Global.Random.NextBoolean() ? _spriteEffects | SpriteEffects.FlipVertically : _spriteEffects;
-
         }
 
         protected override void DrawInner(GraphicsContext graphicsContext)
@@ -30,7 +29,7 @@ namespace Skypiea.View
             // draws the actual map texture
             Vector2i size = SkypieaConstants.MapSizeInPixels / SkypieaViewConstants.PixelSize + Vector2i.One * SkypieaViewConstants.FadeLength / SkypieaViewConstants.PixelSize * 2;
             graphicsContext.SpriteBatch.Draw(
-                 SkypieaViewConstants.LoadTexture(_contentProvider, _mapTextureName), //_world.WorldType.GetMapTextureName()),
+                 SkypieaViewConstants.LoadTexture(_contentProvider, _mapTextureName),
                  -Vector2.One * SkypieaViewConstants.FadeLength, new Rectangle(0, 0, size.X, size.Y), _color, 0, Vector2.Zero, SkypieaViewConstants.PixelSize, _spriteEffects, 0f);
         }
 
@@ -39,26 +38,7 @@ namespace Skypiea.View
         {
             this.DrawSides(graphicsContext);
             this.DrawCorners(graphicsContext);
-
-            // clear to black
-            RectangleF cameraArea = CCamera2D.Active.GetArea();
-            if (cameraArea.Left < -SkypieaViewConstants.FadeLength)
-            {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(-SkypieaViewConstants.FadeLength, cameraArea.Bottom), SkypieaViewConstants.ClearColor);
-            }
-            else if (cameraArea.Right > SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength)
-            {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength, cameraArea.Top), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
-            }
-
-            if (cameraArea.Top < -SkypieaViewConstants.FadeLength)
-            {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(cameraArea.Right, -SkypieaViewConstants.FadeLength), SkypieaViewConstants.ClearColor);
-            }
-            else if (cameraArea.Bottom > SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength)
-            {
-                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(cameraArea.Left, SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
-            }
+            this.DrawBackgroundClear(graphicsContext);         
         }
 
         private void DrawSides(GraphicsContext graphicsContext)
@@ -89,6 +69,28 @@ namespace Skypiea.View
             // bottom
             graphicsContext.SpriteBatch.Draw(texture, Vector2.UnitY * SkypieaConstants.MapHeightInPixels, Corner.TopRight, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipVertically); // bottom-left
             graphicsContext.SpriteBatch.Draw(texture, SkypieaConstants.MapSizeInPixels, Corner.TopLeft, SkypieaViewConstants.ClearColor, 0, SkypieaViewConstants.PixelSize, SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically); // bottom-right
+        }
+
+        private void DrawBackgroundClear(GraphicsContext graphicsContext)
+        { // clear to black
+            RectangleF cameraArea = CCamera2D.Active.GetArea();
+            if (cameraArea.Left < -SkypieaViewConstants.FadeLength)
+            {
+                graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(-SkypieaViewConstants.FadeLength, cameraArea.Bottom), SkypieaViewConstants.ClearColor);
+            }
+            else if (cameraArea.Right > SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength)
+            {
+                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(SkypieaConstants.MapWidthInPixels + SkypieaViewConstants.FadeLength, cameraArea.Top), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
+            }
+
+            if (cameraArea.Top < -SkypieaViewConstants.FadeLength)
+            {
+                graphicsContext.PrimitiveRenderer.DrawRectangle(cameraArea.TopLeft, new Vector2(cameraArea.Right, -SkypieaViewConstants.FadeLength), SkypieaViewConstants.ClearColor);
+            }
+            else if (cameraArea.Bottom > SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength)
+            {
+                graphicsContext.PrimitiveRenderer.DrawRectangle(new Vector2(cameraArea.Left, SkypieaConstants.MapHeightInPixels + SkypieaViewConstants.FadeLength), cameraArea.BottomRight, SkypieaViewConstants.ClearColor);
+            }
         }
 
         private static string GetRandomMap()
