@@ -95,13 +95,12 @@ namespace Skypiea.Screens
         private void DrawStats(GraphicsContext graphicsContext)
         {
             StatsManager statsManager = this.Game.Services.Get<StatsManager>();
-            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Kills: ", statsManager.Kills, new Vector2(graphicsContext.ScreenSize.Width / 2f, 110), Color.White);
 
-            int previous = GraphicalGuidelines.DecimalPrecisionInText;
-            GraphicalGuidelines.DecimalPrecisionInText = 1;
+            GraphicalGuidelines.DecimalPrecisionInText.Push(1);
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Kills: ", statsManager.Kills, new Vector2(graphicsContext.ScreenSize.Width / 2f, 110), Color.White);
             graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Time played: ", statsManager.TimePlayedInMinutes, " min", new Vector2(graphicsContext.ScreenSize.Width / 2f, 146), Color.White);
             graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer.DefaultFont, "Distance run: ", (int)statsManager.TotalMovement, " meters", new Vector2(graphicsContext.ScreenSize.Width / 2f, 182), Color.White);
-            GraphicalGuidelines.DecimalPrecisionInText = previous;
+            GraphicalGuidelines.DecimalPrecisionInText.Pop();
         }
 
         private void DrawAchievements(GraphicsContext graphicsContext)
@@ -109,12 +108,12 @@ namespace Skypiea.Screens
             RectangleF scrollerArea = _scroller.GetArea(graphicsContext.ScreenSize);
             int topVisible = (int)FlaiMath.Clamp((scrollerArea.Top - OffsetFromTop) / SlotHeight, 0, _achievements.Count);
             int bottomVisible = (int)FlaiMath.Clamp(FlaiMath.Ceiling((scrollerArea.Bottom - OffsetFromTop) / SlotHeight), 0, _achievements.Count);
+
             for (int i = topVisible; i < bottomVisible; i++)
             {
                 float verticalPosition = OffsetFromTop + i * AchievementScreen.SlotHeight;
 
                 Achievement achievement = _achievements[i];
-                AchievementInfo achievementInfo = (AchievementInfo)achievement.Tag;
                 RectangleF slotArea = new RectangleF(0, verticalPosition, graphicsContext.ScreenSize.Width, SlotHeight);
 
                 this.DrawSlotBackground(graphicsContext, achievement, slotArea);

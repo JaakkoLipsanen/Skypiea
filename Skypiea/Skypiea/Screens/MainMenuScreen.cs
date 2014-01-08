@@ -76,30 +76,6 @@ namespace Skypiea.Screens
 
             _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, 18)) { Color = Color.White * 0.15f, Font = "SegoeWP.16" });
             _uiContainer.Add(new TextBlock(ApplicationInfo.ShortVersion, new Vector2(24, 40)) { Color = Color.White * 0.15f, Font = "SegoeWP.16" });
-
-            // DEBUG STUFF
-            /*
-            _uiContainer.Add(new TextMultiToggleButton<WeaponType>(RectangleF.CreateCentered(new Vector2(this.Game.ScreenSize.Width / 2f, 40), 150), EnumHelper.GetValues<WeaponType>().ToArray(), EnumHelper.GetName, type =>
-            {
-                TestingGlobals.DefaultWeaponType = type;
-            }) { Font = "SegoeWP.24", Tag = "D" });
-            _uiContainer.Add(new TextToggleButton(RectangleF.CreateCentered(new Vector2(Screen.Width - 100, 30), 50), "Debug", "No debug", isToggled =>
-            {
-                TestingGlobals.Debug = isToggled;
-                this.ScreenManager.Game.Components.Get<DebugInformationComponent>().Visible = isToggled;
-                _uiContainer.FindAllWithTag("D").ForEach(uiObject =>
-                {
-                    uiObject.Enabled = isToggled;
-                    uiObject.Visible = isToggled;
-                });
-
-            }) { IsToggled = true }).ManualClick(); */
-        }
-
-        private void OnHelpClicked()
-        {
-            this.FadeOut = FadeDirection.None;
-            this.ScreenManager.LoadScreen(new HelpScreen(false));
         }
 
         private void OnPlayClicked()
@@ -126,7 +102,6 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                // this.Exited += () => this.ScreenManager.AddScreen(new AchievementScreen());
                 this.FadeOut = FadeDirection.Right;
                 this.ExitScreen();
                 this.ScreenManager.AddScreen(new AchievementScreen(), new Delay(0.25f));
@@ -137,10 +112,8 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                // this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
                 this.FadeOut = FadeDirection.Left;
                 this.ExitScreen();
-
                 this.ScreenManager.AddScreen(new LeaderboardScreen(), new Delay(0.25f));
             }
         }
@@ -149,7 +122,6 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                // this.Exited += () => this.ScreenManager.AddScreen(new LeaderboardScreen());
                 this.FadeOut = FadeDirection.Down;
                 this.ExitScreen();
                 this.ScreenManager.AddScreen(new OptionsScreen(), new Delay(0.25f));
@@ -162,6 +134,12 @@ namespace Skypiea.Screens
             {
                 this.Game.Exit();
             }
+        }
+
+        private void OnHelpClicked()
+        {
+            this.FadeOut = FadeDirection.None;
+            this.ScreenManager.LoadScreen(new HelpScreen(false));
         }
 
         private void OnRateClicked()

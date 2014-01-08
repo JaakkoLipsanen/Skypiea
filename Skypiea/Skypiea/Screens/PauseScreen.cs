@@ -19,8 +19,9 @@ namespace Skypiea.Screens
         public PauseScreen()
         {
             this.EnabledGestures = GestureType.Tap;
-            this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
-            this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
+            this.FadeType = FadeType.FadeAlpha;
+            this.TransitionOnTime = TimeSpan.FromSeconds(0.3f);
+            this.TransitionOffTime = TimeSpan.FromSeconds(0.3f);
 
             this.CreateUiElements();
         }
@@ -45,21 +46,15 @@ namespace Skypiea.Screens
         protected override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Begin();
-
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * (1f - this.TransitionPosition) * 0.4f);
-            if (!this.IsExiting)
-            {
-                _uiContainer.Draw(graphicsContext, true);
-            }
-
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.4f);
+            _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }
 
         private void CreateUiElements()
         {
-            Size screenSize = FlaiGame.Current.ScreenSize;
-            _uiContainer.Add(new TextButton("Continue", new Vector2(screenSize.Width / 4f, screenSize.Height / 2f), this.OnContinueClicked));
-            _uiContainer.Add(new TextButton("Exit", new Vector2(screenSize.Width / 4f * 3f, screenSize.Height / 2f), this.OnExitClicked));
+            _uiContainer.Add(new TextButton("Continue", new Vector2(Screen.Width / 4f, Screen.Height / 2f), this.OnContinueClicked));
+            _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 4f * 3f, Screen.Height / 2f), this.OnExitClicked));
         }
 
         private void OnContinueClicked()

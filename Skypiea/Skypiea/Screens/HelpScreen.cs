@@ -10,8 +10,11 @@ namespace Skypiea.Screens
 {
     public class HelpScreen : GameScreen
     {
-        private int _currentScreen = 0;
+        private const int ScreenCount = 4;
+        private const float FadeAlpha = 0.75f;
+
         private readonly bool _isPlay;
+        private int _currentScreen = 0;
 
         public HelpScreen(bool isPlay)
         {
@@ -38,71 +41,105 @@ namespace Skypiea.Screens
 
             if (updateContext.InputState.IsNewTouchAt(updateContext.ScreenArea) && !this.IsExiting)
             {
-                _currentScreen++;
-                if (_currentScreen == 4)
-                {
-                    SkypieaSettingsManager settings = this.Game.Services.Get<SkypieaSettingsManager>();
-                    if (!settings.Settings.IsFirstHelpShown)
-                    {
-                        settings.Settings.IsFirstHelpShown = true;
-                        settings.Save();
-
-                        if (_isPlay)
-                        {
-                            this.LoadGameplayScreen();
-                            return;
-                        }
-                    }
-
-                    this.LoadMainMenu();
-                }
+                this.AdvanceToNextScreen();
             }
         }
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            SpriteFont font = graphicsContext.FontContainer["Minecraftia.16"];
-
             graphicsContext.SpriteBatch.Begin();
-            const float FadeAlpha = 0.75f;
 
-            if (_currentScreen == 0 || _currentScreen == 1)
+            // if you make more screens, having something more flexible could be nice
+            if (_currentScreen == 0)
             {
-                // background
-                graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Background1"));
-
-                if (_currentScreen == 0)
-                {
-                    graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Fade1"), Color.White * FadeAlpha);
-                    graphicsContext.SpriteBatch.DrawStringCentered(font, "Here is your life, score and weapon", new Vector2(graphicsContext.ScreenSize.Width / 2f + 64, 64), Color.White);
-                }
-                else
-                {
-                    graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Fade2"), Color.White * FadeAlpha);
-                    graphicsContext.SpriteBatch.DrawStringCentered(font, "These are thumbsticks that are used for controlling", new Vector2(graphicsContext.ScreenSize.Width / 2f, 184), Color.White);
-                }
+                this.DrawScreen1(graphicsContext);
             }
-            else if (_currentScreen == 2 || _currentScreen == 3)
+            else if (_currentScreen == 1)
             {
-                // background
-                graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Background2"));
-
-                if (_currentScreen == 2)
-                {
-                    graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Fade3"), Color.White * FadeAlpha);
-                    graphicsContext.SpriteBatch.DrawStringCentered(font, "This drop gives you an extra life", new Vector2(graphicsContext.ScreenSize.Width / 4f + 72, 148), Color.White);
-                    graphicsContext.SpriteBatch.DrawStringCentered(font, "This drop grants you a weapon", new Vector2(graphicsContext.ScreenSize.Width / 4f * 3 - 96, 388), Color.White);
-                }
-                else
-                {
-                    graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture("Tutorial/Fade4"), Color.White * FadeAlpha);
-                    graphicsContext.SpriteBatch.DrawStringCentered(font, "This is a booster that changes elements in the game", new Vector2(graphicsContext.ScreenSize.Width / 2f, 224), Color.White);
-                }
+                this.DrawScreen2(graphicsContext);
+            }
+            else if (_currentScreen == 2)
+            {
+                this.DrawScreen3(graphicsContext);
+            }
+            else if (_currentScreen == 3)
+            {
+                this.DrawScreen4(graphicsContext);
             }
 
-            graphicsContext.SpriteBatch.DrawStringCentered(font, "Tap to continue", new Vector2(graphicsContext.ScreenSize.Width / 2f, 460), Color.White * 0.2f);
-
+            graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.16"], "Tap to continue", new Vector2(graphicsContext.ScreenSize.Width / 2f, 460), Color.White * 0.2f);
             graphicsContext.SpriteBatch.End();
+        }
+
+        private void DrawScreen1(GraphicsContext graphicsContext)
+        {
+            this.DrawFullScreen(graphicsContext, "Tutorial/Background1");
+            this.DrawFullScreen(graphicsContext, "Tutorial/Fade1", Color.White * HelpScreen.FadeAlpha);
+            this.DrawText(graphicsContext, "Here is your life, score and weapon", new Vector2(graphicsContext.ScreenSize.Width / 2f + 64, 64));
+        }
+
+        private void DrawScreen2(GraphicsContext graphicsContext)
+        {
+            this.DrawFullScreen(graphicsContext, "Tutorial/Background1");
+            this.DrawFullScreen(graphicsContext, "Tutorial/Fade2", Color.White * HelpScreen.FadeAlpha);
+            this.DrawText(graphicsContext, "These are thumbsticks that are used for controlling", new Vector2(graphicsContext.ScreenSize.Width / 2f, 184));
+        }
+
+        private void DrawScreen3(GraphicsContext graphicsContext)
+        {
+            this.DrawFullScreen(graphicsContext, "Tutorial/Background2");
+            this.DrawFullScreen(graphicsContext, "Tutorial/Fade3", Color.White * HelpScreen.FadeAlpha);
+            this.DrawText(graphicsContext, "This drop gives you an extra life", new Vector2(graphicsContext.ScreenSize.Width / 4f + 72, 148));
+            this.DrawText(graphicsContext, "This drop grants you a weapon", new Vector2(graphicsContext.ScreenSize.Width / 4f * 3 - 96, 388));
+        }
+
+        private void DrawScreen4(GraphicsContext graphicsContext)
+        {
+            this.DrawFullScreen(graphicsContext, "Tutorial/Background2");
+            this.DrawFullScreen(graphicsContext, "Tutorial/Fade4", Color.White * HelpScreen.FadeAlpha);
+            this.DrawText(graphicsContext, "This is a booster that changes elements in the game", new Vector2(graphicsContext.ScreenSize.Width / 2f, 224));
+        }
+
+        private void DrawText(GraphicsContext graphicsContext, string text, Vector2 position)
+        {
+            SpriteFont font = graphicsContext.FontContainer["Minecraftia.16"];
+            graphicsContext.SpriteBatch.DrawStringCentered(font, text, position, Color.White);
+        }
+
+        private void DrawFullScreen(GraphicsContext graphicsContext, string textureName)
+        {
+            this.DrawFullScreen(graphicsContext, textureName, Color.White);
+        }
+
+        private void DrawFullScreen(GraphicsContext graphicsContext, string textureName, Color color)
+        {
+            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture(textureName), color);
+        }
+
+        private void AdvanceToNextScreen()
+        {
+            if (_currentScreen == HelpScreen.ScreenCount - 1)
+            {
+                this.FadeType = FadeType.FadeToBlack;
+                SkypieaSettingsManager settings = this.Game.Services.Get<SkypieaSettingsManager>();
+                if (!settings.Settings.IsFirstHelpShown)
+                {
+                    settings.Settings.IsFirstHelpShown = true;
+                    settings.Save();
+
+                    if (_isPlay)
+                    {
+                        this.LoadGameplayScreen();
+                        return;
+                    }
+                }
+
+                this.LoadMainMenu();
+            }
+            else
+            {
+                _currentScreen++;
+            }
         }
 
         private void LoadMainMenu()

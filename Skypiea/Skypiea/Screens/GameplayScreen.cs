@@ -32,7 +32,7 @@ namespace Skypiea.Screens
         {
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
-            this.FadeType = Flai.ScreenManagement.FadeType.FadeToBlack;
+            this.FadeType = FadeType.FadeToBlack;
 
             this.EnabledGestures = GestureType.DoubleTap;
         }
@@ -67,13 +67,13 @@ namespace Skypiea.Screens
             {
                 this.Pause();
             }
+            else if (!_isPaused && !this.IsActive && this.ScreenManager.Screens.Count == 1) // if paused or gameover, then update, but if calling/in background, then DONT UPDATE!!
+            {
+                this.Pause();
+            }
             else if (_isPaused && this.IsActive)
             {
                 _isPaused = false;
-            }
-            else if (!_isPaused && this.ScreenManager.Screens.Count == 1 && !this.IsActive) // if paused or gameover, then update, but if calling/in background, then DONT UPDATE!!
-            {
-                this.Pause();
             }
 
             if (!_isPaused && !this.IsExiting)

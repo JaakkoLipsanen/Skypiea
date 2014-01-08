@@ -27,7 +27,7 @@ namespace Skypiea.Screens
             this.FadeType = FadeType.FadeAlpha;
             this.EnabledGestures = GestureType.Tap;
 
-            this.CreateUiElements(score);
+            this.CreateUI(score);
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -47,15 +47,11 @@ namespace Skypiea.Screens
         {
             graphicsContext.SpriteBatch.Begin();
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.5f);
-            //if (!this.IsExiting)
-            {
-                _uiContainer.Draw(graphicsContext, true);
-            }
-
+            _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }
 
-        private void CreateUiElements(int playerScore)
+        private void CreateUI(int playerScore)
         {
             _uiContainer.Add(new TextButton("Play again!", new Vector2(Screen.Width / 4f, Screen.Height / 2f), this.OnReplayClicked));
             _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 4f * 3f, Screen.Height / 2f), this.OnExitClicked));

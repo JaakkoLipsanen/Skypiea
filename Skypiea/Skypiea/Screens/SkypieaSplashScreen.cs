@@ -14,7 +14,6 @@ using Skypiea.Prefabs.Bullets;
 using Skypiea.Prefabs.Zombies;
 using Skypiea.Systems;
 using Skypiea.View;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Skypiea.Screens
@@ -74,48 +73,25 @@ namespace Skypiea.Screens
         {
             _world = World.CreateSimulationWorld();
 
-            _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero); // SkypieaConstants.MapSizeInPixels.ToVector2());
-        //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.RotationThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
-        //    _world.EntityWorld.CreateEntityFromPrefab<VirtualThumbstickPrefab>(EntityNames.MovementThumbStick, VirtualThumbstick.CreateFixed(Vector2.Zero));
-
+            Entity player = _world.EntityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
             _world.Initialize();
 
             _particleEffectRenderer = new ParticleEffectRenderer(_world.EntityWorld, _world.ParticleEngine);
             _particleEffectRenderer.LoadContent();
 
-            this.CreateAllPrefabs(_world.EntityWorld);
+            this.CreatePrefabs(_world.EntityWorld, player);
 
-            ZombieHelper.TriggerBloodSplatter(_world.EntityWorld.FindEntityByName(EntityNames.Player).Transform);
+            ZombieHelper.TriggerBloodSplatter(player.Transform);
             _world.Update(UpdateContext.Null);
             _world.EntityWorld.GetSystem<WeaponDropGeneratorSystem>().CreateWeaponDrop();
 
-            LeaderboardScreen leaderboardScreen = new LeaderboardScreen();
-            this.ScreenManager.AddScreen(leaderboardScreen);
-            GameScreenSimulator.Update(UpdateContext.Null, leaderboardScreen);
-            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, leaderboardScreen);
-            this.ScreenManager.RemoveScreen(leaderboardScreen);
-
-            AchievementScreen achievementScreen = new AchievementScreen();
-            this.ScreenManager.AddScreen(achievementScreen);
-            GameScreenSimulator.Update(UpdateContext.Null, achievementScreen);
-            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, achievementScreen);
-            this.ScreenManager.RemoveScreen(achievementScreen);
-
-            OptionsScreen optionsScreen = new OptionsScreen();
-            this.ScreenManager.AddScreen(optionsScreen);
-            GameScreenSimulator.Update(UpdateContext.Null, optionsScreen);
-            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, optionsScreen);
-            this.ScreenManager.RemoveScreen(optionsScreen);
+            this.SimulateScreen<LeaderboardScreen>();
+            this.SimulateScreen<AchievementScreen>();
+            this.SimulateScreen<OptionsScreen>();
         }
 
-        private void CreateAllPrefabs(EntityWorld entityWorld)
+        private void CreatePrefabs(EntityWorld entityWorld, Entity player)
         {
-            //Entity player = entityWorld.CreateEntityFromPrefab<PlayerPrefab>(EntityNames.Player, Vector2.Zero);
-            //entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.RotationThumbStick, Vector2.Zero);
-            //entityWorld.CreateEntityFromPrefab<VirtualThumbStickPrefab>(EntityNames.MovementThumbStick, Vector2.Zero);
-
-            Entity player = entityWorld.FindEntityByName(EntityNames.Player);
-
             // bullets
             entityWorld.CreateEntityFromPrefab<FlamethrowerBulletPrefab>(player.Transform, new Flamethrower(1));
             entityWorld.CreateEntityFromPrefab<NormalBulletPrefab>(player.Transform, new Flamethrower(1), 0f);
@@ -171,6 +147,17 @@ namespace Skypiea.Screens
             //   texureContentManager.LoadTexture("VignetteDithered");
             //   texureContentManager.LoadTexture("Zombie");
             //   texureContentManager.LoadTexture("ZombieShadow");
+        }
+
+        private void SimulateScreen<T>()
+            where T : GameScreen, new()
+        {
+            T screen = new T();
+
+            this.ScreenManager.AddScreen(screen);
+            GameScreenSimulator.Update(UpdateContext.Null, screen);
+            GameScreenSimulator.Draw(FlaiGame.Current.GraphicsContext, screen);
+            this.ScreenManager.RemoveScreen(screen);
         }
     }
 }

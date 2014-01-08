@@ -42,15 +42,13 @@ namespace Skypiea.Screens
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            // todo: use sprite sheet
             graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Vignette"));
-            //graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "PostProcessing/Vignette")); // ...
-            //graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "PostProcessing/Vignette")); // ...
         }
 
         private void DrawNoise(GraphicsContext graphicsContext)
         {
-            var noiseTexture = SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Noise");
+            // todo: optimize? quite a lot of overdraw atm. using wrapping would be very easy
+            TextureDefinition noiseTexture = SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Noise");
             for (int x = Global.Random.Next(-noiseTexture.Width, 0); x < graphicsContext.ScreenSize.Width; x += noiseTexture.Width)
             {
                 for (int y = Global.Random.Next(-360, 0); y < graphicsContext.ScreenSize.Height; y += noiseTexture.Height)

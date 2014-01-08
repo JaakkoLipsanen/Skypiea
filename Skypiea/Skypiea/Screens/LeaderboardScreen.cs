@@ -35,7 +35,7 @@ namespace Skypiea.Screens
         private ScrollerButton _loadMoreScoresButton;
 
         private bool _hasFailed = false;
-        private string _failMessage = "";
+        private string _failMessage;
 
         public override bool IsPopup
         {
@@ -44,10 +44,10 @@ namespace Skypiea.Screens
 
         public LeaderboardScreen()
         {
-            _leaderboard = new ScrollingLeaderboard(FlaiGame.Current.Services.Get<ScoreloopManager>(), 0, 25);
+            const int ScoresPerLoad = 25;
+            _leaderboard = new ScrollingLeaderboard(FlaiGame.Current.Services.Get<ScoreloopManager>(), 0, ScoresPerLoad);
             if (_leaderboard.ScoreloopManager.IsNetworkAvailable)
             {
-                //_failMessage = "Loading...";
                 _leaderboard.GetRank(LeaderboardScope.Daily, this.OnRankLoaded);
                 _leaderboard.GetRank(LeaderboardScope.AllTime, this.OnRankLoaded);
                 _leaderboard.LoadMoreScores(this.OnScoresLoaded);
@@ -118,7 +118,7 @@ namespace Skypiea.Screens
         {
             if (!string.IsNullOrWhiteSpace(_failMessage) || _leaderboard.Scores.Count == 0)
             {
-                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.20"], _failMessage ?? "Loading...", new Vector2(graphicsContext.ScreenSize.Width / 2f, 192), Color.White);
+                graphicsContext.SpriteBatch.DrawStringCentered(graphicsContext.FontContainer["Minecraftia.20"], _failMessage ?? "Loading...", new Vector2(graphicsContext.ScreenSize.Width / 2f, 256), Color.White);
             }
         }
 
@@ -165,7 +165,8 @@ namespace Skypiea.Screens
             const float HorizontalOffset = 32;
             float verticalPosition = OffsetFromTop + ScoreSlotHeight * rankIndex;
             ScoreloopScore score = _leaderboard.Scores[rankIndex % _leaderboard.Scores.Count];
-            ulong rank = (ulong)(rankIndex + 1);
+
+            long rank = rankIndex + 1;
             int rankDigits = FlaiMath.DigitCount(rank);
 
             // rank
@@ -175,8 +176,8 @@ namespace Skypiea.Screens
             float userNameHorizontalOffset = (rankDigits >= 3 ? 24 * (rankDigits - 2) : 0); // "if 3 or more digits, then add some offset to right, otherwise 0". this makes all usernames of scores 0-100 to start at same offset from left
             graphicsContext.SpriteBatch.DrawString(font, score.User.Login, new Vector2(HorizontalOffset + 72 + userNameHorizontalOffset, verticalPosition), Color.White);
 
-            // TODO: dont call score.Result.ToString().....
-            graphicsContext.SpriteBatch.DrawString(font, ((int)score.Result).ToString(), new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, Color.White);
+            // score
+            graphicsContext.SpriteBatch.DrawString(font, (int)score.Result, new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, Color.White);
         }
 
         #endregion
@@ -238,7 +239,7 @@ namespace Skypiea.Screens
             {
                 _loadMoreScoresButton.Enabled = true;
                 _loadMoreScoresButton.Visible = true;
-                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 48); // _scoller.ScrollingRange.Max + 192 + this.Game.ScreenSize.Height*0.5f);
+                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 48);
             }
         }
 
