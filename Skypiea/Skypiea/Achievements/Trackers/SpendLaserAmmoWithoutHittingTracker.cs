@@ -21,6 +21,7 @@ namespace Skypiea.Achievements.Trackers
                 entityWorld.SubscribeToMessage<ZombieKilledMessage>(this.OnZombieKilled);
             }
 
+            // if the player starts with laser, then the tracking should be active from the start
             if (entityWorld.FindEntityByName(EntityNames.Player).Get<CWeapon>().Weapon.Type == WeaponType.Laser)
             {
                 _isActive = true;

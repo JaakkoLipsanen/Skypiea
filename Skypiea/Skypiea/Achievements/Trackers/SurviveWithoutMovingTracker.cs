@@ -15,7 +15,7 @@ namespace Skypiea.Achievements.Trackers
         private Vector2 _previousPosition;
         private float _currentSeconds;
 
-        public SurviveWithoutMovingTracker(AchievementManager achievementManager, EntityWorld entityWorld, string achievementName, float seconds) 
+        public SurviveWithoutMovingTracker(AchievementManager achievementManager, EntityWorld entityWorld, string achievementName, float seconds)
             : base(achievementManager, entityWorld, achievementName)
         {
             Ensure.Is<BooleanProgression>(_achievement.Progression);
@@ -31,7 +31,8 @@ namespace Skypiea.Achievements.Trackers
                 return;
             }
 
-            if (Vector2.Distance(_previousPosition, _playerTransform.Position) > SkypieaConstants.PixelsPerMeter / 60f / 5f)
+            const float MaxAllowedMovement = SkypieaConstants.PixelsPerMeter / 60f / 5f;
+            if (Vector2.Distance(_previousPosition, _playerTransform.Position) > MaxAllowedMovement)
             {
                 _currentSeconds = 0;
             }

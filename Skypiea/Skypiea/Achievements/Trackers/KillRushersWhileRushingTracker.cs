@@ -3,7 +3,6 @@ using Flai.Achievements;
 using Flai.CBES;
 using Skypiea.Components;
 using Skypiea.Messages;
-using Skypiea.Model;
 using Skypiea.Prefabs;
 
 namespace Skypiea.Achievements.Trackers

@@ -35,13 +35,15 @@ namespace Skypiea.Achievements
             AchievementHelper.CreateKillWithInvulnerabilityAchievements(achievements);
             AchievementHelper.CreateKillWithSingleRocketAchievments(achievements);
 
+            // "survive"
             AchievementHelper.CreateSurviveWithoutKillingAchievements(achievements);
             AchievementHelper.CreateSurviveWithoutMovingAchievements(achievements);
 
+            // misc
             AchievementHelper.CreateLivesAtAnyPointOfGameAchievements(achievements);
             AchievementHelper.CreateSpendLaserWithoutKillingAchievements(achievements);
 
-            // not atm
+            // not in atm
             AchievementHelper.CreateIAPAchievements(achievements);
 
             return achievements;
