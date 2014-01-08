@@ -60,14 +60,8 @@ namespace Skypiea.Ui
         {
             if (this.DrawOutlines)
             {
-                RectangleF area = _area;
-                if (this.IsTouchedDown)
-                {
-                 //   area.Inflate(-area.Width * 0.05f, -area.Height * 0.05f);
-                }
-
-                graphicsContext.PrimitiveRenderer.DrawRectangle(area, Color.Black * 0.15f);
-                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(area, Color.Black * 0.5f, 1f);
+                graphicsContext.PrimitiveRenderer.DrawRectangle(_area, Color.Black * 0.15f);
+                graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(_area, Color.Black * 0.5f, 1f);
             }
 
             base.Draw(graphicsContext);            
