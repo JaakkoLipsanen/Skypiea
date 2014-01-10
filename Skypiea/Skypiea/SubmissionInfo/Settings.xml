@@ -1,7 +1,6 @@
 <MarketplaceDetails>
-  <SmallAppTile>
-  </SmallAppTile>
-  <ScreenShots>;;;;;;;;</ScreenShots>
+  <SmallAppTile>Tile300x300.png</SmallAppTile>
+  <ScreenShots>wp_ss_20140107_0007.png;wp_ss_20140107_0013.png;wp_ss_20140107_0022.png;wp_ss_20140107_0009.png;wp_ss_20140107_0032.png;wp_ss_20140107_0027.png;wp_ss_20140107_0026.png;wp_ss_20140107_0036.png;</ScreenShots>
   <ScreenShotsWXGA>;;;;;;;;</ScreenShotsWXGA>
   <ScreenShots720P>;;;;;;;;</ScreenShots720P>
 </MarketplaceDetails>

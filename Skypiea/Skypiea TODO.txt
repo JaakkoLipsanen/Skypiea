@@ -8,7 +8,6 @@
 -- PÄTSIÄ --
 - FB nappula "like"/"share this score!"
 - the one with everything (all achies) ja IAP achievment
-- varmista et load more scores toimii
 - simulointien optimointi/tsekkaa ainakin/fiksaa viel lisää tökkimistä
 - ehk soundit
 - ehkä jotain erikois mappeja tyylii achilla unlockattavaks esim joku pattern tai vector taidetta tai "pony world"
@@ -25,15 +24,16 @@
 - sydän graffoihin mustat outlinet
 - chromatic aberration menu teksteihin?
 - säädä tilejä? esim niin et tilejen reunat fadentuu mustaksi niin, et mustal teemalla reunoja ei nää.
-- doodle run update mis poista pubcenter ad ja pistä skypiea ad. poista boxstrikestä ad
 - tee 1000x800 featured backgroundi!
 - bouncer graffat
 - contact nappula main menuun? vaik ylä vasen reunaan?
-
+- ekassa launchissa kysy leaderboard nimeä? (vähän kompleksistä kyllä)
 
 
 - relative thumbstick ei "liikuta" jos painaa mut ei vedä. fiksaa? X (en tehny, must ihan jees näin, varmista?)
 - smooth fadet tutorialiin X (en tehny tutoriaaliin sisäisesti smooth fadeja, mut tein helpscreenin fade outista smoothin)
+- doodle run update mis poista pubcenter ad ja pistä skypiea ad. poista boxstrikestä ad (X boxStrikee en tehny)
+- varmista et load more scores toimii (X ei toiminu)
 
 -----
 -- ZOMBIT -- (N? ehk pätsillä?)

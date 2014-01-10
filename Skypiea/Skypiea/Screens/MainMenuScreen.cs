@@ -39,6 +39,8 @@ namespace Skypiea.Screens
             }
 
             this.CreateUI();
+
+            LeaderboardHelper.ShowAskUsername();
             RateHelper.ShowRateMessageIfNeeded();
         }
 
@@ -57,9 +59,29 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
+            // todo: do i want chromatic aberration?
+            const float Offset = 1.5f;
+            graphicsContext.SpriteBatch.Begin(BlendState.AlphaBlend, SamplerState.LinearClamp);
             _uiContainer.Draw(graphicsContext, true);
+
+            /* Draw with chromatic aberration
+            this.DrawUI(graphicsContext, new ColorChannels(1, 0, 0), new Vector2(-Offset, -Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 2));
+            this.DrawUI(graphicsContext, new ColorChannels(0, 1, 0), new Vector2(Offset, Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 2.5f + 1.51f));
+            this.DrawUI(graphicsContext, new ColorChannels(0, 0, 1), new Vector2(-Offset, Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 3 + 4.222f));
+            */
+
             graphicsContext.SpriteBatch.End();
+        }
+
+        private void DrawUI(GraphicsContext graphicsContext, ColorChannels colorChannels, Vector2 offset)
+        {
+            graphicsContext.SpriteBatch.ColorChannels.Push(colorChannels);
+            graphicsContext.SpriteBatch.Offset.Push(offset);
+
+            _uiContainer.Draw(graphicsContext, true);
+
+            graphicsContext.SpriteBatch.Offset.Pop();
+            graphicsContext.SpriteBatch.ColorChannels.Pop();
         }
 
         private void CreateUI()

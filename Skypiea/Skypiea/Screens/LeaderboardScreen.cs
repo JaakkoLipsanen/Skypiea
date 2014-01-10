@@ -1,6 +1,7 @@
 using Flai;
 using Flai.General;
 using Flai.Graphics;
+using Flai.Misc;
 using Flai.Scoreloop;
 using Flai.ScreenManagement;
 using Flai.Ui;
@@ -29,11 +30,13 @@ namespace Skypiea.Screens
         private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
         private readonly Dictionary<LeaderboardScope, ScoreRank> _ranks = new Dictionary<LeaderboardScope, ScoreRank>();
+        private string _playerUserName = "";
 
         private ScrollerButton _dailyLeaderboardButton;
         private ScrollerButton _overallLeaderboardButton;
         private ScrollerButton _loadMoreScoresButton;
 
+        private readonly Timer _changeScopeTimer = new Timer(0.5f);
         private bool _hasFailed = false;
         private string _failMessage;
 
@@ -84,6 +87,7 @@ namespace Skypiea.Screens
                 return;
             }
 
+            _changeScopeTimer.Update(updateContext);
             _scroller.Update(updateContext);
             _uiContainer.Update(updateContext);
             if (updateContext.InputState.IsBackButtonPressed)
@@ -169,15 +173,17 @@ namespace Skypiea.Screens
             long rank = rankIndex + 1;
             int rankDigits = FlaiMath.DigitCount(rank);
 
+            Color color = (score.User.Login == _playerUserName) ? DeviceInfo.PhoneAccentColor : Color.White;
+
             // rank
-            graphicsContext.SpriteBatch.DrawString(font, rank, ".", new Vector2(HorizontalOffset, verticalPosition), Color.White);
+            graphicsContext.SpriteBatch.DrawString(font, rank, ".", new Vector2(HorizontalOffset, verticalPosition), color);
 
             // user name
             float userNameHorizontalOffset = (rankDigits >= 3 ? 24 * (rankDigits - 2) : 0); // "if 3 or more digits, then add some offset to right, otherwise 0". this makes all usernames of scores 0-100 to start at same offset from left
-            graphicsContext.SpriteBatch.DrawString(font, score.User.Login, new Vector2(HorizontalOffset + 72 + userNameHorizontalOffset, verticalPosition), Color.White);
+            graphicsContext.SpriteBatch.DrawString(font, score.User.Login, new Vector2(HorizontalOffset + 72 + userNameHorizontalOffset, verticalPosition), color);
 
             // score
-            graphicsContext.SpriteBatch.DrawString(font, (int)score.Result, new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, Color.White);
+            graphicsContext.SpriteBatch.DrawString(font, (int)score.Result, new Vector2(graphicsContext.ScreenSize.Width - HorizontalOffset, verticalPosition), Corner.TopRight, color);
         }
 
         #endregion
@@ -200,25 +206,38 @@ namespace Skypiea.Screens
 
         private void OnOverallButtonClicked()
         {
-            this.ChangeScope(LeaderboardScope.AllTime);
-            _overallLeaderboardButton.Color = Color.White;
-            _dailyLeaderboardButton.Color = Color.DimGray;
+            if (this.ChangeScope(LeaderboardScope.AllTime))
+            {
+                _overallLeaderboardButton.Color = Color.White;
+                _dailyLeaderboardButton.Color = Color.DimGray;
+            }
         }
 
         private void OnDailyButtonClicked()
         {
-            this.ChangeScope(LeaderboardScope.Daily);
-            _dailyLeaderboardButton.Color = Color.White;
-            _overallLeaderboardButton.Color = Color.DimGray;
+            if (this.ChangeScope(LeaderboardScope.Daily))
+            {
+                _dailyLeaderboardButton.Color = Color.White;
+                _overallLeaderboardButton.Color = Color.DimGray;
+            }
         }
 
-        private void ChangeScope(LeaderboardScope scope)
+        private bool ChangeScope(LeaderboardScope scope)
         {
-            if (!_hasFailed && _leaderboard.CurrentScope != scope)
+            if (!_hasFailed && _leaderboard.CurrentScope != scope && _changeScopeTimer.HasFinished)
             {
+                _changeScopeTimer.Restart();
                 _leaderboard.CurrentScope = scope;
                 _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+
+                _loadMoreScoresButton.SetVerticalPosition(100);
+                _loadMoreScoresButton.Enabled = false;
+                _loadMoreScoresButton.Visible = false;
+
+                return true;
             }
+
+            return false;
         }
 
         private void OnScoresLoaded(ScoreloopResponse<LeaderboardScoresResponse> response)
@@ -234,12 +253,12 @@ namespace Skypiea.Screens
                 return;
             }
 
-            _scroller.ScrollingRange = new Range(0, FlaiMath.Max(0, _leaderboard.Scores.Count * ScoreSlotHeight - this.Game.ScreenSize.Height * 0.5f));
+            _scroller.ScrollingRange = new Range(0, FlaiMath.Max(0, _leaderboard.Scores.Count * ScoreSlotHeight - this.Game.ScreenSize.Height * 0.5f + 96));
             if (_leaderboard.CanLoadMoreScores && response.Data != null && response.Data.Scores.Count != 0)
             {
                 _loadMoreScoresButton.Enabled = true;
                 _loadMoreScoresButton.Visible = true;
-                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 48);
+                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 58);
             }
         }
 
@@ -259,6 +278,11 @@ namespace Skypiea.Screens
             int rank = response.Data.Rank;
             int score = (rank == 0) ? 0 : (int)response.Data.Score.Result;
             _ranks.Add(response.Data.Scope, new ScoreRank(rank, score));
+
+            if (_playerUserName == "" && rank != 0)
+            {
+                _playerUserName = response.Data.Score.User.Login;
+            }
         }
 
         #endregion

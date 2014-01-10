@@ -88,20 +88,20 @@ namespace Skypiea.View
             _otherUiAlpha = _otherUiAlpha.Clamp(0, 1);
 
             // draw with player UI alpha (player UI + booster)
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(_playerUiAlpha);
+            graphicsContext.SpriteBatch.Alpha.Push(_playerUiAlpha);
             _playerRenderer.DrawUI(graphicsContext);
             _boosterStateRenderer.Draw(graphicsContext);
-            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
+            graphicsContext.SpriteBatch.Alpha.Pop();
 
             // draw all other UI (pause, thumbsticks, drop arrow, achievement)
-            graphicsContext.SpriteBatch.GlobalAlpha.Push(_otherUiAlpha);
+            graphicsContext.SpriteBatch.Alpha.Push(_otherUiAlpha);
 
             levelUiContainer.Draw(graphicsContext, true);
             _virtualThumbStickRenderer.Draw(graphicsContext);
             _dropArrowRenderer.Draw(graphicsContext);
             _achievementRenderer.Draw(graphicsContext);
 
-            graphicsContext.SpriteBatch.GlobalAlpha.Pop();
+            graphicsContext.SpriteBatch.Alpha.Pop();
         }
     }
 }

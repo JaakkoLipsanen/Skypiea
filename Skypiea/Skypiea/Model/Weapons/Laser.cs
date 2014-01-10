@@ -87,11 +87,7 @@ namespace Skypiea.Model.Weapons
             Vector2 rayEndPoint;
             if (!ray.Intersects(cameraArea, out rayEndPoint))
             {
-#if DEBUG
-                throw new InvalidOperationException("camera is fucked up? or player isn't in the camera area");
-#else
                 return new Segment2D(-Vector2.One * 1000, -Vector2.One * 1000);
-#endif
             }
 
             return new Segment2D(ray.Position, rayEndPoint);
