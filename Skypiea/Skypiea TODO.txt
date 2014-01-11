@@ -28,6 +28,12 @@
 - bouncer graffat
 - contact nappula main menuun? vaik ylä vasen reunaan?
 - ekassa launchissa kysy leaderboard nimeä? (vähän kompleksistä kyllä)
+- goto top arrow leaderboardseihin "load more scores" buttonin viereen?
+- balanssausta (http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/cemlpex)
+- smoothausta thumbstickkeihin? varsinkin laserilla välil se rotation hyppii sikana
+- lue feedback: http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/ (shooting thumbstick ei ammu oikeeseen suuntaan? option toggle button alueet toimii jos painaa otsikkoo?)
+- lue review feedback (kamera kauemmas?)
+- ei kaht samaa asetta peräkkäin? oisko?
 
 
 - relative thumbstick ei "liikuta" jos painaa mut ei vedä. fiksaa? X (en tehny, must ihan jees näin, varmista?)
