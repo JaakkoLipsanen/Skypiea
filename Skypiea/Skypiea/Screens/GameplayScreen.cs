@@ -1,4 +1,5 @@
-﻿using Flai;
+﻿using System.Linq;
+using Flai;
 using Flai.Graphics;
 using Flai.ScreenManagement;
 using Flai.Ui;
@@ -34,6 +35,7 @@ namespace Skypiea.Screens
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeType = FadeType.FadeToBlack;
 
+            // todo: wtf? i don't need this to anything, do i? make sure
             this.EnabledGestures = GestureType.DoubleTap;
         }
 
@@ -49,12 +51,12 @@ namespace Skypiea.Screens
 
         protected override void UnloadContent()
         {
-            _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
+            _level.EntityWorld.BroadcastMessage(new GameExitMessage());
         }
 
         protected override void Deactivate()
         {
-            _level.World.EntityWorld.BroadcastMessage(new GameExitMessage());
+            _level.EntityWorld.BroadcastMessage(new GameExitMessage());
             if (this.IsActive || this.ScreenManager.Screens.Count == 1) // if game is not over or paused
             {
                 this.Pause();
@@ -67,7 +69,7 @@ namespace Skypiea.Screens
             {
                 this.Pause();
             }
-            else if (!_isPaused && !this.IsActive && this.ScreenManager.Screens.Count == 1) // if paused or gameover, then update, but if calling/in background, then DONT UPDATE!!
+            else if (!_isPaused && !this.IsActive && this.ScreenManager.Screens.Count == 1) // if calling/in background, then pause!
             {
                 this.Pause();
             }

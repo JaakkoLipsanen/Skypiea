@@ -6,29 +6,21 @@
 - "abstraktit"
 
 -- PÄTSIÄ --
-- FB nappula "like"/"share this score!"
-- the one with everything (all achies) ja IAP achievment
+
+
+- IAP achievment (ei rewardia?) (support nappula main menu ylä vasen)
 - simulointien optimointi/tsekkaa ainakin/fiksaa viel lisää tökkimistä
-- ehk soundit
-- ehkä jotain erikois mappeja tyylii achilla unlockattavaks esim joku pattern tai vector taidetta tai "pony world"
-- ehkä "no ammo used" booster
+- uusii mappeja 
 - ehkä "black box"/tapa kaikki zombit maailmassa. sika harvinainen
-- queue achievement rendereriin?
-- treasure goblin tyylisiä "piste-apajoita"
-- OPTIMOINNIT/SIMULOINNIT FIXAA
-- Main Menu jos tarpeeks kauan idle, niin joku zombie menee screenin läpi taustalla tyylii sini-funktiota
+- treasure goblin tyylisiä "piste-apajoita" (tiputtaa pisteitä (ihan reippaasti, vaik 5k)), 1-2 asetta ja ehkä lifen) (kohtuu pitkä aika väliin. graafisesti kultaa hehkuva, siitä lentää jotain sparkleja ja jää vana jälkeen)
 - life droppiin mustat reunat ympärille?
-- score bonus booster
-- ehk animointii/interaktiivisuutta help screeniin?
-- player lives tekstuurit paremmaks?
-- sydän graffoihin mustat outlinet
-- chromatic aberration menu teksteihin?
-- säädä tilejä? esim niin et tilejen reunat fadentuu mustaksi niin, et mustal teemalla reunoja ei nää.
+- ehk jotai uutta help screenin?
+- chromatic aberration menu teksteihin? (ehkä?)
 - tee 1000x800 featured backgroundi!
 - bouncer graffat
-- contact nappula main menuun? vaik ylä vasen reunaan?
-- ekassa launchissa kysy leaderboard nimeä? (vähän kompleksistä kyllä)
 - goto top arrow leaderboardseihin "load more scores" buttonin viereen?
+- relative thumbstick default movement direction?
+
 - balanssausta (http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/cemlpex)
 - smoothausta thumbstickkeihin? varsinkin laserilla välil se rotation hyppii sikana
 - lue feedback: http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/ (shooting thumbstick ei ammu oikeeseen suuntaan? option toggle button alueet toimii jos painaa otsikkoo?)
@@ -36,10 +28,14 @@
 - ei kaht samaa asetta peräkkäin? oisko?
 
 
-- relative thumbstick ei "liikuta" jos painaa mut ei vedä. fiksaa? X (en tehny, must ihan jees näin, varmista?)
-- smooth fadet tutorialiin X (en tehny tutoriaaliin sisäisesti smooth fadeja, mut tein helpscreenin fade outista smoothin)
-- doodle run update mis poista pubcenter ad ja pistä skypiea ad. poista boxstrikestä ad (X boxStrikee en tehny)
-- varmista et load more scores toimii (X ei toiminu)
+-- PÄTSI V2 --	
+- FB nappula "like"/"share this score!" 
+- the one with everything (all achies) (???? ehk ei..)
+- ehk soundit
+- ehkä "no ammo used" booster
+- Main Menu jos tarpeeks kauan idle, niin joku zombie menee screenin läpi taustalla tyylii sini-funktiota
+- säädä tilejä? esim niin et tilejen reunat fadentuu mustaksi niin, et mustal teemalla reunoja ei nää.
+- weapon ranks.
 
 -----
 -- ZOMBIT -- (N? ehk pätsillä?)

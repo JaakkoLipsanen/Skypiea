@@ -60,15 +60,15 @@ namespace Skypiea.Screens
         protected override void Draw(GraphicsContext graphicsContext)
         {
             // todo: do i want chromatic aberration?
-            const float Offset = 1.5f;
-            graphicsContext.SpriteBatch.Begin(BlendState.AlphaBlend, SamplerState.LinearClamp);
-            _uiContainer.Draw(graphicsContext, true);
+            const float Offset = 1f;
+            graphicsContext.SpriteBatch.Begin(BlendState.Additive, SamplerState.LinearClamp);
+          //  _uiContainer.Draw(graphicsContext, true);
 
-            /* Draw with chromatic aberration
+           // /* Draw with chromatic aberration
             this.DrawUI(graphicsContext, new ColorChannels(1, 0, 0), new Vector2(-Offset, -Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 2));
             this.DrawUI(graphicsContext, new ColorChannels(0, 1, 0), new Vector2(Offset, Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 2.5f + 1.51f));
             this.DrawUI(graphicsContext, new ColorChannels(0, 0, 1), new Vector2(-Offset, Offset) * FlaiMath.Sin(graphicsContext.TotalSeconds * 3 + 4.222f));
-            */
+          //  */
 
             graphicsContext.SpriteBatch.End();
         }
