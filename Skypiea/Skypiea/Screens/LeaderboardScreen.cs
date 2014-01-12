@@ -35,6 +35,7 @@ namespace Skypiea.Screens
         private ScrollerButton _dailyLeaderboardButton;
         private ScrollerButton _overallLeaderboardButton;
         private ScrollerButton _loadMoreScoresButton;
+        private ScrollerTextureButton _gotoTopButton;
 
         private readonly Timer _changeScopeTimer = new Timer(0.5f);
         private bool _hasFailed = false;
@@ -173,7 +174,7 @@ namespace Skypiea.Screens
             long rank = rankIndex + 1;
             int rankDigits = FlaiMath.DigitCount(rank);
 
-            Color color = (score.User.Login == _playerUserName) ? DeviceInfo.PhoneAccentColor : Color.White;
+            Color color = (score.User.Login == _playerUserName) ? DeviceInfo.PhoneAccentColor : (rankIndex % 2 == 0 ? Color.White : Color.Gray);
 
             // rank
             graphicsContext.SpriteBatch.DrawString(font, rank, ".", new Vector2(HorizontalOffset, verticalPosition), color);
@@ -193,6 +194,14 @@ namespace Skypiea.Screens
             _uiContainer.Add(_dailyLeaderboardButton = new ScrollerButton("Daily", new Vector2(this.Game.ScreenSize.Width / 4f, 64), _scroller, this.OnDailyButtonClicked) { Font = "Minecraftia.24", Color = Color.White });
             _uiContainer.Add(_overallLeaderboardButton = new ScrollerButton("Overall", new Vector2(this.Game.ScreenSize.Width / 4f * 3f, 64), _scroller, this.OnOverallButtonClicked) { Font = "Minecraftia.24", Color = Color.DimGray });
             _uiContainer.Add(_loadMoreScoresButton = new ScrollerButton("Load more scores", new Vector2(this.Game.ScreenSize.Width / 2f, 100), _scroller, this.OnLoadMoreScoresClicked) { Font = "Minecraftia.24", Enabled = false, Visible = false });
+            _uiContainer.Add(_gotoTopButton = new ScrollerTextureButton(
+                new Sprite(this.ContentProvider.DefaultManager.LoadTexture("ArrowUp")) { Tint = Color.White * 0.15f, Scale = Vector2.One * 0.85f }, 
+                new Vector2(this.Game.ScreenSize.Width - 64, 0), _scroller, 
+                this.OnGotoTopClicked)
+            {
+                Enabled = false, Visible = false,
+                InflateAmount = 32,
+            });
         }
 
         #region OnXXX
@@ -202,6 +211,11 @@ namespace Skypiea.Screens
             _loadMoreScoresButton.Enabled = false;
             _loadMoreScoresButton.Visible = false;
             _leaderboard.LoadMoreScores(this.OnScoresLoaded);
+        }
+
+        private void OnGotoTopClicked()
+        {
+            _scroller.ScrollValue = 0;
         }
 
         private void OnOverallButtonClicked()
@@ -230,9 +244,11 @@ namespace Skypiea.Screens
                 _leaderboard.CurrentScope = scope;
                 _leaderboard.LoadMoreScores(this.OnScoresLoaded);
 
-                _loadMoreScoresButton.SetVerticalPosition(100);
-                _loadMoreScoresButton.Enabled = false;
+                _loadMoreScoresButton.Enabled =  false;
                 _loadMoreScoresButton.Visible = false;
+                   
+                _gotoTopButton.Enabled = false;
+                _gotoTopButton.Visible = false;
 
                 return true;
             }
@@ -256,9 +272,15 @@ namespace Skypiea.Screens
             _scroller.ScrollingRange = new Range(0, FlaiMath.Max(0, _leaderboard.Scores.Count * ScoreSlotHeight - this.Game.ScreenSize.Height * 0.5f + 96));
             if (_leaderboard.CanLoadMoreScores && response.Data != null && response.Data.Scores.Count != 0)
             {
+                float verticalPosition = OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 58;
+                _loadMoreScoresButton.SetVerticalPosition(verticalPosition);
+                _gotoTopButton.SetVerticalPosition(verticalPosition + 16);
+
                 _loadMoreScoresButton.Enabled = true;
                 _loadMoreScoresButton.Visible = true;
-                _loadMoreScoresButton.SetVerticalPosition(OffsetFromTop + _leaderboard.Scores.Count * ScoreSlotHeight + 58);
+
+                _gotoTopButton.Enabled = true;
+                _gotoTopButton.Visible = true;
             }
         }
 
@@ -272,7 +294,7 @@ namespace Skypiea.Screens
                     _failMessage = "Something went wrong. Please try again later";
                 }
 
-                return;
+                return; 
             }
 
             int rank = response.Data.Rank;

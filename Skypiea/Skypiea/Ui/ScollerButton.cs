@@ -3,6 +3,7 @@ using Flai.General;
 using Flai.Graphics;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Skypiea.Ui
 {
@@ -33,6 +34,35 @@ namespace Skypiea.Ui
         {
             _centerPosition.Y = _realVerticalPosition - verticalOffset;
             this.UpdateArea();
+        }
+    }
+
+    public class ScrollerTextureButton : TexturedButton
+    {
+        private readonly Scroller _scroller;
+        private float _realVerticalPosition;
+
+        public ScrollerTextureButton(Sprite sprite, Vector2 position, Scroller scroller, GenericEvent clickFunction)
+            : base(sprite, position, clickFunction)
+        {
+            _realVerticalPosition = position.Y;
+            _scroller = scroller;
+        }
+
+        public override void Update(UpdateContext updateContext)
+        {
+            base.Update(updateContext);
+            this.SetVerticalOffset(_scroller.ScrollValue);
+        }
+
+        public void SetVerticalPosition(float value)
+        {
+            _realVerticalPosition = value;
+        }
+
+        private void SetVerticalOffset(float verticalOffset)
+        {
+            _area.Center = _visualArea.Center = new Vector2(_area.Center.X, _realVerticalPosition - verticalOffset);
         }
     }
 
