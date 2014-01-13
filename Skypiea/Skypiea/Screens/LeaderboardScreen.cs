@@ -174,7 +174,7 @@ namespace Skypiea.Screens
             long rank = rankIndex + 1;
             int rankDigits = FlaiMath.DigitCount(rank);
 
-            Color color = (score.User.Login == _playerUserName) ? DeviceInfo.PhoneAccentColor : (rankIndex % 2 == 0 ? Color.White : Color.Gray);
+            Color color = (score.User.Login == _playerUserName) ? DeviceInfo.PhoneAccentColor : (rankIndex % 2 == 0 ? Color.White : Color.DarkGray);
 
             // rank
             graphicsContext.SpriteBatch.DrawString(font, rank, ".", new Vector2(HorizontalOffset, verticalPosition), color);

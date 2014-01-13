@@ -7,25 +7,31 @@
 
 -- PÄTSIÄ --
 
+- tee 1000x800 featured backgroundi!
+- rate now message aiemmin (3. start?) (varmista et toimii oikeesti!)
+- life droppiin mustat reunat ympärille? (testaa jos helppo muuttamal suoraan xml ja spritesheet texture)
 
-- IAP achievment (ei rewardia?) (support nappula main menu ylä vasen)
-- simulointien optimointi/tsekkaa ainakin/fiksaa viel lisää tökkimistä
-- uusii mappeja 
+
 - ehkä "black box"/tapa kaikki zombit maailmassa. sika harvinainen
 - treasure goblin tyylisiä "piste-apajoita" (tiputtaa pisteitä (ihan reippaasti, vaik 5k)), 1-2 asetta ja ehkä lifen) (kohtuu pitkä aika väliin. graafisesti kultaa hehkuva, siitä lentää jotain sparkleja ja jää vana jälkeen)
-- life droppiin mustat reunat ympärille?
-- ehk jotai uutta help screenin?
-- chromatic aberration menu teksteihin? (ehkä?)
-- tee 1000x800 featured backgroundi!
 - bouncer graffat
-- goto top arrow leaderboardseihin "load more scores" buttonin viereen?
+- chromatic aberration menu teksteihin? (ehkä?)
+
+- uusii mappeja 
+- IAP achievment (ei rewardia?) (support nappula main menu ylä vasen)
+
 - relative thumbstick default movement direction?
+- ehk jotai uutta help screenin?
+- simulointien optimointi/tsekkaa ainakin/fiksaa viel lisää tökkimistä
 
 - balanssausta (http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/cemlpex)
 - smoothausta thumbstickkeihin? varsinkin laserilla välil se rotation hyppii sikana
 - lue feedback: http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/ (shooting thumbstick ei ammu oikeeseen suuntaan? option toggle button alueet toimii jos painaa otsikkoo?)
 - lue review feedback (kamera kauemmas?)
 - ei kaht samaa asetta peräkkäin? oisko?
+
+
+- goto top arrow leaderboardseihin "load more scores" buttonin viereen? X
 
 
 -- PÄTSI V2 --	
@@ -48,35 +54,3 @@
 - chance to kill zombie when zombie hits player M/N
 
 ------ *DONE* --------
-
-
--- FIX --
-
-- spritesheettiin suuremmat välit: täl hetkel tulee graafisii glitchei ainakin corner fade tekstuureissa! X
-- todo: map rendering käyttää sprite sheettei. atm ei käytä X
-- ota debug ominaisuudet pois (ja pause menu homma) X
-- culture testausta jossainmäärin X
-- älä käytä piirto efekteis graphicsContext.TotalSeconds, muuten liikkuu vaik pausel tms X
-- separation optimointi X (varmista et tarpeeks?)
-- todo: statsei bugi simulation tappaa zombien ja muuttaa statsei! X
-- pause button suuremmaks X
-- checkkaa scoreloopista oikea highscore ettei käy niin et näytetään "new highscore" mut oikeesti ei oo. siis re-installaus juttu. X
-- cullaus X
-- statsien running on väärä X
-- näytä review-prompt tyylii 5.:llä kerralla jos ei oo viel reviawattu X (5. kerta) 
-
--- NIMI --
-- Final Fight Z 5-5 = 10
-///////////////////////////////////////////////////////
-- Last Light Z 3-0 = 3
-///////////////////////
-- Zombie Attack 2-1 = 3
-- Rise of the Dead 3-0 = 3
-- Dying Earth 2-1 = 3
-
-
--- HELP SCREEN --
-- PLAYER UI
-- VIRTUALTHUMBSTICKIT UI
-- BOOSTER UI
-- DROPIT

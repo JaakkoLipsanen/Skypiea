@@ -8,7 +8,7 @@ namespace Skypiea.Misc
     {
         public static void ShowRateMessageIfNeeded()
         {
-            const int ShowAfterLaunches = 5;
+            const int ShowAfterLaunches = 2;
             SkypieaSettingsManager settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
             if (settingsManager.Settings.LaunchCounts >= ShowAfterLaunches && !settingsManager.Settings.IsRateWindowShown)
             {
