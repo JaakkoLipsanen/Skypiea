@@ -7,22 +7,31 @@
 
 -- PÄTSIÄ --
 
+
+-- HIGH --
 - tee 1000x800 featured backgroundi!
 - rate now message aiemmin (3. start?) (varmista et toimii oikeesti!)
 - life droppiin mustat reunat ympärille? (testaa jos helppo muuttamal suoraan xml ja spritesheet texture)
 
+-- MID --
 
 - ehkä "black box"/tapa kaikki zombit maailmassa. sika harvinainen
 - treasure goblin tyylisiä "piste-apajoita" (tiputtaa pisteitä (ihan reippaasti, vaik 5k)), 1-2 asetta ja ehkä lifen) (kohtuu pitkä aika väliin. graafisesti kultaa hehkuva, siitä lentää jotain sparkleja ja jää vana jälkeen)
-- bouncer graffat
-- chromatic aberration menu teksteihin? (ehkä?)
 
 - uusii mappeja 
+- bouncer graffat (X TODO: pistä spritesheettiin!!!)
+- chromatic aberration menu teksteihin? (ehkä?)
 - IAP achievment (ei rewardia?) (support nappula main menu ylä vasen)
 
+
+--- LOW ---
 - relative thumbstick default movement direction?
 - ehk jotai uutta help screenin?
 - simulointien optimointi/tsekkaa ainakin/fiksaa viel lisää tökkimistä
+
+
+
+
 
 - balanssausta (http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/cemlpex)
 - smoothausta thumbstickkeihin? varsinkin laserilla välil se rotation hyppii sikana

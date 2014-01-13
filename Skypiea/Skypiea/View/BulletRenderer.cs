@@ -43,7 +43,7 @@ namespace Skypiea.View
             }
             else if (bullet.Weapon.Type == WeaponType.Bouncer)
             {
-                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, Color.DarkGray, entity.Transform.Rotation, 1);
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, new Color(96, 96, 128), entity.Transform.Rotation, 1);
             }
             else if (bullet.Weapon.Type == WeaponType.Flamethrower)
             {
@@ -71,7 +71,7 @@ namespace Skypiea.View
                     return SkypieaViewConstants.LoadTexture(_contentProvider, "RocketBullet");
 
                 case WeaponType.Bouncer:
-                    return SkypieaViewConstants.LoadTexture(_contentProvider, "RicochetBullet");
+                    return new TextureDefinition(_contentProvider.DefaultManager.LoadTexture("Weapons/RicochetBullet")); // SkypieaViewConstants.LoadTexture(_contentProvider, "RicochetBullet");
 
                 case WeaponType.Flamethrower:
                 case WeaponType.Waterblaster:
