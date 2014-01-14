@@ -9,8 +9,8 @@
 
 
 -- HIGH --
-- tee 1000x800 featured backgroundi!
-- rate now message aiemmin (3. start?) (varmista et toimii oikeesti!)
+- tee 1000x800 featured backgroundi! (X, ei upattu vielä patchiin!!)
+- rate now message aiemmin (3. start?) (X, pitäs toimii, testattiin)
 - life droppiin mustat reunat ympärille? (testaa jos helppo muuttamal suoraan xml ja spritesheet texture)
 
 -- MID --
