@@ -20,7 +20,7 @@ namespace Skypiea.Systems.Zombie
 
         public override void Process(UpdateContext updateContext, Entity entity, CHealth health)
         {
-            if (!health.IsAlive)
+            if (!health.IsAlive && !entity.IsDeleting)
             {
                 this.EntityWorld.BroadcastMessage(this.EntityWorld.FetchMessage<ZombieKilledMessage>().Initialize(entity));
                 entity.Delete();
