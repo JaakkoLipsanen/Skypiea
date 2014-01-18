@@ -4,9 +4,9 @@ using Flai.CBES.Systems;
 using Flai.General;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
-using Skypiea.Prefabs;
+using Skypiea.Prefabs.Drops;
 
-namespace Skypiea.Systems
+namespace Skypiea.Systems.Drops
 {
     public class BlackBoxGeneratorSystem : EntitySystem
     {

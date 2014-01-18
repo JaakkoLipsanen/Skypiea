@@ -5,7 +5,7 @@ using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
 
-namespace Skypiea.Prefabs
+namespace Skypiea.Prefabs.Drops
 {
     public class LifeDropPrefab : Prefab
     {

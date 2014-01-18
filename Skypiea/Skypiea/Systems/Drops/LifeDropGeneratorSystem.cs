@@ -6,9 +6,9 @@ using Microsoft.Xna.Framework;
 using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
-using Skypiea.Prefabs;
+using Skypiea.Prefabs.Drops;
 
-namespace Skypiea.Systems
+namespace Skypiea.Systems.Drops
 {
     public class LifeDropGeneratorSystem : EntitySystem
     {

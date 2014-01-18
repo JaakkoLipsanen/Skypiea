@@ -2,6 +2,7 @@
 using Flai.CBES;
 using Flai.Graphics.Particles;
 using Skypiea.Systems;
+using Skypiea.Systems.Drops;
 using Skypiea.Systems.Player;
 using Skypiea.Systems.Zombie;
 

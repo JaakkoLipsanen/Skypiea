@@ -11,8 +11,10 @@ using Skypiea.Model;
 using Skypiea.Model.Weapons;
 using Skypiea.Prefabs;
 using Skypiea.Prefabs.Bullets;
+using Skypiea.Prefabs.Drops;
 using Skypiea.Prefabs.Zombies;
 using Skypiea.Systems;
+using Skypiea.Systems.Drops;
 using Skypiea.View;
 using System.Linq;
 

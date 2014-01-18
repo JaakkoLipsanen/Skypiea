@@ -7,9 +7,9 @@ using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
-using Skypiea.Prefabs;
+using Skypiea.Prefabs.Drops;
 
-namespace Skypiea.Systems
+namespace Skypiea.Systems.Drops
 {
     // todo: "WeaponDropLifeTimeSystem"? destroyes them after a certain amount of time
     public class WeaponDropGeneratorSystem : EntitySystem

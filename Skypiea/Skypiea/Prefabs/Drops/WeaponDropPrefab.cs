@@ -6,7 +6,7 @@ using Skypiea.Misc;
 using Skypiea.Model;
 using Skypiea.Model.Weapons;
 
-namespace Skypiea.Prefabs
+namespace Skypiea.Prefabs.Drops
 {
     public class WeaponDropPrefab : Prefab
     {
