@@ -14,7 +14,7 @@ namespace Skypiea.View
     public class DropRenderer : ComponentProcessingRenderer<CDrop>
     {
         public DropRenderer(EntityWorld entityWorld)
-            : base(entityWorld, Aspect.Any<CWeaponDrop, CLifeDrop>())
+            : base(entityWorld, Aspect.Any<CDrop>())
         {
         }
 
@@ -29,9 +29,13 @@ namespace Skypiea.View
             {
                 this.DrawWeaponDrop(graphicsContext, entity);
             }
-            else
+            else if (drop.DropType == DropType.Life)
             {
                 this.DrawLifeDrop(graphicsContext, entity);
+            }
+            else if (drop.DropType == DropType.BlackBox)
+            {
+                this.DrawBlackBox(graphicsContext, entity);
             }
         }
 
@@ -78,6 +82,15 @@ namespace Skypiea.View
             const float BaseScale = SkypieaViewConstants.PixelSize * 1.5f;
             float scale = BaseScale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f);
             graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), entity.Transform.Position, Color.White, 0f, scale);
+        }
+
+        private void DrawBlackBox(GraphicsContext graphicsContext, Entity entity)
+        {
+            Color color = graphicsContext.TotalSeconds % 0.5f > 0.25f ? Color.White : Color.Black;
+            this.DrawFans(graphicsContext, entity.Transform.Position, color * 0.5f, 0.5f);
+
+            graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, Color.Black, graphicsContext.TotalSeconds * 3, 32 * (1f + FlaiMath.Sin(graphicsContext.TotalSeconds * 10f) * 0.5f));
+            graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, entity.Transform.Position, Color.White, 2 + graphicsContext.TotalSeconds * 3, 16 * (1f + FlaiMath.Sin(FlaiMath.Pi + graphicsContext.TotalSeconds * 10f) * 0.5f));
         }
 
         private void DrawFans(GraphicsContext graphicsContext, Vector2 position, Color color, float scale)

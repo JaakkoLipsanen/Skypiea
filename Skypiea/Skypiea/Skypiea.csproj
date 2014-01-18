@@ -137,6 +137,8 @@
     <Compile Include="Model\Weapons\WeaponType.cs" />
     <Compile Include="Model\World.cs" />
     <Compile Include="Model\WorldGenerator.cs" />
+    <Compile Include="Prefabs\BlackBoxPrefab.cs" />
+    <Compile Include="Prefabs\Zombies\GoldenGoblinPrefab.cs" />
     <Compile Include="Prefabs\ZombieType.cs" />
     <Compile Include="Prefabs\Bullets\FlamethrowerBulletPrefab.cs" />
     <Compile Include="Prefabs\Bullets\NormalBulletPrefab.cs" />
@@ -165,6 +167,7 @@
     <Compile Include="Stats\StatsHelper.cs" />
     <Compile Include="Stats\StatsManager.cs" />
     <Compile Include="Systems\AchievementSystem.cs" />
+    <Compile Include="Systems\BlackBoxGeneratorSystem.cs" />
     <Compile Include="Systems\BoosterManagerSystem.cs" />
     <Compile Include="Systems\BulletCollisionSystem.cs" />
     <Compile Include="Systems\BulletOutOfBoundsDestroySystem.cs" />

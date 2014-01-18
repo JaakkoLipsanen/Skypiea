@@ -5,6 +5,7 @@ using Flai.Graphics.Particles;
 using Flai.Graphics.Particles.EmitterStyles;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
+using Skypiea.Messages;
 using Skypiea.Model.Boosters;
 using Skypiea.Prefabs;
 using Skypiea.View;
@@ -96,6 +97,19 @@ namespace Skypiea.Misc
             }
 
             effect.Trigger(transform.Position);
+        }
+
+        public static void KillAllZombies(EntityWorld entityWorld)
+        {
+            foreach (Entity zombie in entityWorld.FindEntitiesWithTag(EntityTags.Zombie))
+            {
+                if (zombie.Get<CHealth>().IsAlive)
+                {
+                    ZombieHelper.Kill(zombie, Vector2.Zero);
+                    entityWorld.BroadcastMessage(entityWorld.FetchMessage<ZombieKilledMessage>().Initialize(zombie));
+                    zombie.Delete();
+                }
+            }
         }
 
         public static void TriggerBloodSplatter(CTransform2D transform)

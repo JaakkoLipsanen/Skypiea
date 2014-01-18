@@ -51,7 +51,7 @@ namespace Skypiea.View
             {
                 this.DrawLifeDropArrow(graphicsContext, drop, screenPosition, scale);
             }
-            else
+            else if(drop.DropType == DropType.Weapon)
             {
                 this.DrawWeaponDropArrow(graphicsContext, drop, screenPosition, scale);
             }

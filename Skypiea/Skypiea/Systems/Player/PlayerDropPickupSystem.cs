@@ -17,7 +17,7 @@ namespace Skypiea.Systems.Player
         private IPlayerPassiveStats _passiveStats;
 
         public PlayerDropPickupSystem()
-            : base(Aspect.Any<CWeaponDrop, CLifeDrop>())
+            : base(Aspect.Any<CDrop>())
         {          
         }
 
@@ -38,9 +38,13 @@ namespace Skypiea.Systems.Player
                 {
                     this.OnWeaponDropPicked(entity);
                 }
-                else
+                else if(drop.DropType == DropType.Life)
                 {
                     this.OnLifeDropPicked(entity);
+                }
+                else if (drop.DropType == DropType.BlackBox)
+                {
+                    this.OnBlackBoxPicked(entity);
                 }
             }
         }
@@ -73,6 +77,11 @@ namespace Skypiea.Systems.Player
             }
 
             entity.Delete();
+        }
+
+        private void OnBlackBoxPicked(Entity entity)
+        {
+            ZombieHelper.KillAllZombies(this.EntityWorld);
         }
     }
 }

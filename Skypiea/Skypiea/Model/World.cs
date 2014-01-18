@@ -76,6 +76,7 @@ namespace Skypiea.Model
 
             _entityWorld.AddSystem<WeaponDropGeneratorSystem>();
             _entityWorld.AddSystem<LifeDropGeneratorSystem>();
+            _entityWorld.AddSystem<BlackBoxGeneratorSystem>();
 
             _entityWorld.AddSystem<VelocitySystem>();
             _entityWorld.AddSystem<BoosterManagerSystem>();

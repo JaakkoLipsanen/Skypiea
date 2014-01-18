@@ -5,5 +5,6 @@ namespace Skypiea.Model
     {
         Weapon,
         Life,
+        BlackBox
     }
 }
