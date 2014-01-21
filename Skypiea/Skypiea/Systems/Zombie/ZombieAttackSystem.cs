@@ -4,8 +4,8 @@ using Flai.CBES.Systems;
 using Flai.DataStructures;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
-using Skypiea.Messages;
 using Skypiea.Misc;
+using Skypiea.Prefabs;
 
 namespace Skypiea.Systems.Zombie
 {
@@ -41,8 +41,14 @@ namespace Skypiea.Systems.Zombie
             IZombieSpatialMap zombieSpatialMap = this.EntityWorld.Services.Get<IZombieSpatialMap>();
             foreach (Entity zombie in zombieSpatialMap.GetAllIntersecting(_player.Transform, range))
             {
+                CZombieInfo zombieInfo = zombie.Get<CZombieInfo>();
                 if (!_playerInfo.IsInvulnerable)
                 {
+                    if (!ZombieAttackSystem.CanAttack(zombieInfo.Type))
+                    {
+                        continue;
+                    }
+
                     _playerInfo.KillPlayer();
                     return;
                 }
@@ -50,6 +56,11 @@ namespace Skypiea.Systems.Zombie
                 // player is invulnerable
                 ZombieHelper.Kill(zombie, Vector2.Zero);
             }
+        }
+
+        private static bool CanAttack(ZombieType zombieType)
+        {
+            return zombieType != ZombieType.GoldenGoblin;
         }
     }
 }

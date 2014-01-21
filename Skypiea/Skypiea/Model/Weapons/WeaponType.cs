@@ -21,11 +21,11 @@ namespace Skypiea.Model.Weapons
     {
         private static readonly WeaponType[] _weaponTypes = EnumHelper.GetValues<WeaponType>().ToArray();
         private static readonly string[] _weaponDisplayNames = EnumHelper.GetNames<WeaponType>().Select(name => Common.AddSpaceBeforeCaps(name)).ToArray();
-        public static WeaponType GenerateWeaponDropType()
+        public static WeaponType GenerateWeaponDropType(bool isWaterBlasterIncluded)
         {
             // this could do some weighting or something.. 
             // exclude assault rifle
-            return _weaponTypes[Global.Random.Next((int)WeaponType.Shotgun, (int)WeaponType.Waterblaster)]; // Waterthrower *IS NOT* included
+            return _weaponTypes[Global.Random.Next((int)WeaponType.Shotgun, (int)WeaponType.Waterblaster + (isWaterBlasterIncluded ? 1 : 0))]; // Waterthrower *IS NOT* included
         }
 
         public static string GetDisplayName(this WeaponType weaponType)

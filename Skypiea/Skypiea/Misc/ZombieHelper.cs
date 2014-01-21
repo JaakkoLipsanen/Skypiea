@@ -26,6 +26,9 @@ namespace Skypiea.Misc
                 case ZombieType.Rusher:
                     return 150;
 
+                case ZombieType.GoldenGoblin:
+                    return 0; // the score from golden goblin in GoldenGoblinRewardSystem (tms)
+
                 default:
                     return 100;
             }

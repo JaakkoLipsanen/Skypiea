@@ -6,7 +6,7 @@ using Skypiea.Components;
 using Skypiea.Misc;
 using Skypiea.Model.Boosters;
 
-namespace Skypiea.Systems.Zombie
+namespace Skypiea.Systems.Zombie.AI
 {
     public class RusherZombieAISystem : ComponentProcessingSystem<CRusherZombieAI>
     {

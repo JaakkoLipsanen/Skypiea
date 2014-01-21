@@ -5,6 +5,7 @@ using Skypiea.Systems;
 using Skypiea.Systems.Drops;
 using Skypiea.Systems.Player;
 using Skypiea.Systems.Zombie;
+using Skypiea.Systems.Zombie.AI;
 
 namespace Skypiea.Model
 {
@@ -58,13 +59,16 @@ namespace Skypiea.Model
         private void CreateSystems(bool isSimulation)
         {
             _entityWorld.AddSystem<ZombieAttackSystem>();
-            _entityWorld.AddSystem<ZombieSpawnManagerSystem>();
+            _entityWorld.AddSystem<ZombieSpawnSystem>();
+            _entityWorld.AddSystem<GoldenGoblinSpawnSystem>();
             _entityWorld.AddSystem<ZombieHealthSystem>();
             _entityWorld.AddSystem<ZombieSpatialMapSystem>();
             _entityWorld.AddSystem<ZombieExplosionSystem>();
+            _entityWorld.AddSystem<GoldenGoblinDeathSystem>();
 
             _entityWorld.AddSystem<BasicZombieAISystem>();
             _entityWorld.AddSystem<RusherZombieAISystem>();
+            _entityWorld.AddSystem<GoldenGoblinAISystem>();
 
             _entityWorld.AddSystem<PlayerControllerSystem>();
             _entityWorld.AddSystem<PlayerManagerSystem>();

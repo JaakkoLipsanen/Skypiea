@@ -82,6 +82,7 @@ namespace Skypiea.Systems.Player
         private void OnBlackBoxPicked(Entity entity)
         {
             ZombieHelper.KillAllZombies(this.EntityWorld);
+            entity.Delete();
         }
     }
 }

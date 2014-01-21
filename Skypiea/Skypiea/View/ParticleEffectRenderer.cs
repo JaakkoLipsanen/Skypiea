@@ -1,3 +1,4 @@
+using System.Reflection;
 using Flai;
 using Flai.CBES;
 using Flai.CBES.Components;
@@ -35,9 +36,20 @@ namespace Skypiea.View
             this.CreateParticleEffects();
         }
 
+        // name...
+        public void DrawEffectsUnderObjects(GraphicsContext graphicsContext)
+        {
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.GoldenGoblinPath]);
+        }
+
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            _particleRenderer.RenderAllEffects(graphicsContext, _particleEngine);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.ZombieExplosion]);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.ZombieBloodSplatter]);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.RocketSmoke]);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.RocketExplosion]);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.GoldenGoblinSpray]);
+            _particleRenderer.RenderEffect(graphicsContext, _particleEngine[ParticleEffectID.GoldenGoblinExplosion]);
         }
 
         #region Create Particle Effects
@@ -154,6 +166,117 @@ namespace Skypiea.View
                     new CullerTriggerHandler(this.ShouldParticleEffectTrigger)
                 }
             });
+
+            #endregion
+
+            #region Golden Goblin Path
+
+            _particleEngine.Add(ParticleEffectID.GoldenGoblinPath, new ParticleEffect
+            {
+                Emitters = new ParticleEmitterCollection
+                {
+                    new ParticleEmitter(250, 1f, new CircleEmitter(8, false, false))
+                    {
+                        ReleaseParameters = new ReleaseParameters
+                        {
+                            Quantity = new RangeInt(1, 2),
+                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                            Color = Color.Gold,
+                            Opacity = 0.5f,
+                            Scale = new Range(6, 12),
+                        },
+
+                        Modifiers = new ParticleModifierCollection
+                        {
+                            new OpacityTriInterpolatorModifier() { InitialOpacity = 0.2f, MedianOpacity = 0.15f, FinalOpacity = 0f, Median = 0.6f },
+                          //  new ScaleInterpolatorModifier { InitialScale = 7, FinalScale = 14 },
+                           //  new VelocityDampingModifier() { DampingPower = 1.5f },
+                        }
+                    }
+                },
+
+                TriggerHandlers = new ParticleTriggerHandlerCollection()
+                {
+                    new CullerTriggerHandler((ref TriggerContext context) => SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active).Inflate(128).Contains(context.Position))
+                }
+            });
+
+            #endregion
+
+            #region Golden Goblin Spray
+
+            _particleEngine.Add(ParticleEffectID.GoldenGoblinSpray, new ParticleEffect
+            {
+                Emitters = new ParticleEmitterCollection
+                {
+                    new ParticleEmitter(400, 2f, new CircleEmitter(24, false, false))
+                    {
+                        ReleaseParameters = new ReleaseParameters
+                        {
+                            Quantity = new RangeInt(6, 12),
+                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                            Color = Color.Yellow,
+                            Opacity = 0.5f,
+                            Scale = new Range(16, 32),
+                            Speed = new Range(5, 40),
+                        },
+
+                        Modifiers = new ParticleModifierCollection
+                        {
+                            new OpacityTriInterpolatorModifier() { InitialOpacity = 0.0f, MedianOpacity = 0.3f, FinalOpacity = 0f, Median = 0.05f },
+                          //  new ScaleInterpolatorModifier { InitialScale = 7, FinalScale = 14 },
+                           //  new VelocityDampingModifier() { DampingPower = 1.5f },
+                        },
+
+                        Texture = _contentProvider.DefaultManager.LoadTexture("Sparkle"),
+                    }
+                },
+
+                TriggerHandlers = new ParticleTriggerHandlerCollection()
+                {
+                    new CullerTriggerHandler((ref TriggerContext context) => SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active).Inflate(128).Contains(context.Position))
+                }
+            });
+
+
+            #endregion
+
+            #region Golden Goblin Explosion
+
+            _particleEngine.Add(ParticleEffectID.GoldenGoblinExplosion, new ParticleEffect
+            {
+                Emitters = new ParticleEmitterCollection
+                {
+                    new ParticleEmitter(200, 2f, new CircleEmitter(24, false, false))
+                    {
+                        ReleaseParameters = new ReleaseParameters
+                        {
+                            Quantity = new RangeInt(5, 100),
+                            Rotation = new Range(-FlaiMath.Pi, FlaiMath.Pi),
+                            Color = Color.Yellow,
+                            Opacity = 0.5f,
+                            Scale = new Range(24, 48),
+                            Speed = new Range(30, 160),
+                        },
+
+                        Modifiers = new ParticleModifierCollection
+                        {
+                            new OpacityTriInterpolatorModifier() { InitialOpacity = 0.0f, MedianOpacity = 0.3f, FinalOpacity = 0f, Median = 0.05f },
+                            new VelocityDampingModifier() { DampingPower = 2f }
+                          //  new ScaleInterpolatorModifier { InitialScale = 7, FinalScale = 14 },
+                           //  new VelocityDampingModifier() { DampingPower = 1.5f },
+                        },
+
+                        Texture = _contentProvider.DefaultManager.LoadTexture("Sparkle"),
+                    }
+                },
+
+                TriggerHandlers = new ParticleTriggerHandlerCollection()
+                {
+                    new CullerTriggerHandler((ref TriggerContext context) => SkypieaConstants.GetAdjustedCameraArea(CCamera2D.Active).Inflate(128).Contains(context.Position))
+                }
+            });
+
 
             #endregion
         }

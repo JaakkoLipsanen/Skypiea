@@ -27,7 +27,7 @@ namespace Skypiea.Prefabs.Bullets
 
             entity.AddFromPool<CBullet>().Initialize(RocketLauncherBulletPrefab.BulletSize, parameters.Get<RocketLauncher>(1));
             entity.AddFromPool<CVelocity2D>().Initialize(FlaiMath.GetAngleVector(transform.Rotation), Speed);
-            entity.AddFromPool<CParticleEmitter2D>().Initialize(ParticleEffectID.RocketSmoke, new BurstTriggerSettable(0.01f, entity.Transform));
+            entity.AddFromPool<CParticleEmitter2D>().Initialize(ParticleEffectID.RocketSmoke, new BurstTriggerController(0.01f, entity.Transform));
         }
     }
 }

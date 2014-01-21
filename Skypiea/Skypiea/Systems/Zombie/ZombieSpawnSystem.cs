@@ -9,8 +9,7 @@ using Skypiea.Prefabs.Zombies;
 
 namespace Skypiea.Systems.Zombie
 {
-    // ZombieSpawnManagerSystem ? -> do it probably
-    public class ZombieSpawnManagerSystem : EntitySystem
+    public class ZombieSpawnSystem : EntitySystem
     {
         private readonly Timer _zombieTimer = new Timer(float.MaxValue);
         private CPlayerInfo _playerInfo;

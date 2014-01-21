@@ -1,6 +1,5 @@
 using Flai;
 using Flai.CBES;
-using Skypiea.Model;
 using Skypiea.Prefabs;
 
 namespace Skypiea.Components

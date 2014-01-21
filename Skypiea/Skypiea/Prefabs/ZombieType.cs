@@ -6,5 +6,6 @@ namespace Skypiea.Prefabs
         Normal,
         Rusher,
         Fat,
+        GoldenGoblin,
     }
 }

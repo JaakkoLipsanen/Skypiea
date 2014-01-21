@@ -61,6 +61,7 @@ namespace Skypiea.View
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
             _mapRenderer.Draw(graphicsContext);
+            _particleEffectRenderer.DrawEffectsUnderObjects(graphicsContext);
             _dropRenderer.Draw(graphicsContext);
 
             _zombieRenderer.Draw(graphicsContext);

@@ -57,7 +57,7 @@ namespace Skypiea.Systems.Drops
                 new Range(MinDistanceFromBorder, SkypieaConstants.MapHeightInPixels - MinDistanceFromBorder),
                 playerTransform.Position, SkypieaConstants.PixelsPerMeter * 5);
 
-            WeaponType dropType = WeaponTypeHelper.GenerateWeaponDropType();
+            WeaponType dropType = WeaponTypeHelper.GenerateWeaponDropType(false);
             if (dropType == WeaponType.Flamethrower && _passiveStats.ChanceForWaterBlaster)
             {
                 // 50% chance... should it be lower?

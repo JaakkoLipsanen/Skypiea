@@ -13,6 +13,9 @@ namespace Skypiea.Misc
         public static readonly Vector2i MapSizeInPixels = new Vector2i(SkypieaConstants.MapWidthInPixels, SkypieaConstants.MapHeightInPixels);
         public static readonly RectangleF MapAreaInPixels = new RectangleF(0, 0, SkypieaConstants.MapWidthInPixels, SkypieaConstants.MapHeightInPixels);
 
+        public static readonly Range MapWidthInPixelsRange = new Range(0, SkypieaConstants.MapWidthInPixels);
+        public static readonly Range MapHeightInPixelsRange = new Range(0, SkypieaConstants.MapHeightInPixels);
+
         public const float MeterMultiplier = 2f;
         public const float ScreenSizeBias = 96;
 
