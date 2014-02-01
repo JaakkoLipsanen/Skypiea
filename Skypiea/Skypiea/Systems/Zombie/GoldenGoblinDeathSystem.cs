@@ -40,9 +40,8 @@ namespace Skypiea.Systems.Zombie
         {
             this.SpawnWeapons(position);
             this.SpawnBlackBox(position);
+            this.SpawnHealth(position);
             this.AddScore();
-
-
         }
 
         private void AddScore()
@@ -56,10 +55,19 @@ namespace Skypiea.Systems.Zombie
 
         private void SpawnBlackBox(Vector2 position)
         {
-            bool spawnBlackBox = Global.Random.NextFromOdds(0.2f);
+            bool spawnBlackBox = Global.Random.NextFromOdds(1); //1 / 3f);
             if (spawnBlackBox)
             {
-                this.EntityWorld.CreateEntityFromPrefab<BlackBoxPrefab>(position + Vector2.UnitY * 32); // waterblaster IS included!
+                this.EntityWorld.CreateEntityFromPrefab<BlackBoxPrefab>(position + Vector2.UnitY * 32 + Vector2.UnitX * 32);
+            }
+        }
+
+        private void SpawnHealth(Vector2 position)
+        {
+            bool spawnHealth = Global.Random.NextFromOdds(1); //3 / 4f);
+            if (spawnHealth)
+            {
+                this.EntityWorld.CreateEntityFromPrefab<LifeDropPrefab>(position + Vector2.UnitY * 32 - Vector2.UnitX * 32);
             }
         }
 

@@ -38,7 +38,13 @@ namespace Skypiea.View
                 {
                     graphicsContext.SpriteBatch.DrawCentered(graphicsContext.ContentProvider.DefaultManager.LoadTexture("GoldenGoblinGlow"), zombie.Transform.Position, Color.Gold * 0.5f, 0, 3f + FlaiMath.Sin(graphicsContext.TotalSeconds * 2));
 
+                    // DEBUG //
                     CGoldenGoblinAI goldenGoblinAI = zombie.Get<CGoldenGoblinAI>();
+                    if (goldenGoblinAI.State == GoldenGoblinState.TravellingToWaypoint)
+                    {
+                        graphicsContext.PrimitiveRenderer.DrawLine(goldenGoblinAI.Transform.Position, goldenGoblinAI.CurrentWaypoint, Color.Red, 2f);
+                    }
+
                     for (int i = 0; i < goldenGoblinAI.Waypoints.Length - 1; i++)
                     {
                         graphicsContext.PrimitiveRenderer.DrawLine(goldenGoblinAI.Waypoints[i], goldenGoblinAI.Waypoints[i + 1], Color.Red, 4f);

@@ -12,6 +12,11 @@ namespace Skypiea.Components
             get { return this.CurrentHealth > 0; }
         }
 
+        public bool HasBeenHit      
+        {
+            get { return this.CurrentHealth < this.MaximumHealth; }
+        }
+
         public bool TakeDamage(float damage)
         {
             this.CurrentHealth -= damage;

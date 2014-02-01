@@ -18,7 +18,7 @@ namespace Skypiea.Components
 
     public class CGoldenGoblinAI : PoolableComponent
     {
-        private const int WaypointCount = 4;
+        private const int WaypointCount = 5;
         public GoldenGoblinState State { get; set; }
         public int CurrentWaypointIndex { get; set; }
         public Vector2 Velocity { get; set; }
@@ -70,7 +70,7 @@ namespace Skypiea.Components
                 float angle;
                 do
                 {
-                    newPosition = FlaiAlgorithms.GenerateRandomVector2(SkypieaConstants.MapWidthInPixelsRange.AsInflated(-64), SkypieaConstants.MapHeightInPixelsRange.AsInflated(-64), currentPosition, SkypieaConstants.MapHeightInPixels / 6f);
+                    newPosition = FlaiAlgorithms.GenerateRandomVector2(SkypieaConstants.MapWidthInPixelsRange.AsInflated(-128), SkypieaConstants.MapHeightInPixelsRange.AsInflated(-128), currentPosition, SkypieaConstants.MapHeightInPixels / 6f);
                     angle = FlaiMath.AngleBetweenVectors(newPosition - currentPosition, currentPosition - previousPosition);
                     testCount++;
 

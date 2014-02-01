@@ -11,9 +11,13 @@ namespace Skypiea.Systems.Zombie
 {
     public class GoldenGoblinSpawnSystem : EntitySystem
     {
-        private readonly Timer _zombieTimer = new Timer(float.MaxValue);
+        private const float FirstMinTime = 55;
+        private const float FirstMaxTime = 85;
+        private const float TestMultiplier = 1.35f;
+        private const float ChanceToSpawn = 0.5f;
+
+        private readonly Timer _zombieTimer = new Timer(Global.Random.NextFloat(GoldenGoblinSpawnSystem.FirstMinTime, GoldenGoblinSpawnSystem.FirstMaxTime)); // first gg has a change to
         private CPlayerInfo _playerInfo;
-        private IZombieStatsProvider _zombieStatsProvider;
 
         protected override int ProcessOrder
         {
@@ -23,29 +27,24 @@ namespace Skypiea.Systems.Zombie
         protected override void Initialize()
         {
             _playerInfo = this.EntityWorld.FindEntityByName(EntityNames.Player).Get<CPlayerInfo>();
-            _zombieStatsProvider = this.EntityWorld.Services.Get<IZombieStatsProvider>();
         }
 
-        private bool _spawned = false;
         protected override void Update(UpdateContext updateContext)
         {
-            if (!_spawned)
-            {
-                _spawned = true;
-                this.SpawnZombie();
-            }
-            return;
             if (!_playerInfo.IsAlive)
             {
                 return;
             }
 
-            _zombieTimer.SetTickTime(_zombieStatsProvider.SpawnRate * 20);
             _zombieTimer.Update(updateContext);
-
             if (_zombieTimer.HasFinished)
             {
-                this.SpawnZombie();
+                if (Global.Random.NextFromOdds(GoldenGoblinSpawnSystem.ChanceToSpawn))
+                {
+                    this.SpawnZombie();
+                }
+
+                _zombieTimer.SetTickTime(_zombieTimer.TickTime * GoldenGoblinSpawnSystem.TestMultiplier);
                 _zombieTimer.Restart();
             }
         }
