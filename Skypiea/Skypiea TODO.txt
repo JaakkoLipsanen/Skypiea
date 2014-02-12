@@ -9,38 +9,19 @@
 
 
 -- HIGH --
-- tee 1000x800 featured backgroundi! (X, ei upattu viel‰ patchiin!!)
-- rate now message aiemmin (3. start?) (X, pit‰s toimii, testattiin)
-- life droppiin mustat reunat ymp‰rille? (testaa jos helppo muuttamal suoraan xml ja spritesheet texture)
+- life droppiin mustat reunat ymp‰rille? (testaa jos helppo muuttamal suoraan xml ja spritesheet texture) (X, reunat n‰ytti huonolta, tein "fans":t haaleemmaks
 
 -- MID --
 
-- ehk‰ "black box"/tapa kaikki zombit maailmassa. sika harvinainen
-- treasure goblin tyylisi‰ "piste-apajoita" (tiputtaa pisteit‰ (ihan reippaasti, vaik 5k)), 1-2 asetta ja ehk‰ lifen) (kohtuu pitk‰ aika v‰liin. graafisesti kultaa hehkuva, siit‰ lent‰‰ jotain sparkleja ja j‰‰ vana j‰lkeen)
+- ehk‰ "black box"/tapa kaikki zombit maailmassa. sika harvinainen (X, GG voi tiputtaa)
+- treasure goblinit (X, tweakkausta viel)
 
-- uusii mappeja 
-- bouncer graffat (X TODO: pist‰ spritesheettiin!!!)
-- chromatic aberration menu teksteihin? (ehk‰?)
-- IAP achievment (ei rewardia?) (support nappula main menu yl‰ vasen)
-
+- uusii mappeja (???)
+- bouncer graffat (X, ehk twiikkaa viel)
 
 --- LOW ---
-- relative thumbstick default movement direction?
 - ehk jotai uutta help screenin?
 - simulointien optimointi/tsekkaa ainakin/fiksaa viel lis‰‰ tˆkkimist‰
-
-
-
-
-
-- balanssausta (http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/cemlpex)
-- smoothausta thumbstickkeihin? varsinkin laserilla v‰lil se rotation hyppii sikana
-- lue feedback: http://www.reddit.com/r/windowsphone/comments/1uw8ze/just_released_a_free_zombieshooter_for_wp/ (shooting thumbstick ei ammu oikeeseen suuntaan? option toggle button alueet toimii jos painaa otsikkoo?)
-- lue review feedback (kamera kauemmas?)
-- ei kaht samaa asetta per‰kk‰in? oisko?
-
-
-- goto top arrow leaderboardseihin "load more scores" buttonin viereen? X
 
 
 -- PƒTSI V2 --	
@@ -51,6 +32,10 @@
 - Main Menu jos tarpeeks kauan idle, niin joku zombie menee screenin l‰pi taustalla tyylii sini-funktiota
 - s‰‰d‰ tilej‰? esim niin et tilejen reunat fadentuu mustaksi niin, et mustal teemalla reunoja ei n‰‰.
 - weapon ranks.
+- nerf zombie speed boost?
+
+- Camera shake?
+- PC versio :O ?
 
 -----
 -- ZOMBIT -- (N? ehk p‰tsill‰?)
