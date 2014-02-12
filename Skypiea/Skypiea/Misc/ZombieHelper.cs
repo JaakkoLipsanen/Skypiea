@@ -106,7 +106,7 @@ namespace Skypiea.Misc
         {
             foreach (Entity zombie in entityWorld.FindEntitiesWithTag(EntityTags.Zombie))
             {
-                if (zombie.Get<CHealth>().IsAlive)
+                if (zombie.Get<CHealth>().IsAlive && zombie.Get<CZombieInfo>().Type != ZombieType.GoldenGoblin) // meh "hard-coded" GG ignore...
                 {
                     ZombieHelper.Kill(zombie, Vector2.Zero);
                     entityWorld.BroadcastMessage(entityWorld.FetchMessage<ZombieKilledMessage>().Initialize(zombie));
