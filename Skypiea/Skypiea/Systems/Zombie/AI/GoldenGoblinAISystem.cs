@@ -49,7 +49,7 @@ namespace Skypiea.Systems.Zombie.AI
         private void UpdateGoblin(UpdateContext updateContext, Entity zombie, float speedMultiplier)
         {
             CGoldenGoblinAI goldenGoblinAI = zombie.Get<CGoldenGoblinAI>();
-            if (goldenGoblinAI.State != GoldenGoblinState.EscapingFromPlayer && (this.HasBeenHit(zombie) || this.IsPlayerTooClose(zombie)))
+            if (goldenGoblinAI.State != GoldenGoblinState.EscapingFromPlayer && this.ShouldEscape(zombie, goldenGoblinAI))
             {
                 goldenGoblinAI.State = GoldenGoblinState.EscapingFromPlayer;
             }
@@ -81,7 +81,7 @@ namespace Skypiea.Systems.Zombie.AI
             if (Vector2.Distance(transform.Position, goldenGoblinAI.CurrentWaypoint) < SkypieaConstants.PixelsPerMeter * 2)
             {
                 // if the current waypoint is the last one, then change the state to escape
-                if (goldenGoblinAI.CurrentWaypointIndex - 1 >= goldenGoblinAI.Waypoints.Count)
+                if (goldenGoblinAI.CurrentWaypointIndex + 1 >= goldenGoblinAI.Waypoints.Count)
                 {
                     goldenGoblinAI.State = GoldenGoblinState.EscapingFromPlayer;
                     return;
@@ -91,6 +91,11 @@ namespace Skypiea.Systems.Zombie.AI
                 goldenGoblinAI.CurrentWaypointIndex++;
                 goldenGoblinAI.WaypointStunTimer.Restart();
                 goldenGoblinAI.State = GoldenGoblinState.WaypointStun;
+
+                if (goldenGoblinAI.CurrentWaypointIndex >= goldenGoblinAI.Waypoints.Count)
+                {
+                    goldenGoblinAI.CurrentWaypointIndex = goldenGoblinAI.CurrentWaypointIndex;
+                }
             }
             else
             {
@@ -131,15 +136,25 @@ namespace Skypiea.Systems.Zombie.AI
             }
         }
 
-        private bool HasBeenHit(Entity zombie)
+        private bool ShouldEscape(Entity zombie, CGoldenGoblinAI goldenGoblinAI)
         {
-            return zombie.Get<CHealth>().HasBeenHit;
-        }
+            // is player too close?
+            const float DistanceToStartEscape = SkypieaConstants.PixelsPerMeter * 3;
+            if (Vector2.Distance(_playerTransform.Position, zombie.Transform.Position) < DistanceToStartEscape)
+            {
+                return true;
+            }
 
-        private bool IsPlayerTooClose(Entity zombie)
-        {
-            const float Distance = SkypieaConstants.PixelsPerMeter * 3;
-            return Vector2.Distance(_playerTransform.Position, zombie.Transform.Position) < Distance;
+            // is at last waypoint
+            if (goldenGoblinAI.CurrentWaypointIndex >= goldenGoblinAI.Waypoints.Count)
+            {
+                return true;
+            }
+
+            // has golden goblin been hit too much?
+            const float EscapeLifeBoundary = 0.6f; // awful name.. basically how much life must be taken (in %) for the goblin to start escaping?
+            CHealth health = zombie.Get<CHealth>();
+            return health.CurrentHealth < health.MaximumHealth * EscapeLifeBoundary;
         }
     }
 }
