@@ -72,7 +72,7 @@ namespace Skypiea.View
 
         private void DrawLifeDrop(GraphicsContext graphicsContext, Entity entity)
         {
-            this.DrawFans(graphicsContext, entity.Transform.Position, Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f) * 0.5f, 0.5f);
+            this.DrawFans(graphicsContext, entity.Transform.Position, Color.Lerp(Color.Red, Color.PaleVioletRed, 0.5f) * 0.15f, 0.5f);
             if (DropHelper.IsBlinking(entity.Get<CLifeTime>()))
             {
                 return;
@@ -81,7 +81,10 @@ namespace Skypiea.View
             // heart
             const float BaseScale = SkypieaViewConstants.PixelSize * 1.5f;
             float scale = BaseScale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f);
-            graphicsContext.SpriteBatch.DrawCentered(SkypieaViewConstants.LoadTexture(_contentProvider, "Life"), entity.Transform.Position, Color.White, 0f, scale);
+            graphicsContext.SpriteBatch.DrawCentered(
+             //   _contentProvider.DefaultManager.LoadTexture("Li"),
+                SkypieaViewConstants.LoadTexture(_contentProvider, "Life"),
+                entity.Transform.Position, Color.White, 0f, scale);
         }
 
         private void DrawBlackBox(GraphicsContext graphicsContext, Entity entity)
