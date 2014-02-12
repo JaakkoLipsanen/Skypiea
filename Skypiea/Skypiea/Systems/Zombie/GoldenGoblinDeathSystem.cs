@@ -1,6 +1,5 @@
 using Flai;
 using Flai.CBES.Systems;
-using Flai.General;
 using Flai.Graphics.Particles;
 using Microsoft.Xna.Framework;
 using Skypiea.Components;
@@ -55,7 +54,7 @@ namespace Skypiea.Systems.Zombie
 
         private void SpawnBlackBox(Vector2 position)
         {
-            bool spawnBlackBox = Global.Random.NextFromOdds(1); //1 / 3f);
+            bool spawnBlackBox = Global.Random.NextFromOdds(1 / 3f);
             if (spawnBlackBox)
             {
                 this.EntityWorld.CreateEntityFromPrefab<BlackBoxPrefab>(position + Vector2.UnitY * 32 + Vector2.UnitX * 32);
@@ -64,7 +63,7 @@ namespace Skypiea.Systems.Zombie
 
         private void SpawnHealth(Vector2 position)
         {
-            bool spawnHealth = Global.Random.NextFromOdds(1); //3 / 4f);
+            bool spawnHealth = Global.Random.NextFromOdds(2 / 3f);
             if (spawnHealth)
             {
                 this.EntityWorld.CreateEntityFromPrefab<LifeDropPrefab>(position + Vector2.UnitY * 32 - Vector2.UnitX * 32);

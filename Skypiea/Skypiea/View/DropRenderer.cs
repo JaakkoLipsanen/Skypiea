@@ -82,7 +82,6 @@ namespace Skypiea.View
             const float BaseScale = SkypieaViewConstants.PixelSize * 1.5f;
             float scale = BaseScale * (1f + FlaiMath.Sin(_entityWorld.TotalUpdateTime * 2f) * 0.1f);
             graphicsContext.SpriteBatch.DrawCentered(
-             //   _contentProvider.DefaultManager.LoadTexture("Li"),
                 SkypieaViewConstants.LoadTexture(_contentProvider, "Life"),
                 entity.Transform.Position, Color.White, 0f, scale);
         }
