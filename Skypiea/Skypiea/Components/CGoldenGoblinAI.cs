@@ -55,7 +55,11 @@ namespace Skypiea.Components
 
         protected override void Cleanup()
         {
+            this.State = GoldenGoblinState.TravellingToWaypoint;
+            this.CurrentWaypointIndex = 0;
+            this.Velocity = Vector2.Zero;
             this.WaypointStunTimer.ForceFinish();
+
             Array.Clear(_waypoints, 0, _waypoints.Length);
         }
 
