@@ -43,7 +43,7 @@ namespace Skypiea.View
             }
             else if (bullet.Weapon.Type == WeaponType.Bouncer)
             {
-                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, new Color(96, 96, 128), entity.Transform.Rotation, 1);
+                graphicsContext.SpriteBatch.DrawCentered(texture, entity.Transform.Position, new Color(160, 160, 160), entity.Transform.Rotation, 1);
             }
             else if (bullet.Weapon.Type == WeaponType.Flamethrower)
             {
