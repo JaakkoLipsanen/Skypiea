@@ -34,6 +34,7 @@ namespace Skypiea.Achievements
             AchievementHelper.CreateKillRushersWhileRushingAchievements(achievements);
             AchievementHelper.CreateKillWithInvulnerabilityAchievements(achievements);
             AchievementHelper.CreateKillWithSingleRocketAchievments(achievements);
+            AchievementHelper.CreateKillGoldenGoblinsAchievements(achievements);
 
             // "survive"
             AchievementHelper.CreateSurviveWithoutKillingAchievements(achievements);
@@ -42,6 +43,8 @@ namespace Skypiea.Achievements
             // misc
             AchievementHelper.CreateLivesAtAnyPointOfGameAchievements(achievements);
             AchievementHelper.CreateSpendLaserWithoutKillingAchievements(achievements);
+
+            // golden goblin
 
             // not in atm
             AchievementHelper.CreateIAPAchievements(achievements);
@@ -219,6 +222,18 @@ namespace Skypiea.Achievements
 
         #endregion
 
+        #region Persistent Kill Golden Goblins
+
+        private static void CreateKillGoldenGoblinsAchievements(ICollection<Achievement> achievements)
+        {
+            CreateAchievementTrackerDelegate trackerCreator = (am, ew, a) => new KillGoldenGoblinsTracker(am, ew, a.Name);
+            PassiveSkill reward = PassiveHelper.CreateGoldenGoblinRadarPassive();
+
+            achievements.Add(new Achievement("Treasure Hunter", "Kill 25 golden goblins", new IntegerProgression(0, 25)) { Tag = new AchievementInfo(trackerCreator, reward) });
+        }
+
+        #endregion
+
         #region Groups
 
         private static void CreateAchievementGroups(AchievementManager achievementManager)
@@ -315,6 +330,11 @@ namespace Skypiea.Achievements
         public static PassiveSkill CreateChanceToGetTwoLivesOnDrop(float chance)
         {
             return new PassiveSkill("Chance to get two lives on a single life drop", passiveStats => passiveStats.ChanceToGetTwoLivesOnDrop += chance);
+        }
+
+        public static PassiveSkill CreateGoldenGoblinRadarPassive()
+        {
+            return new PassiveSkill("See golden goblins in the radar", passiveStats => passiveStats.SeeGoldenGoblinsOnRadar = true);
         }
     }
 }

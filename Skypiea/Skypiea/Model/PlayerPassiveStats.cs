@@ -49,5 +49,7 @@ namespace Skypiea.Model
             this.ZombieBirthdayParty = false;
             this.ChanceForWaterBlaster = false;
         }
+
+        public bool SeeGoldenGoblinsOnRadar { get; set; }
     }
 }

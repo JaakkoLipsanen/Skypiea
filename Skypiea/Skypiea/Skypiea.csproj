@@ -76,6 +76,7 @@
     <Compile Include="Achievements\AchievementHelper.cs" />
     <Compile Include="Achievements\AchievementInfo.cs" />
     <Compile Include="Achievements\Trackers\KillEnemiesWithSingleRocket.cs" />
+    <Compile Include="Achievements\Trackers\KillGoldenGoblinsTracker.cs" />
     <Compile Include="Achievements\Trackers\KillWithInvulnerabilityBoosterTracker.cs" />
     <Compile Include="Achievements\Trackers\KillRushersWhileRushingTracker.cs" />
     <Compile Include="Achievements\Trackers\KillZombiesInTimeTracker.cs" />
