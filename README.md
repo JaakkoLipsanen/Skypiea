@@ -7,6 +7,8 @@ Final Fight Z is a top-down zombie shooter for Windows Phone that I developed in
 
 Final Fight Z has around 200,000 downloads in the Windows Phone Store and +4.5 rating worldwide.
 
+The game is written in C#/XNA and uses my [Flai.XNA](https://github.com/JaakkoLipsanen/Flai.XNA) engine/library.
+
 ![screenshot1](/Skypiea/SkypieaContent/Assets/Screenshots/Screenshot7.png)
 ![screenshot1](/Skypiea/SkypieaContent/Assets/Screenshots/Screenshot5.png)
 ![screenshot1](/Skypiea/SkypieaContent/Assets/Screenshots/Screenshot3.png)
