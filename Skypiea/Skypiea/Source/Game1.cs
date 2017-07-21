@@ -47,7 +47,7 @@ namespace Skypiea
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            tex = Content.Load<Texture2D>("ball");
+            tex = Content.Load<Texture2D>("Textures/Map/MapTextures/Map1");
 
             // TODO: use this.Content to load your game content here
         }

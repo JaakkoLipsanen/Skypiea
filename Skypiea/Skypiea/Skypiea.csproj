@@ -83,7 +83,7 @@
     <AndroidResource Include="Resources\Values\Styles.xml" />
   </ItemGroup>
   <ItemGroup>
-    <MonoGameContentReference Include="..\Content\Content.mgcb" />
+    <MonoGameContentReference Include="..\SkypieaContent\SkypieaContent.mgcb" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
