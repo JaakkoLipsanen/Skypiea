@@ -58,8 +58,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Activity1.cs" />
-    <Compile Include="Source\Game1.cs" />
+    <Compile Include="Source\MainActivity.cs" />
+    <Compile Include="Source\SkypieaGame.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
