@@ -12,6 +12,8 @@ namespace Skypiea
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
+        Texture2D tex;
+
         public SkypieaGame()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -44,6 +46,8 @@ namespace Skypiea
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            tex = Content.Load<Texture2D>("ball");
 
             // TODO: use this.Content to load your game content here
         }
@@ -79,6 +83,11 @@ namespace Skypiea
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            spriteBatch.Begin();
+            spriteBatch.Draw(tex, Vector2.Zero, Color.White);
+
+            spriteBatch.End();
 
             // TODO: Add your drawing code here
 
