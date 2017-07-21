@@ -1,7 +1,7 @@
 
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:bin/$(Platform)
+/outputDir:/bin/$(Platform)
 /intermediateDir:obj/$(Platform)
 /platform:Android
 /config:
