@@ -48,12 +48,12 @@ namespace Skypiea.Components
             this.GenerateWaypoints(position);
         }
 
-        protected override void PostUpdate(UpdateContext updateContext)
+        protected internal override void PostUpdate(UpdateContext updateContext)
         {
             this.WaypointStunTimer.Update(updateContext);
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.State = GoldenGoblinState.TravellingToWaypoint;
             this.CurrentWaypointIndex = 0;

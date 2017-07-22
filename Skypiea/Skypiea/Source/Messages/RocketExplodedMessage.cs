@@ -19,7 +19,7 @@ namespace Skypiea.Messages
             _killedZombies.Add(killedZombie);
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             _killedZombies.Clear();
         }

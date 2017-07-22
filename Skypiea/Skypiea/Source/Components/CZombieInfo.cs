@@ -33,7 +33,7 @@ namespace Skypiea.Components
             this.KillReason = null;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.Type = (ZombieType)(-1);
             this.Size = 0;

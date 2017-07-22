@@ -19,7 +19,7 @@ namespace Skypiea.Systems.Zombie
         private readonly Timer _zombieTimer = new Timer(Global.Random.NextFloat(GoldenGoblinSpawnSystem.FirstMinTime, GoldenGoblinSpawnSystem.FirstMaxTime)); // first gg has a change to
         private CPlayerInfo _playerInfo;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PreUpdate; }
         }

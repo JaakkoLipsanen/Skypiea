@@ -1,97 +1,104 @@
+using System;
+using Flai;
+using Flai.Graphics;
+using Flai.IO;
+using Flai.Misc;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
+using Skypiea.Leaderboards;
+using Skypiea.Screens;
+using Skypiea.Settings;
+using Skypiea.Stats;
 
 namespace Skypiea
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// This is the main type for your game
     /// </summary>
-    public class SkypieaGame : Game
+    public class SkypieaGame : FlaiGame
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-
-        Texture2D tex;
+        private readonly ScoreloopManager _scoreloopManager;
+        private readonly SkypieaSettingsManager _settingsManager;
+        private RenderTarget2D r;
 
         public SkypieaGame()
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            base.ClearColor = Color.Black;
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.All, Visible = true });
 
-            graphics.IsFullScreen = true;
-            graphics.PreferredBackBufferWidth = 800;
-            graphics.PreferredBackBufferHeight = 480;
-            graphics.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+            _serviceContainer.Add(_settingsManager = SettingsHelper.CreateSettingsManager());
+            _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
+            _serviceContainer.Add(StatsHelper.CreateStatsManager());
+            _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
+
+            _graphicsDeviceManager.IsFullScreen = true;
+            _graphicsDeviceManager.PreferredBackBufferWidth = 800;
+            _graphicsDeviceManager.PreferredBackBufferHeight = 480;
+            _graphicsDeviceManager.PreferMultiSampling = false;
+            _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            _graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+            _graphicsDeviceManager.ApplyChanges();
         }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
-        protected override void Initialize()
+        protected override void InitializeInner()
         {
-            // TODO: Add your initialization logic here
-
-            base.Initialize();
+            this.FontContainer.DefaultFont = this.FontContainer["Minecraftia.20"];
+            r = new RenderTarget2D(GraphicsDevice, 800, 480, false, SurfaceFormat.Color, DepthFormat.Depth24, 4, RenderTargetUsage.DiscardContents);
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
-        protected override void LoadContent()
+        protected override void OnExiting(object sender, EventArgs args)
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            tex = Content.Load<Texture2D>("Textures/Map/MapTextures/Map1");
-
-            // TODO: use this.Content to load your game content here
+            _scoreloopManager.Close();
+            _settingsManager.Save();
+            base.OnExiting(sender, args);
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
+        protected override void OnDeactivated(object sender, EventArgs args)
         {
-            // TODO: Unload any non ContentManager content here
+            _settingsManager.Save();
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        protected override void UpdateInner(UpdateContext updateContext)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
-                Exit();
-
-            // TODO: Add your update logic here
-
-            base.Update(gameTime);
+            _screenManager.Update(updateContext);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.SetRenderTarget(r);
+            _screenManager.Draw(graphicsContext);
+            GraphicsDevice.SetRenderTarget(null);
 
-            spriteBatch.Begin();
-            spriteBatch.Draw(tex, Vector2.Zero, Color.White);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.DrawFullscreen(r);
+            graphicsContext.SpriteBatch.End();
+        }
 
-            spriteBatch.End();
+        protected override void AddInitialScreens()
+        {
+            _screenManager.AddScreen(new SkypieaSplashScreen());
+        }
 
-            // TODO: Add your drawing code here
+        protected override void InitializeGraphicsSettings()
+        {
+            _graphicsDeviceManager.IsFullScreen = true;
+            _graphicsDeviceManager.PreferredBackBufferWidth = 800;
+            _graphicsDeviceManager.PreferredBackBufferHeight = 480;
+            _graphicsDeviceManager.PreferMultiSampling = false;
+            _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            _graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
+        }
 
-            base.Draw(gameTime);
+        protected override void OnPreparingDeviceSettings(object sender, PreparingDeviceSettingsEventArgs e)
+        {
+            e.GraphicsDeviceInformation.PresentationParameters.PresentationInterval = PresentInterval.One;
+
+            // use 4-bit (per channel) color format for WP7. Atleast Omnia 7 has a horrible banding with SurfaceFormat.Color.
+            // Lumia's don't probably have but whatever
+            if (OperatingSystemHelper.Version == WindowsPhoneVersion.WP7)
+            {
+                e.GraphicsDeviceInformation.PresentationParameters.BackBufferFormat = SurfaceFormat.Bgra4444;
+            }
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Skypiea.Components
             return WeaponFactory.CreateWeapon(this.Type, ammoMultiplier);
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.Type = (WeaponType)(-1);
         }

@@ -29,7 +29,7 @@ namespace Skypiea.Components
             this.Weapon = weapon;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.Size = SizeF.Empty;
             this.Weapon = null;

@@ -14,7 +14,7 @@ namespace Skypiea.Systems
         private CTransform2D _playerTransform;
         private Vector2 _previousPosition;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PostFrame; }
         }

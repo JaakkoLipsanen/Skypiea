@@ -8,7 +8,7 @@ namespace Skypiea.Systems.Zombie
 {
     public class ZombieHealthSystem : ComponentProcessingSystem<CHealth>
     {
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PostFrame; }
         }

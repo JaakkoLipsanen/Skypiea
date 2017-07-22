@@ -55,7 +55,7 @@ namespace Skypiea.Components
             _respawnInvulnerabilityTimer.ForceFinish();
         }
 
-        protected override void PreUpdate(UpdateContext updateContext)
+        protected internal override void PreUpdate(UpdateContext updateContext)
         {
             _spawnTimer.Update(updateContext);
             _respawnInvulnerabilityTimer.Update(updateContext);

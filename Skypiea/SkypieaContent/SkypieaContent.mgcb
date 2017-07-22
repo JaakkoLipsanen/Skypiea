@@ -1,8 +1,8 @@
 
 #----------------------------- Global Properties ----------------------------#
 
-/outputDir:/bin/$(Platform)
-/intermediateDir:obj/$(Platform)
+/outputDir:bin
+/intermediateDir:obj
 /platform:Android
 /config:
 /profile:Reach
@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\..\XNA\Flai\TexturePackerPipelineExtension - MonoGame\bin\x86\Debug\TexturePackerPipelineExtension.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -36,6 +37,62 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Drops/LifeDropFan.png
+
+#begin Textures/Map/MapBases/Fonts/Minecraftia.12.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/Minecraftia.12.spritefont
+
+#begin Textures/Map/MapBases/Fonts/Minecraftia.16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/Minecraftia.16.spritefont
+
+#begin Textures/Map/MapBases/Fonts/Minecraftia.20.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/Minecraftia.20.spritefont
+
+#begin Textures/Map/MapBases/Fonts/Minecraftia.24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/Minecraftia.24.spritefont
+
+#begin Textures/Map/MapBases/Fonts/Minecraftia.32.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/Minecraftia.32.spritefont
+
+#begin Textures/Map/MapBases/Fonts/SegoeWP.16.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/SegoeWP.16.spritefont
+
+#begin Textures/Map/MapBases/Fonts/SegoeWP.24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/SegoeWP.24.spritefont
+
+#begin Textures/Map/MapBases/Fonts/VirtualThumbstickFont.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Textures/Map/MapBases/Fonts/VirtualThumbstickFont.spritefont
 
 #begin Textures/Map/MapBases/Desert.png
 /importer:TextureImporter
@@ -204,6 +261,126 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Textures/Map/MapTextures/Map9.png
+
+#begin Textures/Map/Old/Map6.OLD.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/Old/Map6.OLD.png
+
+#begin Textures/Map/PSD/Base.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/Base.psd
+
+#begin Textures/Map/PSD/CIRCLE.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/CIRCLE.psd
+
+#begin Textures/Map/PSD/CombineTest.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/CombineTest.psd
+
+#begin Textures/Map/PSD/GrassFullAdjusted.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/GrassFullAdjusted.psd
+
+#begin Textures/Map/PSD/heat.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/heat.psd
+
+#begin Textures/Map/PSD/Icy.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/Icy.psd
+
+#begin Textures/Map/PSD/sandy.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/sandy.psd
+
+#begin Textures/Map/PSD/snow.psd
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/snow.psd
+
+#begin Textures/Map/PSD/Untitled-1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Textures/Map/PSD/Untitled-1.png
 
 #begin Textures/Map/CombineTest.png
 /importer:TextureImporter
@@ -769,59 +946,74 @@
 /processorParam:TextureFormat=Color
 /build:Textures/ZombieWhite.png
 
-#begin Textures/Map/MapBases/Fonts/Minecraftia.12.spritefont
+#begin Fonts/Minecraftia.12.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/Minecraftia.12.spritefont
+/build:Fonts/Minecraftia.12.spritefont
 
-#begin Textures/Map/MapBases/Fonts/Minecraftia.16.spritefont
+#begin Fonts/Minecraftia.16.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/Minecraftia.16.spritefont
+/build:Fonts/Minecraftia.16.spritefont
 
-#begin Textures/Map/MapBases/Fonts/Minecraftia.20.spritefont
+#begin Fonts/Minecraftia.20.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/Minecraftia.20.spritefont
+/build:Fonts/Minecraftia.20.spritefont
 
-#begin Textures/Map/MapBases/Fonts/Minecraftia.24.spritefont
+#begin Fonts/Minecraftia.24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/Minecraftia.24.spritefont
+/build:Fonts/Minecraftia.24.spritefont
 
-#begin Textures/Map/MapBases/Fonts/Minecraftia.32.spritefont
+#begin Fonts/Minecraftia.32.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/Minecraftia.32.spritefont
+/build:Fonts/Minecraftia.32.spritefont
 
-#begin Textures/Map/MapBases/Fonts/SegoeWP.16.spritefont
+#begin Fonts/SegoeWP.16.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/SegoeWP.16.spritefont
+/build:Fonts/SegoeWP.16.spritefont
 
-#begin Textures/Map/MapBases/Fonts/SegoeWP.24.spritefont
+#begin Fonts/SegoeWP.24.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/SegoeWP.24.spritefont
+/build:Fonts/SegoeWP.24.spritefont
 
-#begin Textures/Map/MapBases/Fonts/VirtualThumbstickFont.spritefont
+#begin Fonts/VirtualThumbstickFont.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Textures/Map/MapBases/Fonts/VirtualThumbstickFont.spritefont
+/build:Fonts/VirtualThumbstickFont.spritefont
+
+#begin SpriteSheets/TextureSpriteSheet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:SpriteSheets/TextureSpriteSheet.png
+
+#begin SpriteSheets/TextureSpriteSheet.xml
+/copy:SpriteSheets/TextureSpriteSheet.xml
 

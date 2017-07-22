@@ -19,7 +19,7 @@ namespace Skypiea.Components
             return _zombiesHits.Contains(zombie);
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.HitsRemaining = -1;
             _zombiesHits.Clear();

@@ -15,7 +15,7 @@ namespace Skypiea.Systems.Zombie
         private CPlayerInfo _playerInfo;
         private IZombieStatsProvider _zombieStatsProvider;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PreUpdate; }
         }

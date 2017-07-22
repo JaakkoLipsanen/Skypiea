@@ -11,7 +11,7 @@ namespace Skypiea.Components
             this.DropType = dropType;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.DropType = (DropType)(-1);
         }

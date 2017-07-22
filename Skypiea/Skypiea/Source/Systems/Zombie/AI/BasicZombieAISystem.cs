@@ -14,7 +14,7 @@ namespace Skypiea.Systems.Zombie.AI
         private IBoosterState _boosterState;
         private IZombieStatsProvider _zombieStatsProvider;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.Update; }
         }

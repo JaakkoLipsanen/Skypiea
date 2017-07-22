@@ -14,7 +14,7 @@ namespace Skypiea.Messages
             this.NewWeapon = newWeapon;    
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.OldWeapon = null;
             this.NewWeapon = null;  

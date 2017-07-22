@@ -14,7 +14,7 @@ namespace Skypiea.Systems.Zombie
         private Entity _player;
         private CPlayerInfo _playerInfo;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.Collision + 1; } // after "BulletCollisionSystem", because why not.
         }

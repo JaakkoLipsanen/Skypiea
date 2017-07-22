@@ -9,7 +9,7 @@ namespace Skypiea.Systems
     public class BulletCollisionSystem : ComponentProcessingSystem<CBullet>
     {
         private IZombieSpatialMap _zombieSpatialMap;
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.Collision; }
         }

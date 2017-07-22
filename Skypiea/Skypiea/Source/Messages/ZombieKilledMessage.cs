@@ -11,7 +11,7 @@ namespace Skypiea.Messages
             return this;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.Zombie = null;
         }

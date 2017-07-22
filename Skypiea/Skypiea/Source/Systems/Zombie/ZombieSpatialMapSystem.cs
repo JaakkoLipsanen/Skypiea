@@ -30,7 +30,7 @@ namespace Skypiea.Systems.Zombie
         private readonly EntityTracker _zombieEntityTracker = EntityTracker.FromAspect(Aspect.All<CZombieInfo>());
         private readonly ZombieGrid _zombieGrid = new ZombieGrid();
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PostUpdate; }
         }

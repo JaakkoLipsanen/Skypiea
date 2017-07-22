@@ -18,6 +18,7 @@ namespace Skypiea.Misc
                     return;
                 }
 
+                return; // TODO TODO
                 GuideHelper.ShowMessageBox("Rate the game", "Please rate the game if you like it! Rating helps us make the game even better!", new[] { "rate now!", "no thanks" }, result =>
                 {
                     // result == null -> the message box was canceled (back button)
@@ -29,7 +30,7 @@ namespace Skypiea.Misc
                         // result == 0 -> "rate now!" pressed
                         if (result == 0)
                         {
-                            ApplicationInfo.OpenApplicationReviewPage();
+                         //   ApplicationInfo.OpenApplicationReviewPage();
                         }
 
                         // else "no thanks" was pressed

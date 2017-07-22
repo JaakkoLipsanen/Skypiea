@@ -1,6 +1,5 @@
 using Flai;
 using Flai.Misc;
-using Flai.Scoreloop;
 using Skypiea.Settings;
 
 namespace Skypiea.Leaderboards

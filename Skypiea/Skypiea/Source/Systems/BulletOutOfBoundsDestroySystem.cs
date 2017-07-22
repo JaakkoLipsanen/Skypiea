@@ -9,7 +9,7 @@ namespace Skypiea.Systems
 {
     public class BulletOutOfBoundsDestroySystem : ComponentProcessingSystem<CBullet>
     {
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PostFrame; }
         }

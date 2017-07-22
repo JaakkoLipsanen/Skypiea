@@ -168,7 +168,7 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                ApplicationInfo.OpenApplicationReviewPage();
+            //    ApplicationInfo.OpenApplicationReviewPage();
             }
         }
 
@@ -176,7 +176,7 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                ApplicationInfo.OpenDeveloperApplicationList();
+             //   ApplicationInfo.OpenDeveloperApplicationList();
             }
         }
     }

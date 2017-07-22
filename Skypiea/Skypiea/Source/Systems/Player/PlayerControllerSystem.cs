@@ -20,7 +20,7 @@ namespace Skypiea.Systems.Player
         private IBoosterState _boosterState;
         private IPlayerPassiveStats _playerPassiveStats;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.Input; }
         }

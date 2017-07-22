@@ -35,7 +35,7 @@ namespace Skypiea.Components
             this.CurrentHealth = health;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.MaximumHealth = 0;
             this.CurrentHealth = 0;

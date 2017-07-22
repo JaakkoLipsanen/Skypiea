@@ -3,14 +3,10 @@ using Flai.General;
 using Flai.Graphics;
 using Flai.IO;
 using Flai.Misc;
-using Flai.Scoreloop;
 using Flai.ScreenManagement;
 using Flai.Ui;
-using Microsoft.Phone.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
-using Scoreloop.CoreSocial.API;
 using Skypiea.Settings;
 using System;
 using Skypiea.View;
@@ -39,7 +35,7 @@ namespace Skypiea.Screens
             this.FadeOut = FadeDirection.Up;
 
             _settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
-            _scoreloopManager = FlaiGame.Current.Services.Get<ScoreloopManager>();
+          _scoreloopManager = FlaiGame.Current.Services.Get<ScoreloopManager>();
         }
 
         protected override void LoadContent(bool instancePreserved)
@@ -86,7 +82,7 @@ namespace Skypiea.Screens
 
             // contacxt
             _uiContainer.Add(new TextBlock("Contact/Feedback", new Vector2(this.Game.ScreenSize.Width / 2f, 400)) { Font = "Minecraftia.20", Color = Color.Gray });
-            _uiContainer.Add(new TextButton("jaakko.lipsanen@outlook.com", new Vector2(this.Game.ScreenSize.Width / 2f, 435), () =>
+            _uiContainer.Add(new TextButton("jaakko.lipsanen@outlook.com", new Vector2(this.Game.ScreenSize.Width / 2f, 435) /*, () => // TODO: https://developer.xamarin.com/recipes/android/networking/email/send_an_email/
             {
                 if (this.IsExiting || Guide.IsVisible)
                 {
@@ -95,7 +91,7 @@ namespace Skypiea.Screens
 
                 EmailComposeTask composeTask = new EmailComposeTask { Subject = "Feedback for Final Fight Z", To = "jaakko.lipsanen@outlook.com" };
                 composeTask.Show();
-            }) { Font = "Minecraftia.16" });
+            } */) { Font = "Minecraftia.16" });
 
             // show graphical quality only on WP7
             if (OperatingSystemHelper.Version == WindowsPhoneVersion.WP7)
@@ -133,19 +129,20 @@ namespace Skypiea.Screens
                     {
                         this.SetRenameErrorText("Username is too long");
                     }
-                    else if (!_scoreloopManager.IsNetworkAvailable)
+                  else if (!_scoreloopManager.IsNetworkAvailable)
                     {
                         this.SetRenameErrorText("No network available. Try again later");
                     }
                     else
                     {
                         _renameResultTextBlock.Visible = false;
-                        _scoreloopManager.RenameUser(input, this.OnUserRenamed);
+                        _scoreloopManager.RenameUser(input, r => { }); //  this.OnUserRenamed); // TODO
                     }
                 }
             });
         }
 
+        /*
         private void OnUserRenamed(ScoreloopResponse response)
         {
             if (response.Success)
@@ -155,8 +152,9 @@ namespace Skypiea.Screens
             else
             {
                 this.SetRenameErrorText(response.Error.ErrorCode == ErrorCode.UserInvalidArguments ? "Username is already taken" : "Something went wrong. Try again later");
-            }
+            } 
         }
+        */
 
         private void SetRenameSuccessText(string text)
         {

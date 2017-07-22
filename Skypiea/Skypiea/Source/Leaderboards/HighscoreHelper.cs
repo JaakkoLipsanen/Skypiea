@@ -1,5 +1,4 @@
 using Flai;
-using Flai.Scoreloop;
 using System.IO.IsolatedStorage;
 
 namespace Skypiea.Leaderboards
@@ -25,6 +24,7 @@ namespace Skypiea.Leaderboards
             ScoreloopManager leaderboardManager = FlaiGame.Current.Services.Get<ScoreloopManager>(); // todo todo todo jos submission ei onnistu niin myöhemmin (vähän niinkun tehty atm)
             leaderboardManager.SubmitScore(score, 0, response =>
             {
+                /*
                 // if the score was highscore and the submission failed, then make sure it'll be submitted later
                 if (response.Success && score == highscoreManager.Highscore)
                 {
@@ -35,6 +35,7 @@ namespace Skypiea.Leaderboards
                         highscoreManager.Save();
                     }
                 }
+                */
             });
         }
 
@@ -67,11 +68,12 @@ namespace Skypiea.Leaderboards
             HighscoreManager highscoreManager = FlaiGame.Current.Services.Get<HighscoreManager>();
 
             leaderboardManager.GetUserScore(LeaderboardScope.AllTime, 0, response =>
-            {
+            { /*
                 if (response.Success && response.Data != null && highscoreManager.UpdateHighscore((int)response.Data.Result))
                 {
                     highscoreManager.Save();
                 }
+                */
             });
         }
 

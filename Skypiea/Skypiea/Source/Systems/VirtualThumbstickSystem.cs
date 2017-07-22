@@ -15,7 +15,7 @@ namespace Skypiea.Systems
         private VirtualThumbstick _rotationThumbstick;
         private bool _hasGameEnded = false;
 
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PreUpdate; }
         }

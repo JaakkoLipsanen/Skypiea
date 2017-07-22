@@ -40,7 +40,7 @@ namespace Skypiea.View
             _worldRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp); //, Matrix.CreateScale(FlaiGame.Current.ScreenSize.Width / 800f, FlaiGame.Current.ScreenSize.Height / 480f, 1f));
             this.DrawWithoutCamera(graphicsContext);
             graphicsContext.SpriteBatch.End();
         }

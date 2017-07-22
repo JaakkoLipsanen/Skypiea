@@ -7,7 +7,7 @@ namespace Skypiea.Systems
 {
     public class VelocitySystem : ComponentProcessingSystem<CVelocity2D>
     {
-        protected override int ProcessOrder
+        protected internal override int ProcessOrder
         {
             get { return SystemProcessOrder.PreCollision; } // ..? post-update?
         }

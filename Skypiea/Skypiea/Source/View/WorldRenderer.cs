@@ -2,7 +2,6 @@
 using Flai.Audio;
 using Flai.Graphics;
 using Flai.Ui;
-using Microsoft.Xna.Framework.GamerServices;
 using Skypiea.Model;
 using Skypiea.Screens;
 

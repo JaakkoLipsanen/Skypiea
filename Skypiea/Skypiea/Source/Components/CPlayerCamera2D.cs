@@ -2,6 +2,7 @@
 using Flai.CBES.Components;
 using Microsoft.Xna.Framework;
 using Skypiea.Misc;
+using Skypiea.View;
 
 namespace Skypiea.Components
 {
@@ -12,13 +13,14 @@ namespace Skypiea.Components
         private static readonly RectangleF _mapAreaWithNormalCamera = new RectangleF(SkypieaConstants.MapAreaInPixels).Inflate(-CameraSlowdownStartDistance, -CameraSlowdownStartDistance); 
 
         private Vector2 _realPosition;
-        protected override void Initialize()
+        protected internal override void Initialize()
         {
+            this.Zoom = SkypieaViewConstants.RenderScale;
             this.Position = this.Entity.Transform.Position;
             _realPosition = this.Position;
         }
 
-        protected override void PreUpdate(UpdateContext updateContext)
+        protected internal override void PreUpdate(UpdateContext updateContext)
         {
             _realPosition = Vector2.Lerp(_realPosition, this.Entity.Transform.Position, updateContext.DeltaSeconds * 5f);
 

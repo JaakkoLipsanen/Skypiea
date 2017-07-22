@@ -10,7 +10,7 @@ namespace Skypiea.Components
             this.Speed = speed;
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             this.Speed = 0;
         }

@@ -36,13 +36,13 @@ namespace Skypiea.Components
             get { return _rushingAllowedTimer; }
         }
 
-        protected override void PreUpdate(UpdateContext updateContext)
+        protected internal override void PreUpdate(UpdateContext updateContext)
         {
             _rushingStunTimer.Update(updateContext);
             _rushingAllowedTimer.Update(updateContext);
         }
 
-        protected override void Cleanup()
+        protected internal override void Cleanup()
         {
             _rushingStunTimer.Restart();
             _rushingAllowedTimer.Restart();

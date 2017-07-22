@@ -1,4 +1,4 @@
-using Flai;
+/*using Flai;
 using Flai.General;
 using Flai.Graphics;
 using Flai.Misc;
@@ -321,4 +321,12 @@ namespace Skypiea.Screens
             }
         }
     }
+}
+*/
+
+using Flai.ScreenManagement;
+
+public class LeaderboardScreen : GameScreen
+{
+
 }
