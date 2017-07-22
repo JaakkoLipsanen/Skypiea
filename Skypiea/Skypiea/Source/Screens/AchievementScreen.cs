@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Achievements;
 using Skypiea.Stats;
 using Skypiea.Ui;
+using Skypiea.View;
 using System;
 
 namespace Skypiea.Screens
@@ -76,13 +77,13 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize));
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, _scroller.GetTransformMatrix(graphicsContext.ScreenSize) * SkypieaViewConstants.RenderScaleMatrix);
             this.DrawTitle(graphicsContext);
             this.DrawStats(graphicsContext);
             this.DrawAchievements(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp);
+            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, SkypieaViewConstants.RenderScaleMatrix);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }

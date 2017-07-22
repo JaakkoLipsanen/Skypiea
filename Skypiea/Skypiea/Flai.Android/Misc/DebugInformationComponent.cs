@@ -3,6 +3,8 @@ using System;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Flai.Input;
+using System.Linq;
 
 namespace Flai.Misc
 {
@@ -109,6 +111,12 @@ namespace Flai.Misc
 
                     }
                 }
+            }
+
+            graphicsContext.SpriteBatch.DrawStringFaded(font, "Touch: ", FlaiGame.Current.InputState.TouchLocations.FirstOrDefault().Position.ToString(), this.DisplayPosition + Vector2.UnitY * characterHeight * 5.5f);
+            foreach (TouchLocation location in FlaiGame.Current.InputState.TouchLocations)
+            {
+                graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, location.Position * InputState.TouchLocationScale, Color.Blue, 0, 24f);
             }
 
             graphicsContext.SpriteBatch.End();

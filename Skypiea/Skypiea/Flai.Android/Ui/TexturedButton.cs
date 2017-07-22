@@ -40,6 +40,7 @@ namespace Flai.Ui
         public override void Draw(GraphicsContext graphicsContext)
         {
             graphicsContext.SpriteBatch.Draw(this.Sprite, _visualArea);
+        //  graphicsContext.SpriteBatch.Draw(graphicsContext.BlankTexture, this.Area, Color.Red * 0.4f);
         }
     }
 }

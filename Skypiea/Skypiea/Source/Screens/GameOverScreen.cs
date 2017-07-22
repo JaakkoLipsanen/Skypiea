@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Leaderboards;
+using Skypiea.View;
 
 namespace Skypiea.Screens
 {
@@ -25,7 +26,7 @@ namespace Skypiea.Screens
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
             this.FadeType = FadeType.FadeAlpha;
-            this.EnabledGestures = GestureType.Tap;
+        //  this.EnabledGestures = GestureType.Tap;
 
             this.CreateUI(score);
         }
@@ -45,7 +46,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin();
+            graphicsContext.SpriteBatch.Begin(SkypieaViewConstants.RenderScaleMatrix);
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.5f);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();

@@ -352,7 +352,7 @@ namespace Flai.Input
 
         #region Properties
 
-        public static float TouchLocationScale { get; set; } = 1;
+        public static Vector2 TouchLocationScale { get; set; } = Vector2.One;
 
         /// <summary>
         /// Gestures that are currently ongoing

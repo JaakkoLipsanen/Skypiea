@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Settings;
+using Skypiea.View;
 using System;
 
 namespace Skypiea.Screens
@@ -61,7 +62,7 @@ namespace Skypiea.Screens
         {
             // todo: do i want chromatic aberration?
             const float Offset = 1f;
-            graphicsContext.SpriteBatch.Begin(BlendState.Additive, SamplerState.LinearClamp);
+            graphicsContext.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive,  SkypieaViewConstants.RenderScaleMatrix);
           //  _uiContainer.Draw(graphicsContext, true);
 
            // /* Draw with chromatic aberration
@@ -86,18 +87,18 @@ namespace Skypiea.Screens
 
         private void CreateUI()
         {
-            _uiContainer.Add(new TextButton("Play", new Vector2(Screen.Width / 2f, 140), this.OnPlayClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Achievements", new Vector2(Screen.Width / 2f, 205), this.OnAchievementsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(Screen.Width / 2f, 270), this.OnLeaderboardsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Options", new Vector2(Screen.Width / 2f, 335), this.OnOptionsClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 2f, 400), this.OnExitClicked) { InflateAmount = -0, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Play", new Vector2(Screen.Width / 2f, 140), this.OnPlayClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Achievements", new Vector2(Screen.Width / 2f, 205), this.OnAchievementsClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Leaderboards", new Vector2(Screen.Width / 2f, 270), this.OnLeaderboardsClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Options", new Vector2(Screen.Width / 2f, 335), this.OnOptionsClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 2f, 400), this.OnExitClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
 
             _uiContainer.Add(new TextButton("Rate", new Vector2(Screen.Width - 44, Screen.Height - 24), this.OnRateClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
             _uiContainer.Add(new TextButton("More Games", new Vector2(110, Screen.Height - 24), this.OnMoreGamesClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
             _uiContainer.Add(new TextButton("Help", new Vector2(Screen.Width - 44, 24), this.OnHelpClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
 
-            _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(56, 18)) { Color = Color.White * 0.15f, Font = "SegoeWP.16" });
-            _uiContainer.Add(new TextBlock(ApplicationInfo.ShortVersion, new Vector2(24, 40)) { Color = Color.White * 0.15f, Font = "SegoeWP.16" });
+            _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(72, 20)) { Color = Color.White * 0.4f, Font = "Minecraftia.20" });
+            _uiContainer.Add(new TextBlock(ApplicationInfo.ShortVersion, new Vector2(28, 48)) { Color = Color.White * 0.4f, Font = "Minecraftia.20" });
         }
 
         private void OnPlayClicked()

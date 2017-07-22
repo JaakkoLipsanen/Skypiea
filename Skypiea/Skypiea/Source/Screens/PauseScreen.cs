@@ -4,6 +4,7 @@ using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
+using Skypiea.View;
 using System;
 
 namespace Skypiea.Screens
@@ -18,7 +19,7 @@ namespace Skypiea.Screens
 
         public PauseScreen()
         {
-            this.EnabledGestures = GestureType.Tap;
+        //  this.EnabledGestures = GestureType.Tap;
             this.FadeType = FadeType.FadeAlpha;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.3f);
             this.TransitionOffTime = TimeSpan.FromSeconds(0.3f);
@@ -45,7 +46,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin();
+            graphicsContext.SpriteBatch.Begin(SkypieaViewConstants.RenderScaleMatrix);
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.4f);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();

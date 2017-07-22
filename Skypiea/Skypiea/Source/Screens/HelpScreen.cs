@@ -5,6 +5,7 @@ using Flai.ScreenManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Settings;
+using Skypiea.View;
 
 namespace Skypiea.Screens
 {
@@ -47,7 +48,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin();
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, SkypieaViewConstants.RenderScaleMatrix);
 
             // if you make more screens, having something more flexible could be nice
             if (_currentScreen == 0)
@@ -113,7 +114,11 @@ namespace Skypiea.Screens
 
         private void DrawFullScreen(GraphicsContext graphicsContext, string textureName, Color color)
         {
-            graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.ContentProvider.DefaultManager.LoadTexture(textureName), color);
+            Texture2D texture = graphicsContext.ContentProvider.DefaultManager.LoadTexture(textureName);
+            graphicsContext.SpriteBatch.Draw(texture, Vector2.Zero, color, 0, 
+                new Vector2(graphicsContext.GraphicsDevice.PresentationParameters.BackBufferWidth, graphicsContext.GraphicsDevice.PresentationParameters.BackBufferHeight) / 
+                new Vector2(texture.Width, texture.Height) / 
+                SkypieaViewConstants.RenderScale);
         }
 
         private void AdvanceToNextScreen()

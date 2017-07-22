@@ -10,18 +10,18 @@ namespace Skypiea.View
     {
         public static readonly Color ClearColor = Color.Black;
 
-        public static float RenderScale
+        public static Vector2 RenderScale
         {
             get
             {
                 // the original WP version was coded to run at 800x480, so lets just scale everything to look same
-                return FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f;
+                return new Vector2(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f);
             }
         }
 
         public static Matrix RenderScaleMatrix
         {
-            get { return Matrix.CreateScale(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f, 1); }
+            get { return Matrix.CreateScale(SkypieaViewConstants.RenderScale.X, SkypieaViewConstants.RenderScale.Y, 1); }
         }
 
         public const int PixelSize = 4;

@@ -115,6 +115,8 @@ namespace Flai.Ui
                 {
                     graphicsContext.SpriteBatch.DrawStringCentered(font, this.Text, base.Area.Center, finalColor, 0f, (_scaleDownIfPressed && isPressedDown) ? 0.9f : 1f);
                 }
+
+            //  graphicsContext.SpriteBatch.Draw(graphicsContext.BlankTexture, this.Area, Color.Red * 0.4f);
             }
         }
 

@@ -10,6 +10,7 @@ using Skypiea.Screens;
 using Skypiea.Settings;
 using Skypiea.Stats;
 using Skypiea.View;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Skypiea
 {
@@ -25,27 +26,18 @@ namespace Skypiea
         public SkypieaGame()
         {
             base.ClearColor = Color.Black;
-            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.All, Visible = true });
+            this.Components.Add(new DebugInformationComponent(this.Services) { DisplayPosition = new Vector2(9, 144), DebugInformationLevel = DebugInformationLevel.All, Visible = false });
 
             _serviceContainer.Add(_settingsManager = SettingsHelper.CreateSettingsManager());
             _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
             _serviceContainer.Add(StatsHelper.CreateStatsManager());
             _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
-
-            _graphicsDeviceManager.IsFullScreen = true;
-            _graphicsDeviceManager.PreferredBackBufferWidth = 800;
-            _graphicsDeviceManager.PreferredBackBufferHeight = 480;
-            _graphicsDeviceManager.PreferMultiSampling = false;
-            _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
-            _graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
-            _graphicsDeviceManager.ApplyChanges();
         }
 
         protected override void InitializeInner()
         {
             this.FontContainer.DefaultFont = this.FontContainer["Minecraftia.20"];
             r = new RenderTarget2D(GraphicsDevice, 800, 480, false, SurfaceFormat.Color, DepthFormat.Depth24, 4, RenderTargetUsage.DiscardContents);
-            Flai.Input.InputState.TouchLocationScale = SkypieaViewConstants.RenderScale;
         }
 
         protected override void OnExiting(object sender, EventArgs args)
@@ -62,6 +54,7 @@ namespace Skypiea
 
         protected override void UpdateInner(UpdateContext updateContext)
         {
+            Flai.Input.InputState.TouchLocationScale = SkypieaViewConstants.RenderScale;
             _screenManager.Update(updateContext);
         }
 

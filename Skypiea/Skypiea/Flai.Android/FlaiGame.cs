@@ -103,7 +103,7 @@ namespace Flai
 
         public Size ScreenSize
         {
-            get { return new Size(800, 480); /* base.GraphicsDevice.GetScreenSize(); */ }
+            get { return new Size((int)FlaiMath.Round(480 * base.GraphicsDevice.GetScreenSize().AspectRatio), 480); /* base.GraphicsDevice.GetScreenSize(); */ }
         }
 
         public Rectangle ScreenArea

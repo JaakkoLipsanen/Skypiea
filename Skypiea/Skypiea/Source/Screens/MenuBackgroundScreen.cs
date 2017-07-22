@@ -30,7 +30,7 @@ namespace Skypiea.Screens
             SkypieaSettingsManager _settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
             if (_settingsManager.Settings.GraphicalQuality == GraphicalQuality.High)
             {
-                graphicsContext.SpriteBatch.Begin(SamplerState.PointWrap);
+                graphicsContext.SpriteBatch.Begin(SamplerState.PointWrap, SkypieaViewConstants.RenderScaleMatrix);
                 this.DrawNoise(graphicsContext);
                 graphicsContext.SpriteBatch.End();
 

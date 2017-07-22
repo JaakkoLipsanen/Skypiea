@@ -33,6 +33,7 @@ namespace Skypiea.Leaderboards
             {
                 if (DeviceInfo.IsNetworkAvailable)
                 {
+                    /*
                     GuideHelper.ShowKeyboardInput("Username for leaderboards", "Give your preferred username for the global leaderboards. Username can be changed in options later", input =>
                     {
                         if (input == null)
@@ -50,6 +51,7 @@ namespace Skypiea.Leaderboards
                             scoreloopManager.RenameUser(input, response => { });
                         }
                     });
+                    */
                 }
             }
         }

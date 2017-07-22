@@ -324,9 +324,24 @@ namespace Skypiea.Screens
 }
 */
 
+using Flai;
 using Flai.ScreenManagement;
+using Skypiea.Screens;
 
 public class LeaderboardScreen : GameScreen
 {
+    protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
+    {
+        if (this.IsExiting)
+        {
+            return;
+        }
+
+        if (updateContext.InputState.IsBackButtonPressed)
+        {
+            this.ExitScreen();
+            this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left), new Delay(0.25f));
+        }
+    }
 
 }
