@@ -65,13 +65,13 @@ namespace Skypiea
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            GraphicsDevice.SetRenderTarget(r);
+        //  GraphicsDevice.SetRenderTarget(r);
             _screenManager.Draw(graphicsContext);
-            GraphicsDevice.SetRenderTarget(null);
+        //  GraphicsDevice.SetRenderTarget(null);
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
-            graphicsContext.SpriteBatch.DrawFullscreen(r);
-            graphicsContext.SpriteBatch.End();
+        // graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp);
+        // graphicsContext.SpriteBatch.DrawFullscreen(r);
+        //  graphicsContext.SpriteBatch.End();
         }
 
         protected override void AddInitialScreens()
