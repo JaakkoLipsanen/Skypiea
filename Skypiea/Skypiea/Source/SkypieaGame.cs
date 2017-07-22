@@ -9,6 +9,7 @@ using Skypiea.Leaderboards;
 using Skypiea.Screens;
 using Skypiea.Settings;
 using Skypiea.Stats;
+using Skypiea.View;
 
 namespace Skypiea
 {
@@ -44,6 +45,7 @@ namespace Skypiea
         {
             this.FontContainer.DefaultFont = this.FontContainer["Minecraftia.20"];
             r = new RenderTarget2D(GraphicsDevice, 800, 480, false, SurfaceFormat.Color, DepthFormat.Depth24, 4, RenderTargetUsage.DiscardContents);
+            Flai.Input.InputState.TouchLocationScale = SkypieaViewConstants.RenderScale;
         }
 
         protected override void OnExiting(object sender, EventArgs args)

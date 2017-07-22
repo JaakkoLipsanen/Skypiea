@@ -15,7 +15,6 @@ namespace Skypiea.Components
         private Vector2 _realPosition;
         protected internal override void Initialize()
         {
-            this.Zoom = SkypieaViewConstants.RenderScale;
             this.Position = this.Entity.Transform.Position;
             _realPosition = this.Position;
         }

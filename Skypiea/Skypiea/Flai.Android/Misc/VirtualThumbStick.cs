@@ -1,7 +1,7 @@
 
 #if WINDOWS_PHONE
+using Flai.Input;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Flai.Misc
 {
@@ -253,7 +253,7 @@ namespace Flai.Misc
 
             protected override bool AcceptTouchLocation(TouchLocation touchLocation)
             {
-                if(touchLocation.State != TouchLocationState.Pressed)
+                if(touchLocation.State != Microsoft.Xna.Framework.Input.Touch.TouchLocationState.Pressed)
                 {
                     return false;
                 }

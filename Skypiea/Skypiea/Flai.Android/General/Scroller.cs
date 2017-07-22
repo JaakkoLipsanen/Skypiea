@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using Flai.Graphics;
 using Microsoft.Xna.Framework;
+using Flai.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Flai.General
@@ -151,12 +152,12 @@ namespace Flai.General
         {
 #if WINDOWS_PHONE
             // check if user touches/moves on the screen
-            foreach (TouchLocation touchLocation in updateContext.InputState.TouchLocations)
+            foreach (var touchLocation in updateContext.InputState.TouchLocations)
             {
                 if (touchLocation.State == TouchLocationState.Moved || touchLocation.State == TouchLocationState.Pressed)
                 {
                     _velocity = 0;
-                    TouchLocation previousLocation;
+                    Flai.Input.TouchLocation previousLocation;
                     if (touchLocation.State == TouchLocationState.Moved && touchLocation.TryGetPreviousLocation(out previousLocation))
                     {
                         _currentScrollValue += (previousLocation.Position - touchLocation.Position).GetAxis(_scrollingAlignment);

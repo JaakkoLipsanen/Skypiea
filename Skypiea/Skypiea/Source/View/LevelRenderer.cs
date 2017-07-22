@@ -36,11 +36,14 @@ namespace Skypiea.View
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, CCamera2D.Active);
+            Matrix scaleMatrix = Matrix.CreateScale(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f, 1);
+            graphicsContext.SpriteBatch.Begin(
+                SamplerState.PointClamp, 
+                CCamera2D.Active.GetTransform(new Size(800, 480)) * scaleMatrix);
             _worldRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp); //, Matrix.CreateScale(FlaiGame.Current.ScreenSize.Width / 800f, FlaiGame.Current.ScreenSize.Height / 480f, 1f));
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, scaleMatrix); //, Matrix.CreateScale(FlaiGame.Current.ScreenSize.Width / 800f, FlaiGame.Current.ScreenSize.Height / 480f, 1f));
             this.DrawWithoutCamera(graphicsContext);
             graphicsContext.SpriteBatch.End();
         }

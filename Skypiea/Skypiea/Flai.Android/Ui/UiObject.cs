@@ -103,7 +103,7 @@ namespace Flai.Ui
                 _isPressedDown = false;
             }
 #elif WINDOWS_PHONE
-            TouchLocation touchLocation;
+            Flai.Input.TouchLocation touchLocation;
             if (updateContext.InputState.IsTouchAt(this.Area.ToRectangle(), out touchLocation))
             {
                 _isTouchedDown = true;

@@ -15,8 +15,13 @@ namespace Skypiea.View
             get
             {
                 // the original WP version was coded to run at 800x480, so lets just scale everything to look same
-                return FlaiGame.Current.ScreenSize.Height / 480f;
+                return FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f;
             }
+        }
+
+        public static Matrix RenderScaleMatrix
+        {
+            get { return Matrix.CreateScale(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f, 1); }
         }
 
         public const int PixelSize = 4;

@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Flai.DataStructures;
 using Flai.Graphics;
+using System.Collections;
 
 #if WINDOWS_PHONE
 using Microsoft.Xna.Framework.Input.Touch;
+
+using XnaTouchCollection = Microsoft.Xna.Framework.Input.Touch.TouchCollection;
+using XnaTouchLocation = Microsoft.Xna.Framework.Input.Touch.TouchLocation;
 #endif
 
 #region Windows Version
@@ -87,7 +91,7 @@ namespace Flai.Input
         publ
 #endif
 
-        #endregion
+#endregion
 
         /// <summary>
         /// Constructs a new input state.
@@ -232,7 +236,7 @@ namespace Flai.Input
             }
         }
 
-        #endregion
+#endregion
 
 #region Keyboard
 
@@ -271,7 +275,7 @@ namespace Flai.Input
             get { return this.KeyboardState.GetPressedKeys().Except(this.PreviousKeyboardState.GetPressedKeys()); }
         }
 
-        #endregion
+#endregion
     }
 }
 
@@ -283,6 +287,59 @@ namespace Flai.Input
 
 namespace Flai.Input
 {
+    public struct TouchCollection : IEnumerable<TouchLocation>
+    {
+        public TouchLocation[] TouchLocations { get; private set; }
+        public int Count { get { return this.TouchLocations.Length; } }
+
+        public TouchCollection(TouchLocation[] touchLocations)
+        {
+            this.TouchLocations = touchLocations;
+        }
+
+        public TouchLocation this[int i]
+        {
+            get { return this.TouchLocations[i]; }
+        }
+
+        public static implicit operator TouchCollection(XnaTouchCollection xnaCollection)
+        {
+            return new TouchCollection(xnaCollection.Select(x => new TouchLocation(x)).ToArray());
+        }
+
+        public IEnumerator<TouchLocation> GetEnumerator()
+        {
+            return ((IEnumerable<TouchLocation>)this.TouchLocations).GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public struct TouchLocation
+    {
+        private XnaTouchLocation _xnaLocation;
+        public TouchLocationState State { get { return _xnaLocation.State; } }
+        public Vector2 Position { get { return _xnaLocation.Position / InputState.TouchLocationScale; } }
+        public int Id { get { return _xnaLocation.Id; } }
+
+        public TouchLocation(XnaTouchLocation xnaLocation)
+        {
+            _xnaLocation = xnaLocation;
+        }
+
+        public bool TryGetPreviousLocation(out TouchLocation previousLocation)
+        {
+            XnaTouchLocation prev;
+            bool wasSuccess = _xnaLocation.TryGetPreviousLocation(out prev);
+
+            previousLocation = new TouchLocation(prev);
+            return wasSuccess;
+        }
+    }
+
     public class InputState
     {
         private readonly List<GestureSample> _gestures = new List<GestureSample>();
@@ -294,6 +351,8 @@ namespace Flai.Input
         private TouchCollection _touchLocations;
 
         #region Properties
+
+        public static float TouchLocationScale { get; set; } = 1;
 
         /// <summary>
         /// Gestures that are currently ongoing
