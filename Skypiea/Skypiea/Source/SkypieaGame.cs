@@ -77,10 +77,10 @@ namespace Skypiea
         protected override void InitializeGraphicsSettings()
         {
             _graphicsDeviceManager.IsFullScreen = true;
-            _graphicsDeviceManager.PreferredBackBufferWidth = 800;
+        /*    _graphicsDeviceManager.PreferredBackBufferWidth = 800;
             _graphicsDeviceManager.PreferredBackBufferHeight = 480;
             _graphicsDeviceManager.PreferMultiSampling = false;
-            _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false;
+            _graphicsDeviceManager.SynchronizeWithVerticalRetrace = false; */
             _graphicsDeviceManager.SupportedOrientations = DisplayOrientation.LandscapeLeft | DisplayOrientation.LandscapeRight;
         }
 

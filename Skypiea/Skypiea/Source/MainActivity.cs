@@ -4,6 +4,8 @@ using Android.OS;
 using Android.Views;
 using Microsoft.Xna.Framework;
 
+using AndroidView = Android.Views.View;
+
 namespace Skypiea
 {
     [Activity(Label = "Skypiea"
@@ -22,6 +24,18 @@ namespace Skypiea
             var g = new SkypieaGame();
             SetContentView((Android.Views.View)((Game)g).Services.GetService (typeof(Android.Views.View)));
             g.Run();
+        }
+
+        protected override void OnResume()
+        {
+            AndroidView decorView = this.Window.DecorView;
+            decorView.SystemUiVisibility = (StatusBarVisibility)(SystemUiFlags.LayoutStable
+                                          | SystemUiFlags.LayoutHideNavigation
+                                          | SystemUiFlags.LayoutFullscreen
+                                          | SystemUiFlags.HideNavigation
+                                          | SystemUiFlags.Fullscreen
+                                          | SystemUiFlags.ImmersiveSticky);
+            base.OnResume();
         }
     }
 }
