@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{D1FB9F68-D953-4250-AB6F-AFEDC2ED9E1C}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Skypiea/Skypiea/Flai.Android/Misc/ApplicationInfo.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Skypiea/Skypiea/Flai.Android/Misc/DebugInformationComponent.cs">
     <Files>
       <File FileName="Flai.Android/MyClass.cs" Line="8" Column="10" />
       <File FileName="Flai.Android/Audio/FlaiSoundEffectInstance.cs" Line="16" Column="37" />
@@ -11,17 +11,20 @@
       <File FileName="Skypiea/SkypieaContent/SkypieaContent.mgcb" Line="460" Column="1" />
       <File FileName="Skypiea/Skypiea/Source/Screens/AchievementScreen.cs" Line="36" Column="35" />
       <File FileName="Skypiea/Skypiea/Flai.Android/Misc/ApplicationInfo.cs" Line="120" Column="1" />
+      <File FileName="Skypiea/Skypiea/Flai.Android/Misc/DebugInformationComponent.cs" Line="20" Column="50" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="Skypiea" expanded="True">
             <Node name="Flai.Android" expanded="True" />
-            <Node name="Skypiea" expanded="True" selected="True">
+            <Node name="Skypiea" expanded="True">
               <Node name="References" expanded="True" />
               <Node name="Assets" expanded="True" />
               <Node name="Flai.Android" expanded="True">
-                <Node name="Misc" expanded="True" />
+                <Node name="Misc" expanded="True">
+                  <Node name="DebugInformationComponent.cs" selected="True" />
+                </Node>
               </Node>
               <Node name="Source" expanded="True">
                 <Node name="Screens" expanded="True" />
