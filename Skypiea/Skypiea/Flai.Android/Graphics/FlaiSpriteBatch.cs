@@ -296,6 +296,12 @@ namespace Flai.Graphics
             this.DrawInner(texture, destinationRectangle, null, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
         }
 
+        // RectangleF
+        public void Draw(TextureDefinition textureDefinition, Rectangle destinationRectangle)
+        {
+            this.DrawInner(textureDefinition.Texture, destinationRectangle, textureDefinition.SourceRectangle, Color.White, 0f, Vector2.Zero, SpriteEffects.None, 0f);
+        }
+
         public void Draw(Texture2D texture, RectangleF destinationRectangle)
         {
             Vector2 scale = new Vector2(destinationRectangle.Width / texture.Width, destinationRectangle.Height / texture.Height);

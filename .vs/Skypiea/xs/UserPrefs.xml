@@ -1,0 +1,42 @@
+﻿<Properties StartupConfiguration="{D1FB9F68-D953-4250-AB6F-AFEDC2ED9E1C}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Skypiea/Skypiea/Flai.Android/Misc/ApplicationInfo.cs">
+    <Files>
+      <File FileName="Flai.Android/MyClass.cs" Line="8" Column="10" />
+      <File FileName="Flai.Android/Audio/FlaiSoundEffectInstance.cs" Line="16" Column="37" />
+      <File FileName="Skypiea/SkypieaContent/Fonts/Minecraftia.12.spritefont" Line="1" Column="1" />
+      <File FileName="Flai.Android/CBES/Components/CVelocity2D.cs" Line="1" Column="17" />
+      <File FileName="Flai.Android/CBES/Aspect.cs" Line="1" Column="1" />
+      <File FileName="Skypiea/Skypiea/Source/SkypieaGame.cs" Line="3" Column="21" />
+      <File FileName="Skypiea/SkypieaContent/Fonts/Minecraftia.16.spritefont" Line="1" Column="1" />
+      <File FileName="Skypiea/SkypieaContent/SkypieaContent.mgcb" Line="460" Column="1" />
+      <File FileName="Skypiea/Skypiea/Source/Screens/AchievementScreen.cs" Line="36" Column="35" />
+      <File FileName="Skypiea/Skypiea/Flai.Android/Misc/ApplicationInfo.cs" Line="120" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="Skypiea" expanded="True">
+            <Node name="Flai.Android" expanded="True" />
+            <Node name="Skypiea" expanded="True" selected="True">
+              <Node name="References" expanded="True" />
+              <Node name="Assets" expanded="True" />
+              <Node name="Flai.Android" expanded="True">
+                <Node name="Misc" expanded="True" />
+              </Node>
+              <Node name="Source" expanded="True">
+                <Node name="Screens" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.Skypiea PreferredExecutionTarget="Android.RF8M90NY4SZ" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

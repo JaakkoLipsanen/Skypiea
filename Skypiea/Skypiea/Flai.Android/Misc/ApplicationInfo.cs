@@ -7,6 +7,9 @@ using System.Linq;
 using System.Xml;
 using Microsoft.Xna.Framework.Graphics;
 
+using AndroidUri = Android.Net.Uri;
+using Application = Android.App.Application;
+
 namespace Flai.Misc
 {
     public static class ApplicationInfo
@@ -148,13 +151,36 @@ namespace Flai.Misc
                 });
             }
         }
-
+        */
         // Not working properly?? Didnt work on boxStrike
         public static void OpenApplicationReviewPage()
         {
+#if ANDROID
+            Context context = Application.Context;
+
+            var uri = AndroidUri.Parse("market://details?id=" + context.PackageName);
+            Intent goToMarket = new Intent(Intent.ActionView, uri);
+            // To count with Play market backstack, After pressing back button, 
+            // to taken back to our application, we need to add following flags to intent. 
+            goToMarket.AddFlags(ActivityFlags.NoHistory | ActivityFlags.NewDocument | ActivityFlags.MultipleTask);
+            try
+            {
+                context.StartActivity(goToMarket);
+            }
+            catch (ActivityNotFoundException e)
+            {
+                context.StartActivity(new Intent(
+                    Intent.ActionView,
+                    AndroidUri.Parse("http://play.google.com/store/apps/details?id=" + context.PackageName)));
+            }
+
+#elif WINDOWS_PHONE
             MarketplaceReviewTask marketplaceReviewTask = new MarketplaceReviewTask();
             marketplaceReviewTask.Show();
+#endif
         }
+
+        /*
 
         public static void OpenMarketplaceApplicationPage(string applicationId)
         {
@@ -184,7 +210,7 @@ namespace Flai.Misc
         /// <returns>the attribute value</returns> 
         private static string GetAppAttribute(string attributeName)
         {
-#if WP8 
+#if WP8
             const string AppManifestName = "WMAppManifest.xml";
             const string AppNodeName = "App";
 

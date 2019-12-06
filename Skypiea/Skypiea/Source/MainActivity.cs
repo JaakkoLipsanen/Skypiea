@@ -18,8 +18,11 @@ namespace Skypiea
         , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
     public class Activity1 : Microsoft.Xna.Framework.AndroidGameActivity
     {
+        public static Activity1 Instance { get; private set; }
         protected override void OnCreate(Bundle bundle)
         {
+            Activity1.Instance = this;
+
             base.OnCreate(bundle);
             var g = new SkypieaGame();
             SetContentView((Android.Views.View)((Game)g).Services.GetService (typeof(Android.Views.View)));

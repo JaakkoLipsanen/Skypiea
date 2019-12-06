@@ -24,7 +24,7 @@ namespace Skypiea.Screens
 
         private readonly AchievementManager _achievementManager = AchievementHelper.CreateAchivementManager();
         private readonly ReadOnlyArray<Achievement> _achievements;
-        private readonly Scroller _scroller = new Scroller(Range.Zero, Alignment.Vertical);
+        private readonly Scroller _scroller = new Scroller(Flai.Range.Zero, Alignment.Vertical);
         private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
         private bool _needsSaving = false;
 
@@ -37,7 +37,7 @@ namespace Skypiea.Screens
         {
             // get achievements with only one achievements per group
             _achievements = new ReadOnlyArray<Achievement>(_achievementManager.GetAchievementsWithoutGroups());
-            _scroller.ScrollingRange = new Range(0, _achievements.Count * SlotHeight - Screen.Height * 0.5f);
+            _scroller.ScrollingRange = new Flai.Range(0, _achievements.Count * SlotHeight - Screen.Height * 0.5f);
 
             this.EnabledGestures = GestureType.Flick;
             this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);

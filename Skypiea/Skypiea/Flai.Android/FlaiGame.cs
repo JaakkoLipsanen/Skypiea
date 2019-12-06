@@ -108,7 +108,7 @@ namespace Flai
 
         public Rectangle ScreenArea
         {
-            get { return base.GraphicsDevice.GetScreenArea(); }
+            get { return this.ScreenSize.ToRectangle(); }
         }
 
         public Size ViewportSize
@@ -411,38 +411,56 @@ namespace Flai
 
         #region Windows Phone Events
 #if WINDOWS_PHONE
-     /*   private void HookPhoneApplicationServiceEvents()
-        {
-            // Hook events on the PhoneApplicationService so we're notified of the application's life cycle
-            PhoneApplicationService.Current.Launching +=
-                new EventHandler<LaunchingEventArgs>(this.GameLaunching);
-            PhoneApplicationService.Current.Activated +=
-                new EventHandler<ActivatedEventArgs>(this.GameActivated);
-            PhoneApplicationService.Current.Deactivated +=
-                new EventHandler<DeactivatedEventArgs>(this.GameDeactivated);
-        }
+        /*   private void HookPhoneApplicationServiceEvents()
+           {
+               // Hook events on the PhoneApplicationService so we're notified of the application's life cycle
+               PhoneApplicationService.Current.Launching +=
+                   new EventHandler<LaunchingEventArgs>(this.GameLaunching);
+               PhoneApplicationService.Current.Activated +=
+                   new EventHandler<ActivatedEventArgs>(this.GameActivated);
+               PhoneApplicationService.Current.Deactivated +=
+                   new EventHandler<DeactivatedEventArgs>(this.GameDeactivated);
+           }
 
-        private void GameLaunching(object sender, LaunchingEventArgs e)
-        {
-            this.AddInitialScreens();
-        }
+           private void GameLaunching(object sender, LaunchingEventArgs e)
+           {
+               this.AddInitialScreens();
+           }
 
-        private void GameActivated(object sender, ActivatedEventArgs e)
+           private void GameActivated(object sender, ActivatedEventArgs e)
+           {
+               if (!_screenManager.Activate(e.IsApplicationInstancePreserved))
+               {
+                   // If the screen manager fails to deserialize, add the initial screens
+                   this.AddInitialScreens();
+               }
+           }
+
+           private void GameDeactivated(object sender, DeactivatedEventArgs e)
+           {
+               // Serialize the screen manager when the game deactivated
+               _screenManager.Deactivate();
+           }
+           */
+#endif
+
+        protected override void OnActivated(object sender, EventArgs args)
         {
-            if (!_screenManager.Activate(e.IsApplicationInstancePreserved))
+            if (!_screenManager.Activate(false))
             {
                 // If the screen manager fails to deserialize, add the initial screens
                 this.AddInitialScreens();
             }
         }
 
-        private void GameDeactivated(object sender, DeactivatedEventArgs e)
-        {
+        protected override void OnDeactivated(object sender, EventArgs args)
+        { 
             // Serialize the screen manager when the game deactivated
             _screenManager.Deactivate();
+
+            base.OnDeactivated(sender, args);
         }
-        */
-#endif
+
         #endregion
 
         #region Game Component Added/Removed

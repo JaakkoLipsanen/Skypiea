@@ -1,3 +1,4 @@
+using Android.OS;
 using Flai;
 using Flai.Graphics;
 using Flai.Misc;
@@ -42,7 +43,7 @@ namespace Skypiea.Screens
             this.CreateUI();
 
             LeaderboardHelper.ShowAskUsername();
-            RateHelper.ShowRateMessageIfNeeded();
+            RateHelper.ShowRateMessageIfNeeded(this);
         }
 
         protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
@@ -62,7 +63,7 @@ namespace Skypiea.Screens
         {
             // todo: do i want chromatic aberration?
             const float Offset = 1f;
-            graphicsContext.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive,  SkypieaViewConstants.RenderScaleMatrix);
+            graphicsContext.SpriteBatch.Begin(SpriteSortMode.Deferred, BlendState.Additive, SkypieaViewConstants.RenderScaleMatrix);
           //  _uiContainer.Draw(graphicsContext, true);
 
            // /* Draw with chromatic aberration
@@ -94,7 +95,7 @@ namespace Skypiea.Screens
             _uiContainer.Add(new TextButton("Exit", new Vector2(Screen.Width / 2f, 400), this.OnExitClicked) { InflateAmount = 12, Font = "Minecraftia.20" });
 
             _uiContainer.Add(new TextButton("Rate", new Vector2(Screen.Width - 44, Screen.Height - 24), this.OnRateClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
-            _uiContainer.Add(new TextButton("More Games", new Vector2(110, Screen.Height - 24), this.OnMoreGamesClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
+        //  _uiContainer.Add(new TextButton("More Games", new Vector2(110, Screen.Height - 24), this.OnMoreGamesClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
             _uiContainer.Add(new TextButton("Help", new Vector2(Screen.Width - 44, 24), this.OnHelpClicked) { InflateAmount = 48, Font = "Minecraftia.20" });
 
             _uiContainer.Add(new TextBlock("SKYPIEA", new Vector2(72, 20)) { Color = Color.White * 0.4f, Font = "Minecraftia.20" });
@@ -155,7 +156,9 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-                this.Game.Exit();
+                Microsoft.Xna.Framework.Game.Activity.MoveTaskToBack(true);
+               // this.Game.Exit();
+            //    Process.KillProcess(Process.MyPid());
             }
         }
 
@@ -169,15 +172,7 @@ namespace Skypiea.Screens
         {
             if (!this.IsExiting)
             {
-            //    ApplicationInfo.OpenApplicationReviewPage();
-            }
-        }
-
-        private void OnMoreGamesClicked()
-        {
-            if (!this.IsExiting)
-            {
-             //   ApplicationInfo.OpenDeveloperApplicationList();
+                this.ScreenManager.AddScreen(new RateScreen());
             }
         }
     }

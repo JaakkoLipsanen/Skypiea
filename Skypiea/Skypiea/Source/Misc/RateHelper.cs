@@ -1,12 +1,14 @@
 using Flai;
 using Flai.Misc;
+using Flai.ScreenManagement;
+using Skypiea.Screens;
 using Skypiea.Settings;
 
 namespace Skypiea.Misc
 {
     public static class RateHelper
     {
-        public static void ShowRateMessageIfNeeded()
+        public static void ShowRateMessageIfNeeded(GameScreen asker)
         {
             const int ShowAfterLaunches = 2;
             SkypieaSettingsManager settingsManager = FlaiGame.Current.Services.Get<SkypieaSettingsManager>();
@@ -18,24 +20,10 @@ namespace Skypiea.Misc
                     return;
                 }
 
-                return; // TODO TODO
-                GuideHelper.ShowMessageBox("Rate the game", "Please rate the game if you like it! Rating helps us make the game even better!", new[] { "rate now!", "no thanks" }, result =>
-                {
-                    // result == null -> the message box was canceled (back button)
-                    if (result != null)
-                    {
-                        settingsManager.Settings.IsRateWindowShown = true;
-                        settingsManager.Save();
+                asker.ScreenManager.AddScreen(new RateScreen());
 
-                        // result == 0 -> "rate now!" pressed
-                        if (result == 0)
-                        {
-                         //   ApplicationInfo.OpenApplicationReviewPage();
-                        }
-
-                        // else "no thanks" was pressed
-                    }
-                });
+                settingsManager.Settings.IsRateWindowShown = true;
+                settingsManager.Save();
             }
         }
     }

@@ -3,6 +3,7 @@ using Flai.Graphics;
 using Flai.ScreenManagement;
 using Flai.Ui;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.View;
 using System;
@@ -46,7 +47,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SkypieaViewConstants.RenderScaleMatrix);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, SkypieaViewConstants.RenderScaleMatrix);
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.4f);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();

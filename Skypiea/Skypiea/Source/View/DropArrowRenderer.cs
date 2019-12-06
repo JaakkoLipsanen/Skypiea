@@ -69,6 +69,8 @@ namespace Skypiea.View
             const string FontName = "Minecraftia.16";
             CWeaponDrop weaponDrop = drop.Entity.Get<CWeaponDrop>();
 
+            screenPosition += -Vector2.Normalize(Screen.Size.ToVector2i() / 2f - screenPosition) * Size * (1-scale) / 2f;
+
             graphicsContext.PrimitiveRenderer.DrawRectangle(screenPosition, Size * scale, Color.White * SkypieaViewConstants.DropArrowAlpha);
             graphicsContext.PrimitiveRenderer.DrawRectangleOutlines(RectangleF.CreateCentered(screenPosition, Size * scale), Color.Black * SkypieaViewConstants.DropArrowAlpha, 4 * scale);
             graphicsContext.SpriteBatch.DrawStringFadedCentered(graphicsContext.FontContainer[FontName], weaponDrop.Type.ToChar(), screenPosition, Color.White * SkypieaViewConstants.DropArrowAlpha, Color.Black * SkypieaViewConstants.DropArrowAlpha, 0, scale);

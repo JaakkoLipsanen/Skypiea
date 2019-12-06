@@ -7,6 +7,7 @@ using System;
 using Microsoft.Xna.Framework.Input.Touch;
 using Skypiea.Leaderboards;
 using Skypiea.View;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Skypiea.Screens
 {
@@ -46,7 +47,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SkypieaViewConstants.RenderScaleMatrix);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, SkypieaViewConstants.RenderScaleMatrix);
             graphicsContext.SpriteBatch.DrawFullscreen(graphicsContext.BlankTexture, Color.Black * 0.5f);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();

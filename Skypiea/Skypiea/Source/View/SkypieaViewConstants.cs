@@ -15,7 +15,9 @@ namespace Skypiea.View
             get
             {
                 // the original WP version was coded to run at 800x480, so lets just scale everything to look same
-                return new Vector2(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f);
+                return new Vector2(
+                    FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / (float)FlaiGame.Current.ScreenSize.Width, 
+                    FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / (float)FlaiGame.Current.ScreenSize.Height);
             }
         }
 
@@ -66,7 +68,7 @@ namespace Skypiea.View
                 case "RocketBullet": return new Rectangle(1912, 448, 9, 4);
                 case "SideFadeTexture": return new Rectangle(1999, 296, 20, 512);
                 case "ThumbstickBase": return new Rectangle(552, 520, 240, 240);
-                case "Vignette": return new Rectangle(16, 16, 800, 480);
+                case "Vignette": return new Rectangle(18, 18, 800, 480);
                 case "Zombie": return new Rectangle(1912, 239, 63, 63);
 
                 default: throw new NotImplementedException();

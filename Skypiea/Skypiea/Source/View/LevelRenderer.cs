@@ -36,14 +36,13 @@ namespace Skypiea.View
 
         protected override void DrawInner(GraphicsContext graphicsContext)
         {
-            Matrix scaleMatrix = Matrix.CreateScale(FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferWidth / 800f, FlaiGame.Current.GraphicsDevice.PresentationParameters.BackBufferHeight / 480f, 1);
             graphicsContext.SpriteBatch.Begin(
                 SamplerState.PointClamp, 
-                CCamera2D.Active.GetTransform(new Size(800, 480)) * scaleMatrix);
+                CCamera2D.Active.GetTransform(FlaiGame.Current.ScreenSize) * Matrix.CreateScale(SkypieaViewConstants.RenderScale.Y));
             _worldRenderer.Draw(graphicsContext);
             graphicsContext.SpriteBatch.End();
 
-            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, scaleMatrix); //, Matrix.CreateScale(FlaiGame.Current.ScreenSize.Width / 800f, FlaiGame.Current.ScreenSize.Height / 480f, 1f));
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, Matrix.CreateScale(SkypieaViewConstants.RenderScale.Y)); //, Matrix.CreateScale(FlaiGame.Current.ScreenSize.Width / 800f, FlaiGame.Current.ScreenSize.Height / 480f, 1f));
             this.DrawWithoutCamera(graphicsContext);
             graphicsContext.SpriteBatch.End();
         }
@@ -75,7 +74,11 @@ namespace Skypiea.View
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(_contentProvider, "Vignette"));
+            Rectangle area = FlaiGame.Current.ScreenArea;
+            area.Width += 1;
+            area.Height += 1;
+
+            graphicsContext.SpriteBatch.Draw(SkypieaViewConstants.LoadTexture(_contentProvider, "Vignette"), area);
         }
     }
 }

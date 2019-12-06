@@ -70,17 +70,17 @@ namespace Skypiea.View
                     color = new Color(72, 72, 72) * 0.75f;
                 }
 
-                const int Scale = 2;
-                const int Size = 24;
-                const float OffsetFromLeft = UiOffsetFromBorder - 10 + 0.5f * Size;
+                const float Scale = 2.5f;
+                const float Size = 12 * Scale;
+                const float OffsetFromLeft = UiOffsetFromBorder - 12 + 0.5f * Size;
 
-                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(OffsetFromLeft + i * Size, UiOffsetFromBorder + 0.5f * Size), color, 0, Scale);
+                graphicsContext.SpriteBatch.DrawCentered(heartTexture, new Vector2(OffsetFromLeft + i * Size, UiOffsetFromBorder + 0.25f * Size), color, 0, Scale);
             }
         }
 
         private void DrawScore(GraphicsContext graphicsContext, CPlayerInfo playerInfo)
         {
-            graphicsContext.SpriteBatch.DrawStringFaded(graphicsContext.FontContainer["Minecraftia.20"], playerInfo.Score, new Vector2(8, 32));
+            graphicsContext.SpriteBatch.DrawStringFaded(graphicsContext.FontContainer["Minecraftia.20"], playerInfo.Score, new Vector2(10, 36));
         }
 
         private void DrawWeaponInfo(GraphicsContext graphicsContext)

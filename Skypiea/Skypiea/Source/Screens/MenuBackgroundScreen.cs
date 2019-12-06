@@ -42,7 +42,7 @@ namespace Skypiea.Screens
 
         private void DrawVignette(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Vignette"));
+            graphicsContext.SpriteBatch.DrawFullscreen(SkypieaViewConstants.LoadTexture(graphicsContext.ContentProvider, "Vignette"), Color.White);
         }
 
         private void DrawNoise(GraphicsContext graphicsContext)

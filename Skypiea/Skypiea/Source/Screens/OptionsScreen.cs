@@ -61,7 +61,7 @@ namespace Skypiea.Screens
 
         protected override void Draw(GraphicsContext graphicsContext)
         {
-            graphicsContext.SpriteBatch.Begin(SamplerState.LinearClamp, SkypieaViewConstants.RenderScaleMatrix);
+            graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, SkypieaViewConstants.RenderScaleMatrix);
             _uiContainer.Draw(graphicsContext, true);
             graphicsContext.SpriteBatch.End();
         }
