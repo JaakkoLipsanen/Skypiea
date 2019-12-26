@@ -5,6 +5,7 @@ using Flai.Ui;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
+using Skypiea.Source.Screens;
 using Skypiea.View;
 using System;
 
@@ -79,7 +80,7 @@ namespace Skypiea.Screens
             this.Exited += () =>
             {
                 this.ScreenManager.AddScreen(new MenuBackgroundScreen());
-                this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Up));
+                this.ScreenManager.AddScreen(new ChangeNavigationBarVisibilityScreen(new MainMenuScreen(FadeDirection.Up), true));
             };
             this.ScreenManager.ExitAllScreens();
         }

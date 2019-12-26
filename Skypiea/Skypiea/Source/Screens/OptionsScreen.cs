@@ -77,7 +77,7 @@ namespace Skypiea.Screens
                 this.OnThumbstickStyleChanged) { Font = "Minecraftia.24" }).SetSelectedValue(_settingsManager.Settings.ThumbstickStyle);
 
             // rename scoreloop name
-            _uiContainer.Add(new TextButton("Rename leaderboard username", new Vector2(this.Game.ScreenSize.Width / 2f, 300), this.OnRenameUserNameClicked) { Font = "Minecraftia.24", InflateAmount = 12 });
+            // _uiContainer.Add(new TextButton("Rename leaderboard username", new Vector2(this.Game.ScreenSize.Width / 2f, 300), this.OnRenameUserNameClicked) { Font = "Minecraftia.24", InflateAmount = 12 });
             _uiContainer.Add(_renameResultTextBlock = new TextBlock("", new Vector2(this.Game.ScreenSize.Width / 2f, 330)) { Visible = false, Font = "Minecraftia.16" });
 
             // contacxt

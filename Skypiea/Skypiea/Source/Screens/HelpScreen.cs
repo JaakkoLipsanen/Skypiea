@@ -5,6 +5,7 @@ using Flai.ScreenManagement;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Settings;
+using Skypiea.Source.Screens;
 using Skypiea.View;
 
 namespace Skypiea.Screens
@@ -156,7 +157,7 @@ namespace Skypiea.Screens
         private void LoadGameplayScreen()
         {
 
-            this.Exited += () => this.ScreenManager.LoadScreen(new GameplayScreen());
+            this.Exited += () => this.ScreenManager.LoadScreen(new ChangeNavigationBarVisibilityScreen(new GameplayScreen(), false));
             this.ExitScreen();
         }
     }

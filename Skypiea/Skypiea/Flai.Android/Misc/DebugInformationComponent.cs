@@ -118,6 +118,7 @@ namespace Flai.Misc
             {
                 graphicsContext.SpriteBatch.DrawCentered(graphicsContext.BlankTexture, location.Position * InputState.TouchLocationScale, Color.Blue, 0, 24f);
             }
+            graphicsContext.SpriteBatch.DrawStringFaded(font, "Screen Size: ", FlaiGame.Current.ScreenSize.ToString(), this.DisplayPosition + Vector2.UnitY * characterHeight * 6.5f);
 
             graphicsContext.SpriteBatch.End();
         }

@@ -46,7 +46,12 @@ namespace Skypiea.Systems.Zombie
         private void SpawnZombie()
         {
             const float MinDistanceFromBorder = -SkypieaConstants.PixelsPerMeter * 4;
-            const float MinDistanceFromPlayer = 480; // sqrt(400^2 + 240^2) == 466
+
+            // WP version (800x480 is the only aspect ratio programmed)
+            // const float MinDistanceFromPlayer = 480; // sqrt(400^2 + 240^2) == 466
+
+            // Android version (21:9 aspect ratio is the max)
+            const float MinDistanceFromPlayer = 610; // sqrt(560^2 + 240^2) == 609
 
             CTransform2D playerTransform = this.EntityWorld.FindEntityByName(EntityNames.Player).Transform;
             Vector2 position = FlaiAlgorithms.GenerateRandomVector2(

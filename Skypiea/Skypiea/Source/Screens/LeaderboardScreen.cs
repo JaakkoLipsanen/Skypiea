@@ -324,12 +324,35 @@ namespace Skypiea.Screens
 }
 */
 
+using System;
 using Flai;
+using Flai.Graphics;
 using Flai.ScreenManagement;
+using Flai.Ui;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Skypiea.Leaderboards;
 using Skypiea.Screens;
+using Skypiea.View;
 
 public class LeaderboardScreen : GameScreen
 {
+    private readonly BasicUiContainer _uiContainer = new BasicUiContainer();
+    public override bool IsPopup => true;
+
+    protected override void LoadContent(bool instancePreserved)
+    {
+        _uiContainer.Add(new TextBlock($"Highscore: {FlaiGame.Current.Services.Get<HighscoreManager>().Highscore}", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f - 10)) { Font = "Minecraftia.24", Color = Color.White });
+        _uiContainer.Add(new TextBlock("Online leaderboards are coming soon...", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f + 30)) { Font = "Minecraftia.16", Color = Color.Gray });
+
+
+        this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
+        this.TransitionOffTime = TimeSpan.FromSeconds(0.5f);
+        this.FadeType = FadeType.FadeAlpha;
+        this.FadeIn = FadeDirection.Right;
+        this.FadeOut = FadeDirection.Right;
+    }
+
     protected override void Update(UpdateContext updateContext, bool otherScreenHasFocus, bool coveredByOtherScreen)
     {
         if (this.IsExiting)
@@ -342,6 +365,13 @@ public class LeaderboardScreen : GameScreen
             this.ExitScreen();
             this.ScreenManager.AddScreen(new MainMenuScreen(FadeDirection.Left), new Delay(0.25f));
         }
+    }
+
+    protected override void Draw(GraphicsContext graphicsContext)
+    {
+        graphicsContext.SpriteBatch.Begin(SamplerState.PointClamp, SkypieaViewConstants.RenderScaleMatrix);
+        _uiContainer.Draw(graphicsContext, true);
+        graphicsContext.SpriteBatch.End();
     }
 
 }

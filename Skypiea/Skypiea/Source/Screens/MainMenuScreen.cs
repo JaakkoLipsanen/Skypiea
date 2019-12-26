@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Skypiea.Leaderboards;
 using Skypiea.Misc;
 using Skypiea.Settings;
+using Skypiea.Source.Screens;
 using Skypiea.View;
 using System;
 
@@ -114,7 +115,7 @@ namespace Skypiea.Screens
             SkypieaSettingsManager settings = this.Game.Services.Get<SkypieaSettingsManager>();
             if (settings.Settings.IsFirstHelpShown)
             {
-                this.ScreenManager.LoadScreen(new GameplayScreen());
+                this.ScreenManager.LoadScreen(new ChangeNavigationBarVisibilityScreen(new GameplayScreen(), false));
             }
             else
             {

@@ -32,6 +32,8 @@ namespace Skypiea
             _serviceContainer.Add(HighscoreHelper.CreateHighscoreManager());
             _serviceContainer.Add(StatsHelper.CreateStatsManager());
             _serviceContainer.Add(_scoreloopManager = LeaderboardHelper.CreateLeaderboardManager());
+
+        
         }
 
         protected override void InitializeInner()
