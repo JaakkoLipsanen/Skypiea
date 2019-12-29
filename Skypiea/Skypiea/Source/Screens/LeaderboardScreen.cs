@@ -343,7 +343,8 @@ public class LeaderboardScreen : GameScreen
     protected override void LoadContent(bool instancePreserved)
     {
         _uiContainer.Add(new TextBlock($"Highscore: {FlaiGame.Current.Services.Get<HighscoreManager>().Highscore}", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f - 10)) { Font = "Minecraftia.24", Color = Color.White });
-        _uiContainer.Add(new TextBlock("Online leaderboards are coming soon...", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f + 30)) { Font = "Minecraftia.16", Color = Color.Gray });
+        _uiContainer.Add(new TextBlock("Online leaderboards currently", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f + 30)) { Font = "Minecraftia.16", Color = Color.Gray });
+        _uiContainer.Add(new TextBlock("not available on Android...", new Vector2(this.Game.ScreenSize.Width / 2f, this.Game.ScreenSize.Height / 2f + 60)) { Font = "Minecraftia.16", Color = Color.Gray });
 
 
         this.TransitionOnTime = TimeSpan.FromSeconds(0.5f);
