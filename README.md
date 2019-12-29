@@ -1,9 +1,9 @@
 ## Final Fight Z (codename Skypiea)
 
-_Originally published for Windows Phone in 2013, ported to Android in 2019. Play Store link is coming soon.._
+_Originally published for Windows Phone in 2013, ported to Android in 2019_
 
 
-[**Windows Phone Store**](https://www.microsoft.com/en-us/store/p/final-fight-z/9nblggh0ctnm)  
+[**Play Store**](https://play.google.com/store/apps/details?id=com.flai.Skypiea)  
 
 
 Final Fight Z is a top-down zombie shooter for Windows Phone that I developed in late 2013. It has global leaderboards and a pretty fun achievement system as well. There are a lot of different weapons, power ups and maps!
