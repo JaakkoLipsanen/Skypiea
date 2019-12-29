@@ -8,7 +8,7 @@ using AndroidView = Android.Views.View;
 
 namespace Skypiea
 {
-    [Activity(Label = "Skypiea"
+    [Activity(Label = "Final Fight Z"
         , MainLauncher = true
         , Icon = "@drawable/icon"
         , Theme = "@style/Theme.Splash"
@@ -16,7 +16,7 @@ namespace Skypiea
         , LaunchMode = Android.Content.PM.LaunchMode.SingleInstance
         , ScreenOrientation = ScreenOrientation.Landscape
         , ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.Keyboard | ConfigChanges.KeyboardHidden | ConfigChanges.ScreenSize)]
-    public class SkypieaGameActivity : Microsoft.Xna.Framework.AndroidGameActivity
+    public class SkypieaGameActivity : AndroidGameActivity
     {
         public static SkypieaGameActivity Instance { get; private set; }
         protected override void OnCreate(Bundle bundle)

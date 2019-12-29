@@ -1,5 +1,6 @@
 using System.Xml.Linq;
 using Android.Content;
+using Skypiea;
 #if WINDOWS_PHONE
 using System;
 using System.IO.IsolatedStorage;
@@ -156,7 +157,7 @@ namespace Flai.Misc
         public static void OpenApplicationReviewPage()
         {
 #if ANDROID
-            Context context = Application.Context;
+            Context context = SkypieaGameActivity.Instance;
 
             var uri = AndroidUri.Parse("market://details?id=" + context.PackageName);
             Intent goToMarket = new Intent(Intent.ActionView, uri);
