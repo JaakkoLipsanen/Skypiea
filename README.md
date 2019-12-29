@@ -1,5 +1,7 @@
 ## Final Fight Z (codename Skypiea)
+_Originally published for Windows Phone in 2013, ported to Android in 2019_
 
+[**Google Play Store**](https://play.google.com/store/apps/details?id=com.flai.Skypiea)  
 [**Windows Phone Store**](https://www.microsoft.com/en-us/store/p/final-fight-z/9nblggh0ctnm)  
 
 
